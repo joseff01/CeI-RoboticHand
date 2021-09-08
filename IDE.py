@@ -80,6 +80,10 @@ class GUI(ttk.Frame):
         self.root = parent
         self.init_gui()
 
+    def println(self, text):
+        '''Agrega una línea de texto a la ventana de la consola'''
+        self.console.insert(tk.END, text)
+
     def init_gui(self):
         self.root.title('Robotic Hand')
         self.root.geometry("1200x800")
@@ -124,3 +128,4 @@ class GUI(ttk.Frame):
         # Padding
         for child in self.winfo_children():
             child.configure(padx=10, pady=5)
+
