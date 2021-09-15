@@ -53,8 +53,6 @@ t_PyC = r'\;'
 t_A1 = r'\#'
 t_A2 = r'\?'
 t_A3 = r'\_'
-t_LET = r'let'
-t_OPERA = r'OPERA'
 
 
 def t_INT(t):
@@ -67,6 +65,19 @@ def t_BOOLEAN(t):
     r'True | False'
     t.type = 'BOOLEAN'
     return t
+
+
+def t_OPERA(t):
+    r'OPERA'
+    t.type = 'OPERA'
+    return t
+
+
+def t_LET(t):
+    r'let'
+    t.type = 'LET'
+    return t
+
 
 def t_VARIABLE(t):
     r'[a-zA-Z]{3,15}'
@@ -88,14 +99,14 @@ def p_expression(p):
 
 def p_var_assign(p):
     '''
-    var_assign: VARIABLE EQUALS expression PYC
-              | VARIABLE EQUALS VARIABLE PYC
+    var_assign: LET VARIABLE EQUALS expression PYC
+              | LET VARIABLE EQUALS VARIABLE PYC
     '''
 
 
 lexer = lex.lex()
 
-lexer.input("False")
+lexer.input("let abc = 21")
 
 while True:
     tok = lexer.token()
