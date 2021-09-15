@@ -5,6 +5,9 @@ import sys
 """Define los tokens validos para el lexer"""
 tokens = [
     'INT',
+    'LET',
+    'OPERA',
+    'EXP',
     'BOOLEAN',
     'VARIABLE',
     'PLUS',
@@ -33,6 +36,7 @@ t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_INT_DIV = r'\//'
 t_DIVIDE = r'\/'
+t_EXP = r'\*\*'
 t_MULTIPLY = r'\*'
 t_EQUALS_EQUALS = r'\=='
 t_EQUALS = r'\='
@@ -49,6 +53,8 @@ t_PyC = r'\;'
 t_A1 = r'\#'
 t_A2 = r'\?'
 t_A3 = r'\_'
+t_LET = r'let'
+t_OPERA = r'OPERA'
 
 
 def t_INT(t):
