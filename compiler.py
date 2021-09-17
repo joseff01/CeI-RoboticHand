@@ -32,6 +32,7 @@ tokens = [
     'A3'
 ]
 """Le dice a lex como se ven los tokens definidos anteriormente"""
+
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_INT_DIV = r'\//'
@@ -54,7 +55,9 @@ t_A1 = r'\#'
 t_A2 = r'\?'
 t_A3 = r'\_'
 
+t_ignore = r' '
 
+"""Definicion de algunos tokens como funciones(nota: definir palabras especificas antes de la definicion de variable)"""
 def t_INT(t):
     r'\d+'
     t.value = int(t.value)
@@ -90,26 +93,44 @@ def t_error(t):
     t.lexer.skip(1)
 
 
-def p_expression(p):
-    '''
-    expression: INT
-              | BOOLEAN
-    '''
-
-
-def p_var_assign(p):
-    '''
-    var_assign: LET VARIABLE EQUALS expression PYC
-              | LET VARIABLE EQUALS VARIABLE PYC
-    '''
-
-
 lexer = lex.lex()
 
-lexer.input("let abc = 21")
+"""Definicion de funciones del parser"""
+def p_calc(p):
+    '''
+    calc : expression
+        | empty
+    '''
+    print(p[1])
+
+
+def p_empty(p):
+    '''
+    empty :
+    '''
+    p[0] = None
+
+
+def p_expression(p):
+    '''
+    expression : OPERA OPEN_P expression PLUS expression CLOSE_P
+          | expression MINUS expression
+    '''
+    p[0] = (p[4], p[3], p[5])
+
+
+def p_expression_int_boolean(p):
+    '''
+    expression : INT
+              | BOOLEAN
+    '''
+    p[0] = p[1]
+
+parser = yacc.yacc()
 
 while True:
-    tok = lexer.token()
-    if not tok:
+    try:
+        s = input('')
+    except EOFError:
         break
-    print(tok)
+    parser.parse(s)

@@ -1,0 +1,229 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    A1
+    A2
+    A3
+    COMMA
+    COMMENTARY
+    DISTINCT
+    DIVIDE
+    EQUALS
+    EQUALS_EQUALS
+    EXP
+    INT_DIV
+    LESS_EQUAL
+    LESS_THAN
+    LET
+    MORE_EQUAL
+    MORE_THAN
+    MULTIPLY
+    PyC
+    VARIABLE
+
+Grammar
+
+Rule 0     S' -> calc
+Rule 1     calc -> expression
+Rule 2     calc -> empty
+Rule 3     empty -> <empty>
+Rule 4     expression -> OPERA OPEN_P expression PLUS expression CLOSE_P
+Rule 5     expression -> expression MINUS expression
+Rule 6     expression -> INT
+Rule 7     expression -> BOOLEAN
+
+Terminals, with rules where they appear
+
+A1                   : 
+A2                   : 
+A3                   : 
+BOOLEAN              : 7
+CLOSE_P              : 4
+COMMA                : 
+COMMENTARY           : 
+DISTINCT             : 
+DIVIDE               : 
+EQUALS               : 
+EQUALS_EQUALS        : 
+EXP                  : 
+INT                  : 6
+INT_DIV              : 
+LESS_EQUAL           : 
+LESS_THAN            : 
+LET                  : 
+MINUS                : 5
+MORE_EQUAL           : 
+MORE_THAN            : 
+MULTIPLY             : 
+OPEN_P               : 4
+OPERA                : 4
+PLUS                 : 4
+PyC                  : 
+VARIABLE             : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+calc                 : 0
+empty                : 2
+expression           : 1 4 4 5 5
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . calc
+    (1) calc -> . expression
+    (2) calc -> . empty
+    (4) expression -> . OPERA OPEN_P expression PLUS expression CLOSE_P
+    (5) expression -> . expression MINUS expression
+    (6) expression -> . INT
+    (7) expression -> . BOOLEAN
+    (3) empty -> .
+
+    OPERA           shift and go to state 4
+    INT             shift and go to state 5
+    BOOLEAN         shift and go to state 6
+    $end            reduce using rule 3 (empty -> .)
+
+    calc                           shift and go to state 1
+    expression                     shift and go to state 2
+    empty                          shift and go to state 3
+
+state 1
+
+    (0) S' -> calc .
+
+
+
+state 2
+
+    (1) calc -> expression .
+    (5) expression -> expression . MINUS expression
+
+    $end            reduce using rule 1 (calc -> expression .)
+    MINUS           shift and go to state 7
+
+
+state 3
+
+    (2) calc -> empty .
+
+    $end            reduce using rule 2 (calc -> empty .)
+
+
+state 4
+
+    (4) expression -> OPERA . OPEN_P expression PLUS expression CLOSE_P
+
+    OPEN_P          shift and go to state 8
+
+
+state 5
+
+    (6) expression -> INT .
+
+    MINUS           reduce using rule 6 (expression -> INT .)
+    $end            reduce using rule 6 (expression -> INT .)
+    PLUS            reduce using rule 6 (expression -> INT .)
+    CLOSE_P         reduce using rule 6 (expression -> INT .)
+
+
+state 6
+
+    (7) expression -> BOOLEAN .
+
+    MINUS           reduce using rule 7 (expression -> BOOLEAN .)
+    $end            reduce using rule 7 (expression -> BOOLEAN .)
+    PLUS            reduce using rule 7 (expression -> BOOLEAN .)
+    CLOSE_P         reduce using rule 7 (expression -> BOOLEAN .)
+
+
+state 7
+
+    (5) expression -> expression MINUS . expression
+    (4) expression -> . OPERA OPEN_P expression PLUS expression CLOSE_P
+    (5) expression -> . expression MINUS expression
+    (6) expression -> . INT
+    (7) expression -> . BOOLEAN
+
+    OPERA           shift and go to state 4
+    INT             shift and go to state 5
+    BOOLEAN         shift and go to state 6
+
+    expression                     shift and go to state 9
+
+state 8
+
+    (4) expression -> OPERA OPEN_P . expression PLUS expression CLOSE_P
+    (4) expression -> . OPERA OPEN_P expression PLUS expression CLOSE_P
+    (5) expression -> . expression MINUS expression
+    (6) expression -> . INT
+    (7) expression -> . BOOLEAN
+
+    OPERA           shift and go to state 4
+    INT             shift and go to state 5
+    BOOLEAN         shift and go to state 6
+
+    expression                     shift and go to state 10
+
+state 9
+
+    (5) expression -> expression MINUS expression .
+    (5) expression -> expression . MINUS expression
+
+  ! shift/reduce conflict for MINUS resolved as shift
+    $end            reduce using rule 5 (expression -> expression MINUS expression .)
+    PLUS            reduce using rule 5 (expression -> expression MINUS expression .)
+    CLOSE_P         reduce using rule 5 (expression -> expression MINUS expression .)
+    MINUS           shift and go to state 7
+
+  ! MINUS           [ reduce using rule 5 (expression -> expression MINUS expression .) ]
+
+
+state 10
+
+    (4) expression -> OPERA OPEN_P expression . PLUS expression CLOSE_P
+    (5) expression -> expression . MINUS expression
+
+    PLUS            shift and go to state 11
+    MINUS           shift and go to state 7
+
+
+state 11
+
+    (4) expression -> OPERA OPEN_P expression PLUS . expression CLOSE_P
+    (4) expression -> . OPERA OPEN_P expression PLUS expression CLOSE_P
+    (5) expression -> . expression MINUS expression
+    (6) expression -> . INT
+    (7) expression -> . BOOLEAN
+
+    OPERA           shift and go to state 4
+    INT             shift and go to state 5
+    BOOLEAN         shift and go to state 6
+
+    expression                     shift and go to state 12
+
+state 12
+
+    (4) expression -> OPERA OPEN_P expression PLUS expression . CLOSE_P
+    (5) expression -> expression . MINUS expression
+
+    CLOSE_P         shift and go to state 13
+    MINUS           shift and go to state 7
+
+
+state 13
+
+    (4) expression -> OPERA OPEN_P expression PLUS expression CLOSE_P .
+
+    MINUS           reduce using rule 4 (expression -> OPERA OPEN_P expression PLUS expression CLOSE_P .)
+    $end            reduce using rule 4 (expression -> OPERA OPEN_P expression PLUS expression CLOSE_P .)
+    PLUS            reduce using rule 4 (expression -> OPERA OPEN_P expression PLUS expression CLOSE_P .)
+    CLOSE_P         reduce using rule 4 (expression -> OPERA OPEN_P expression PLUS expression CLOSE_P .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for MINUS in state 9 resolved as shift
