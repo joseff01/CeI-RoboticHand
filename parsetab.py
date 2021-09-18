@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'A1 A2 A3 BOOLEAN CLOSE_P COMMA COMMENTARY DISTINCT DIVIDE EQUALS EQUALS_EQUALS EXP INT INT_DIV LESS_EQUAL LESS_THAN LET MINUS MORE_EQUAL MORE_THAN MULTIPLY OPEN_P OPERA PLUS PyC VARIABLE\n    calc : expression\n        | empty\n    \n    empty :\n    \n    expression : OPERA OPEN_P expression PLUS expression CLOSE_P\n          | expression MINUS expression\n    \n    expression : INT\n              | BOOLEAN\n    '
+_lr_signature = 'A1 A2 A3 BOOLEAN CLOSE_P COMMA COMMENTARY DISTINCT DIVIDE EQUALS EQUALS_EQUALS EXP INT INT_DIV LESS_EQUAL LESS_THAN LET MINUS MORE_EQUAL MORE_THAN MULTIPLY OPEN_P OPERA PLUS PyC VARIABLE\n    calc : expression\n        | empty\n    \n    empty :\n    \n    expression : OPERA OPEN_P expression PLUS expression CLOSE_P\n          | OPERA OPEN_P expression MINUS expression CLOSE_P\n          | OPERA OPEN_P expression INT_DIV expression CLOSE_P\n          | OPERA OPEN_P expression DIVIDE expression CLOSE_P\n          | OPERA OPEN_P expression EXP expression CLOSE_P\n          | OPERA OPEN_P expression MULTIPLY expression CLOSE_P\n    \n    expression : INT\n              | BOOLEAN\n    '
     
-_lr_action_items = {'OPERA':([0,7,8,11,],[4,4,4,4,]),'INT':([0,7,8,11,],[5,5,5,5,]),'BOOLEAN':([0,7,8,11,],[6,6,6,6,]),'$end':([0,1,2,3,5,6,9,13,],[-3,0,-1,-2,-6,-7,-5,-4,]),'MINUS':([2,5,6,9,10,12,13,],[7,-6,-7,7,7,7,-4,]),'OPEN_P':([4,],[8,]),'PLUS':([5,6,9,10,13,],[-6,-7,-5,11,-4,]),'CLOSE_P':([5,6,9,12,13,],[-6,-7,-5,13,-4,]),}
+_lr_action_items = {'OPERA':([0,7,9,10,11,12,13,14,],[4,4,4,4,4,4,4,4,]),'INT':([0,7,9,10,11,12,13,14,],[5,5,5,5,5,5,5,5,]),'BOOLEAN':([0,7,9,10,11,12,13,14,],[6,6,6,6,6,6,6,6,]),'$end':([0,1,2,3,5,6,21,22,23,24,25,26,],[-3,0,-1,-2,-10,-11,-4,-5,-6,-7,-8,-9,]),'OPEN_P':([4,],[7,]),'PLUS':([5,6,8,21,22,23,24,25,26,],[-10,-11,9,-4,-5,-6,-7,-8,-9,]),'MINUS':([5,6,8,21,22,23,24,25,26,],[-10,-11,10,-4,-5,-6,-7,-8,-9,]),'INT_DIV':([5,6,8,21,22,23,24,25,26,],[-10,-11,11,-4,-5,-6,-7,-8,-9,]),'DIVIDE':([5,6,8,21,22,23,24,25,26,],[-10,-11,12,-4,-5,-6,-7,-8,-9,]),'EXP':([5,6,8,21,22,23,24,25,26,],[-10,-11,13,-4,-5,-6,-7,-8,-9,]),'MULTIPLY':([5,6,8,21,22,23,24,25,26,],[-10,-11,14,-4,-5,-6,-7,-8,-9,]),'CLOSE_P':([5,6,15,16,17,18,19,20,21,22,23,24,25,26,],[-10,-11,21,22,23,24,25,26,-4,-5,-6,-7,-8,-9,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'calc':([0,],[1,]),'expression':([0,7,8,11,],[2,9,10,12,]),'empty':([0,],[3,]),}
+_lr_goto_items = {'calc':([0,],[1,]),'expression':([0,7,9,10,11,12,13,14,],[2,8,15,16,17,18,19,20,]),'empty':([0,],[3,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -31,7 +31,11 @@ _lr_productions = [
   ('calc -> empty','calc',1,'p_calc','compiler.py',102),
   ('empty -> <empty>','empty',0,'p_empty','compiler.py',109),
   ('expression -> OPERA OPEN_P expression PLUS expression CLOSE_P','expression',6,'p_expression','compiler.py',116),
-  ('expression -> expression MINUS expression','expression',3,'p_expression','compiler.py',117),
-  ('expression -> INT','expression',1,'p_expression_int_boolean','compiler.py',124),
-  ('expression -> BOOLEAN','expression',1,'p_expression_int_boolean','compiler.py',125),
+  ('expression -> OPERA OPEN_P expression MINUS expression CLOSE_P','expression',6,'p_expression','compiler.py',117),
+  ('expression -> OPERA OPEN_P expression INT_DIV expression CLOSE_P','expression',6,'p_expression','compiler.py',118),
+  ('expression -> OPERA OPEN_P expression DIVIDE expression CLOSE_P','expression',6,'p_expression','compiler.py',119),
+  ('expression -> OPERA OPEN_P expression EXP expression CLOSE_P','expression',6,'p_expression','compiler.py',120),
+  ('expression -> OPERA OPEN_P expression MULTIPLY expression CLOSE_P','expression',6,'p_expression','compiler.py',121),
+  ('expression -> INT','expression',1,'p_expression_int_boolean','compiler.py',128),
+  ('expression -> BOOLEAN','expression',1,'p_expression_int_boolean','compiler.py',129),
 ]

@@ -114,7 +114,11 @@ def p_empty(p):
 def p_expression(p):
     '''
     expression : OPERA OPEN_P expression PLUS expression CLOSE_P
-          | expression MINUS expression
+          | OPERA OPEN_P expression MINUS expression CLOSE_P
+          | OPERA OPEN_P expression INT_DIV expression CLOSE_P
+          | OPERA OPEN_P expression DIVIDE expression CLOSE_P
+          | OPERA OPEN_P expression EXP expression CLOSE_P
+          | OPERA OPEN_P expression MULTIPLY expression CLOSE_P
     '''
     p[0] = (p[4], p[3], p[5])
 
