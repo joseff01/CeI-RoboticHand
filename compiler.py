@@ -1,5 +1,4 @@
 import ply.lex as lex
-import re
 import ply.yacc as yacc
 import sys
 """Define los tokens validos para el lexer"""
@@ -96,12 +95,24 @@ def t_error(t):
 lexer = lex.lex()
 
 """Definicion de funciones del parser"""
+
+
 def p_calc(p):
     '''
     calc : expression
+         | var_assign
         | empty
     '''
     print(p[1])
+
+
+def p_var_assign(p):
+    '''
+    var_assign : LET VARIABLE EQUALS expression
+              | LET VARIABLE EQUALS VARIABLE
+    '''
+
+    p[0] = ('=', p[2], p[4])
 
 
 def p_empty(p):
