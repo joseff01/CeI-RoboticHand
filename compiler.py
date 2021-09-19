@@ -103,13 +103,12 @@ def p_calc(p):
          | var_assign
         | empty
     '''
-    print(p[1])
+    print(run(p[1]))
 
 
 def p_var_assign(p):
     '''
     var_assign : LET VARIABLE EQUALS expression PyC
-              | LET VARIABLE EQUALS VARIABLE
     '''
 
     p[0] = ('=', p[2], p[4])
@@ -143,6 +142,25 @@ def p_expression_int_boolean(p):
 
 
 parser = yacc.yacc()
+
+
+def run(p):
+    if type(p) == tuple:
+        if p[0] == '+':
+            return run(p[1]) + run(p[2])
+        elif p[0] == '-':
+            return run(p[1]) - run(p[2])
+        elif p[0] == '//':
+            return run(p[1]) // run(p[2])
+        elif p[0] == '/':
+            return int(run(p[1]) / run(p[2]))
+        elif p[0] == '**':
+            return run(p[1]) ** run(p[2])
+        elif p[0] == '*':
+            return run(p[1]) * run(p[2])
+    else:
+        return p
+
 
 while True:
     try:
