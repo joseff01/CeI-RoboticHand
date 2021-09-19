@@ -123,12 +123,12 @@ def p_empty(p):
 
 def p_expression(p):
     '''
-    expression : OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
-          | OPERA OPEN_P MINUS COMMA expression COMMA expression CLOSE_P
-          | OPERA OPEN_P INT_DIV COMMA expression COMMA expression CLOSE_P
-          | OPERA OPEN_P DIVIDE COMMA expression COMMA expression CLOSE_P
-          | OPERA OPEN_P EXP COMMA expression COMMA expression CLOSE_P
-          | OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
+    expression : OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P PyC
+          | OPERA OPEN_P MINUS COMMA expression COMMA expression CLOSE_P PyC
+          | OPERA OPEN_P INT_DIV COMMA expression COMMA expression CLOSE_P PyC
+          | OPERA OPEN_P DIVIDE COMMA expression COMMA expression CLOSE_P PyC
+          | OPERA OPEN_P EXP COMMA expression COMMA expression CLOSE_P PyC
+          | OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P PyC
     '''
     p[0] = (p[3], p[5], p[7])
 
@@ -140,14 +140,20 @@ def p_expression_int_boolean(p):
     '''
     p[0] = p[1]
 
+
 def p_expression_var(p):
     '''
     expression : VARIABLE
     '''
     p[0] = ('var', p[1])
+
+
 parser = yacc.yacc()
 
+
 variables = {}
+
+
 def run(p):
     global variables
     if type(p) == tuple:
