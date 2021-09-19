@@ -108,7 +108,7 @@ def p_calc(p):
 
 def p_var_assign(p):
     '''
-    var_assign : LET VARIABLE EQUALS expression
+    var_assign : LET VARIABLE EQUALS expression PyC
               | LET VARIABLE EQUALS VARIABLE
     '''
 
@@ -124,14 +124,14 @@ def p_empty(p):
 
 def p_expression(p):
     '''
-    expression : OPERA OPEN_P expression PLUS expression CLOSE_P
-          | OPERA OPEN_P expression MINUS expression CLOSE_P
-          | OPERA OPEN_P expression INT_DIV expression CLOSE_P
-          | OPERA OPEN_P expression DIVIDE expression CLOSE_P
-          | OPERA OPEN_P expression EXP expression CLOSE_P
-          | OPERA OPEN_P expression MULTIPLY expression CLOSE_P
+    expression : OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
+          | OPERA OPEN_P MINUS COMMA expression COMMA expression CLOSE_P
+          | OPERA OPEN_P INT_DIV COMMA expression COMMA expression CLOSE_P
+          | OPERA OPEN_P DIVIDE COMMA expression COMMA expression CLOSE_P
+          | OPERA OPEN_P EXP COMMA expression COMMA expression CLOSE_P
+          | OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     '''
-    p[0] = (p[4], p[3], p[5])
+    p[0] = (p[3], p[5], p[7])
 
 
 def p_expression_int_boolean(p):
@@ -140,6 +140,7 @@ def p_expression_int_boolean(p):
               | BOOLEAN
     '''
     p[0] = p[1]
+
 
 parser = yacc.yacc()
 
