@@ -29,6 +29,7 @@ Rule 10    expression -> OPERA OPEN_P EXP COMMA expression COMMA expression CLOS
 Rule 11    expression -> OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
 Rule 12    expression -> INT
 Rule 13    expression -> BOOLEAN
+Rule 14    expression -> VARIABLE
 
 Terminals, with rules where they appear
 
@@ -57,7 +58,7 @@ OPEN_P               : 6 7 8 9 10 11
 OPERA                : 6 7 8 9 10 11
 PLUS                 : 6
 PyC                  : 4
-VARIABLE             : 4
+VARIABLE             : 4 14
 error                : 
 
 Nonterminals, with rules where they appear
@@ -83,13 +84,15 @@ state 0
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
     (4) var_assign -> . LET VARIABLE EQUALS expression PyC
     (5) empty -> .
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
-    LET             shift and go to state 8
+    VARIABLE        shift and go to state 8
+    LET             shift and go to state 9
     $end            reduce using rule 5 (empty -> .)
 
     calc                           shift and go to state 1
@@ -133,7 +136,7 @@ state 5
     (10) expression -> OPERA . OPEN_P EXP COMMA expression COMMA expression CLOSE_P
     (11) expression -> OPERA . OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
 
-    OPEN_P          shift and go to state 9
+    OPEN_P          shift and go to state 10
 
 
 state 6
@@ -158,12 +161,22 @@ state 7
 
 state 8
 
-    (4) var_assign -> LET . VARIABLE EQUALS expression PyC
+    (14) expression -> VARIABLE .
 
-    VARIABLE        shift and go to state 10
+    $end            reduce using rule 14 (expression -> VARIABLE .)
+    PyC             reduce using rule 14 (expression -> VARIABLE .)
+    COMMA           reduce using rule 14 (expression -> VARIABLE .)
+    CLOSE_P         reduce using rule 14 (expression -> VARIABLE .)
 
 
 state 9
+
+    (4) var_assign -> LET . VARIABLE EQUALS expression PyC
+
+    VARIABLE        shift and go to state 11
+
+
+state 10
 
     (6) expression -> OPERA OPEN_P . PLUS COMMA expression COMMA expression CLOSE_P
     (7) expression -> OPERA OPEN_P . MINUS COMMA expression COMMA expression CLOSE_P
@@ -172,64 +185,64 @@ state 9
     (10) expression -> OPERA OPEN_P . EXP COMMA expression COMMA expression CLOSE_P
     (11) expression -> OPERA OPEN_P . MULTIPLY COMMA expression COMMA expression CLOSE_P
 
-    PLUS            shift and go to state 11
-    MINUS           shift and go to state 12
-    INT_DIV         shift and go to state 13
-    DIVIDE          shift and go to state 14
-    EXP             shift and go to state 15
-    MULTIPLY        shift and go to state 16
-
-
-state 10
-
-    (4) var_assign -> LET VARIABLE . EQUALS expression PyC
-
-    EQUALS          shift and go to state 17
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 13
+    INT_DIV         shift and go to state 14
+    DIVIDE          shift and go to state 15
+    EXP             shift and go to state 16
+    MULTIPLY        shift and go to state 17
 
 
 state 11
 
-    (6) expression -> OPERA OPEN_P PLUS . COMMA expression COMMA expression CLOSE_P
+    (4) var_assign -> LET VARIABLE . EQUALS expression PyC
 
-    COMMA           shift and go to state 18
+    EQUALS          shift and go to state 18
 
 
 state 12
 
-    (7) expression -> OPERA OPEN_P MINUS . COMMA expression COMMA expression CLOSE_P
+    (6) expression -> OPERA OPEN_P PLUS . COMMA expression COMMA expression CLOSE_P
 
     COMMA           shift and go to state 19
 
 
 state 13
 
-    (8) expression -> OPERA OPEN_P INT_DIV . COMMA expression COMMA expression CLOSE_P
+    (7) expression -> OPERA OPEN_P MINUS . COMMA expression COMMA expression CLOSE_P
 
     COMMA           shift and go to state 20
 
 
 state 14
 
-    (9) expression -> OPERA OPEN_P DIVIDE . COMMA expression COMMA expression CLOSE_P
+    (8) expression -> OPERA OPEN_P INT_DIV . COMMA expression COMMA expression CLOSE_P
 
     COMMA           shift and go to state 21
 
 
 state 15
 
-    (10) expression -> OPERA OPEN_P EXP . COMMA expression COMMA expression CLOSE_P
+    (9) expression -> OPERA OPEN_P DIVIDE . COMMA expression COMMA expression CLOSE_P
 
     COMMA           shift and go to state 22
 
 
 state 16
 
-    (11) expression -> OPERA OPEN_P MULTIPLY . COMMA expression COMMA expression CLOSE_P
+    (10) expression -> OPERA OPEN_P EXP . COMMA expression COMMA expression CLOSE_P
 
     COMMA           shift and go to state 23
 
 
 state 17
+
+    (11) expression -> OPERA OPEN_P MULTIPLY . COMMA expression COMMA expression CLOSE_P
+
+    COMMA           shift and go to state 24
+
+
+state 18
 
     (4) var_assign -> LET VARIABLE EQUALS . expression PyC
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -240,14 +253,16 @@ state 17
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 24
+    expression                     shift and go to state 25
 
-state 18
+state 19
 
     (6) expression -> OPERA OPEN_P PLUS COMMA . expression COMMA expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -258,14 +273,16 @@ state 18
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 25
+    expression                     shift and go to state 26
 
-state 19
+state 20
 
     (7) expression -> OPERA OPEN_P MINUS COMMA . expression COMMA expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -276,14 +293,16 @@ state 19
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 26
+    expression                     shift and go to state 27
 
-state 20
+state 21
 
     (8) expression -> OPERA OPEN_P INT_DIV COMMA . expression COMMA expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -294,14 +313,16 @@ state 20
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 27
+    expression                     shift and go to state 28
 
-state 21
+state 22
 
     (9) expression -> OPERA OPEN_P DIVIDE COMMA . expression COMMA expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -312,14 +333,16 @@ state 21
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 28
+    expression                     shift and go to state 29
 
-state 22
+state 23
 
     (10) expression -> OPERA OPEN_P EXP COMMA . expression COMMA expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -330,14 +353,16 @@ state 22
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 29
+    expression                     shift and go to state 30
 
-state 23
+state 24
 
     (11) expression -> OPERA OPEN_P MULTIPLY COMMA . expression COMMA expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -348,70 +373,72 @@ state 23
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 30
-
-state 24
-
-    (4) var_assign -> LET VARIABLE EQUALS expression . PyC
-
-    PyC             shift and go to state 31
-
+    expression                     shift and go to state 31
 
 state 25
 
-    (6) expression -> OPERA OPEN_P PLUS COMMA expression . COMMA expression CLOSE_P
+    (4) var_assign -> LET VARIABLE EQUALS expression . PyC
 
-    COMMA           shift and go to state 32
+    PyC             shift and go to state 32
 
 
 state 26
 
-    (7) expression -> OPERA OPEN_P MINUS COMMA expression . COMMA expression CLOSE_P
+    (6) expression -> OPERA OPEN_P PLUS COMMA expression . COMMA expression CLOSE_P
 
     COMMA           shift and go to state 33
 
 
 state 27
 
-    (8) expression -> OPERA OPEN_P INT_DIV COMMA expression . COMMA expression CLOSE_P
+    (7) expression -> OPERA OPEN_P MINUS COMMA expression . COMMA expression CLOSE_P
 
     COMMA           shift and go to state 34
 
 
 state 28
 
-    (9) expression -> OPERA OPEN_P DIVIDE COMMA expression . COMMA expression CLOSE_P
+    (8) expression -> OPERA OPEN_P INT_DIV COMMA expression . COMMA expression CLOSE_P
 
     COMMA           shift and go to state 35
 
 
 state 29
 
-    (10) expression -> OPERA OPEN_P EXP COMMA expression . COMMA expression CLOSE_P
+    (9) expression -> OPERA OPEN_P DIVIDE COMMA expression . COMMA expression CLOSE_P
 
     COMMA           shift and go to state 36
 
 
 state 30
 
-    (11) expression -> OPERA OPEN_P MULTIPLY COMMA expression . COMMA expression CLOSE_P
+    (10) expression -> OPERA OPEN_P EXP COMMA expression . COMMA expression CLOSE_P
 
     COMMA           shift and go to state 37
 
 
 state 31
 
+    (11) expression -> OPERA OPEN_P MULTIPLY COMMA expression . COMMA expression CLOSE_P
+
+    COMMA           shift and go to state 38
+
+
+state 32
+
     (4) var_assign -> LET VARIABLE EQUALS expression PyC .
 
     $end            reduce using rule 4 (var_assign -> LET VARIABLE EQUALS expression PyC .)
 
 
-state 32
+state 33
 
     (6) expression -> OPERA OPEN_P PLUS COMMA expression COMMA . expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -422,14 +449,16 @@ state 32
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 38
+    expression                     shift and go to state 39
 
-state 33
+state 34
 
     (7) expression -> OPERA OPEN_P MINUS COMMA expression COMMA . expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -440,14 +469,16 @@ state 33
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 39
+    expression                     shift and go to state 40
 
-state 34
+state 35
 
     (8) expression -> OPERA OPEN_P INT_DIV COMMA expression COMMA . expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -458,14 +489,16 @@ state 34
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 40
+    expression                     shift and go to state 41
 
-state 35
+state 36
 
     (9) expression -> OPERA OPEN_P DIVIDE COMMA expression COMMA . expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -476,14 +509,16 @@ state 35
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 41
+    expression                     shift and go to state 42
 
-state 36
+state 37
 
     (10) expression -> OPERA OPEN_P EXP COMMA expression COMMA . expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -494,14 +529,16 @@ state 36
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 42
+    expression                     shift and go to state 43
 
-state 37
+state 38
 
     (11) expression -> OPERA OPEN_P MULTIPLY COMMA expression COMMA . expression CLOSE_P
     (6) expression -> . OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
@@ -512,56 +549,58 @@ state 37
     (11) expression -> . OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
     (12) expression -> . INT
     (13) expression -> . BOOLEAN
+    (14) expression -> . VARIABLE
 
     OPERA           shift and go to state 5
     INT             shift and go to state 6
     BOOLEAN         shift and go to state 7
+    VARIABLE        shift and go to state 8
 
-    expression                     shift and go to state 43
-
-state 38
-
-    (6) expression -> OPERA OPEN_P PLUS COMMA expression COMMA expression . CLOSE_P
-
-    CLOSE_P         shift and go to state 44
-
+    expression                     shift and go to state 44
 
 state 39
 
-    (7) expression -> OPERA OPEN_P MINUS COMMA expression COMMA expression . CLOSE_P
+    (6) expression -> OPERA OPEN_P PLUS COMMA expression COMMA expression . CLOSE_P
 
     CLOSE_P         shift and go to state 45
 
 
 state 40
 
-    (8) expression -> OPERA OPEN_P INT_DIV COMMA expression COMMA expression . CLOSE_P
+    (7) expression -> OPERA OPEN_P MINUS COMMA expression COMMA expression . CLOSE_P
 
     CLOSE_P         shift and go to state 46
 
 
 state 41
 
-    (9) expression -> OPERA OPEN_P DIVIDE COMMA expression COMMA expression . CLOSE_P
+    (8) expression -> OPERA OPEN_P INT_DIV COMMA expression COMMA expression . CLOSE_P
 
     CLOSE_P         shift and go to state 47
 
 
 state 42
 
-    (10) expression -> OPERA OPEN_P EXP COMMA expression COMMA expression . CLOSE_P
+    (9) expression -> OPERA OPEN_P DIVIDE COMMA expression COMMA expression . CLOSE_P
 
     CLOSE_P         shift and go to state 48
 
 
 state 43
 
-    (11) expression -> OPERA OPEN_P MULTIPLY COMMA expression COMMA expression . CLOSE_P
+    (10) expression -> OPERA OPEN_P EXP COMMA expression COMMA expression . CLOSE_P
 
     CLOSE_P         shift and go to state 49
 
 
 state 44
+
+    (11) expression -> OPERA OPEN_P MULTIPLY COMMA expression COMMA expression . CLOSE_P
+
+    CLOSE_P         shift and go to state 50
+
+
+state 45
 
     (6) expression -> OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P .
 
@@ -571,7 +610,7 @@ state 44
     CLOSE_P         reduce using rule 6 (expression -> OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P .)
 
 
-state 45
+state 46
 
     (7) expression -> OPERA OPEN_P MINUS COMMA expression COMMA expression CLOSE_P .
 
@@ -581,7 +620,7 @@ state 45
     CLOSE_P         reduce using rule 7 (expression -> OPERA OPEN_P MINUS COMMA expression COMMA expression CLOSE_P .)
 
 
-state 46
+state 47
 
     (8) expression -> OPERA OPEN_P INT_DIV COMMA expression COMMA expression CLOSE_P .
 
@@ -591,7 +630,7 @@ state 46
     CLOSE_P         reduce using rule 8 (expression -> OPERA OPEN_P INT_DIV COMMA expression COMMA expression CLOSE_P .)
 
 
-state 47
+state 48
 
     (9) expression -> OPERA OPEN_P DIVIDE COMMA expression COMMA expression CLOSE_P .
 
@@ -601,7 +640,7 @@ state 47
     CLOSE_P         reduce using rule 9 (expression -> OPERA OPEN_P DIVIDE COMMA expression COMMA expression CLOSE_P .)
 
 
-state 48
+state 49
 
     (10) expression -> OPERA OPEN_P EXP COMMA expression COMMA expression CLOSE_P .
 
@@ -611,7 +650,7 @@ state 48
     CLOSE_P         reduce using rule 10 (expression -> OPERA OPEN_P EXP COMMA expression COMMA expression CLOSE_P .)
 
 
-state 49
+state 50
 
     (11) expression -> OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P .
 

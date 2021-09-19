@@ -140,11 +140,16 @@ def p_expression_int_boolean(p):
     '''
     p[0] = p[1]
 
-
+def p_expression_var(p):
+    '''
+    expression : VARIABLE
+    '''
+    p[0] = ('var', p[1])
 parser = yacc.yacc()
 
-
+variables = {}
 def run(p):
+    global variables
     if type(p) == tuple:
         if p[0] == '+':
             return run(p[1]) + run(p[2])
@@ -158,6 +163,11 @@ def run(p):
             return run(p[1]) ** run(p[2])
         elif p[0] == '*':
             return run(p[1]) * run(p[2])
+        elif p[0] == '=':
+            variables[p[1]] = run(p[2])
+            print(variables)
+        elif p[0] == 'var':
+            return variables[p[1]]
     else:
         return p
 
