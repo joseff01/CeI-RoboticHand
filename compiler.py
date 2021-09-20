@@ -1,6 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
+
 """Define los tokens validos para el lexer"""
 tokens = [
     'INT',
@@ -54,7 +55,7 @@ t_A1 = r'\#'
 t_A2 = r'\?'
 t_A3 = r'\_'
 
-t_ignore = r' '
+t_ignore = r' \t'
 
 """Definicion de algunos tokens como funciones(nota: definir palabras especificas antes de la definicion de variable)"""
 def t_INT(t):
@@ -82,7 +83,7 @@ def t_LET(t):
 
 
 def t_VARIABLE(t):
-    r'[a-zA-Z]{3,15}'
+    r'[a-zA-Z#_?][a-zA-Z0-9#_?]{2,14}'
     t.type = 'VARIABLE'
     return t
 
