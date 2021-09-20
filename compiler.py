@@ -170,9 +170,9 @@ def run(p):
         elif p[0] == '*':
             return run(p[1]) * run(p[2])
         elif p[0] == '=':
-            if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(p[2], str) is True:
+            if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(run(p[2]), str) is True:
                 print('Tipo incompatible')
-            elif len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], str) is True and isinstance(p[2], int) is True:
+            elif len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], str) is True and isinstance(run(p[2]), int) is True:
                 print('Tipo incompatible')
             else:
                 variables[p[1]] = run(p[2])
