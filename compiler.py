@@ -99,16 +99,28 @@ lexer = lex.lex()
 
 def p_calc(p):
     '''
-    calc : expression
-         | var_assign
+    calc : expression PyC
+         | var_assign PyC
         | empty
     '''
     print(run(p[1]))
 
 
+def p_expression_opera(p):
+    '''
+    expression : OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
+          | OPERA OPEN_P MINUS COMMA expression COMMA expression CLOSE_P
+          | OPERA OPEN_P INT_DIV COMMA expression COMMA expression CLOSE_P
+          | OPERA OPEN_P DIVIDE COMMA expression COMMA expression CLOSE_P
+          | OPERA OPEN_P EXP COMMA expression COMMA expression CLOSE_P
+          | OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
+    '''
+    p[0] = (p[3], p[5], p[7])
+
+
 def p_var_assign(p):
     '''
-    var_assign : LET VARIABLE EQUALS expression PyC
+    var_assign : LET VARIABLE EQUALS expression
     '''
 
     p[0] = ('=', p[2], p[4])
@@ -119,18 +131,6 @@ def p_empty(p):
     empty :
     '''
     p[0] = None
-
-
-def p_expression(p):
-    '''
-    expression : OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P PyC
-          | OPERA OPEN_P MINUS COMMA expression COMMA expression CLOSE_P PyC
-          | OPERA OPEN_P INT_DIV COMMA expression COMMA expression CLOSE_P PyC
-          | OPERA OPEN_P DIVIDE COMMA expression COMMA expression CLOSE_P PyC
-          | OPERA OPEN_P EXP COMMA expression COMMA expression CLOSE_P PyC
-          | OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P PyC
-    '''
-    p[0] = (p[3], p[5], p[7])
 
 
 def p_expression_int_boolean(p):
@@ -172,6 +172,8 @@ def run(p):
         elif p[0] == '=':
             variables[p[1]] = run(p[2])
             print(variables)
+            print(p[1])
+            print(p[2])
         elif p[0] == 'var':
             return variables[p[1]]
     else:
