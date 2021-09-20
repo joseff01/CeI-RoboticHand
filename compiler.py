@@ -55,7 +55,7 @@ t_A1 = r'\#'
 t_A2 = r'\?'
 t_A3 = r'\_'
 
-t_ignore = r' \t'
+t_ignore = r' '
 
 """Definicion de algunos tokens como funciones(nota: definir palabras especificas antes de la definicion de variable)"""
 def t_INT(t):
@@ -106,15 +106,20 @@ def p_calc(p):
     '''
     print(run(p[1]))
 
+def p_operator(p):
+    '''
+    operator : PLUS
+            | MINUS
+            | INT_DIV
+            | DIVIDE
+            | EXP
+            | MULTIPLY
+    '''
+    p[0] = p[1]
 
 def p_expression_opera(p):
     '''
-    expression : OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P
-          | OPERA OPEN_P MINUS COMMA expression COMMA expression CLOSE_P
-          | OPERA OPEN_P INT_DIV COMMA expression COMMA expression CLOSE_P
-          | OPERA OPEN_P DIVIDE COMMA expression COMMA expression CLOSE_P
-          | OPERA OPEN_P EXP COMMA expression COMMA expression CLOSE_P
-          | OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P
+    expression : OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     '''
     p[0] = (p[3], p[5], p[7])
 

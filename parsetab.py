@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'A1 A2 A3 BOOLEAN CLOSE_P COMMA COMMENTARY DISTINCT DIVIDE EQUALS EQUALS_EQUALS EXP INT INT_DIV LESS_EQUAL LESS_THAN LET MINUS MORE_EQUAL MORE_THAN MULTIPLY OPEN_P OPERA PLUS PyC VARIABLE\n    calc : expression PyC\n         | var_assign PyC\n        | empty\n    \n    expression : OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P\n          | OPERA OPEN_P MINUS COMMA expression COMMA expression CLOSE_P\n          | OPERA OPEN_P INT_DIV COMMA expression COMMA expression CLOSE_P\n          | OPERA OPEN_P DIVIDE COMMA expression COMMA expression CLOSE_P\n          | OPERA OPEN_P EXP COMMA expression COMMA expression CLOSE_P\n          | OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P\n    \n    var_assign : LET VARIABLE EQUALS expression\n    \n    empty :\n    \n    expression : INT\n              | BOOLEAN\n    \n    expression : VARIABLE\n    '
+_lr_signature = 'A1 A2 A3 BOOLEAN CLOSE_P COMMA COMMENTARY DISTINCT DIVIDE EQUALS EQUALS_EQUALS EXP INT INT_DIV LESS_EQUAL LESS_THAN LET MINUS MORE_EQUAL MORE_THAN MULTIPLY OPEN_P OPERA PLUS PyC VARIABLE\n    calc : expression PyC\n         | var_assign PyC\n        | empty\n    \n    operator : PLUS\n            | MINUS\n            | INT_DIV\n            | DIVIDE\n            | EXP\n            | MULTIPLY\n    \n    expression : OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P\n    \n    var_assign : LET VARIABLE EQUALS expression\n    \n    empty :\n    \n    expression : INT\n              | BOOLEAN\n    \n    expression : VARIABLE\n    '
     
-_lr_action_items = {'OPERA':([0,20,21,22,23,24,25,26,34,35,36,37,38,39,],[5,5,5,5,5,5,5,5,5,5,5,5,5,5,]),'INT':([0,20,21,22,23,24,25,26,34,35,36,37,38,39,],[6,6,6,6,6,6,6,6,6,6,6,6,6,6,]),'BOOLEAN':([0,20,21,22,23,24,25,26,34,35,36,37,38,39,],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,]),'VARIABLE':([0,9,20,21,22,23,24,25,26,34,35,36,37,38,39,],[8,13,8,8,8,8,8,8,8,8,8,8,8,8,8,]),'LET':([0,],[9,]),'$end':([0,1,4,10,11,],[-11,0,-3,-1,-2,]),'PyC':([2,3,6,7,8,27,46,47,48,49,50,51,],[10,11,-12,-13,-14,-10,-4,-5,-6,-7,-8,-9,]),'OPEN_P':([5,],[12,]),'COMMA':([6,7,8,14,15,16,17,18,19,28,29,30,31,32,33,46,47,48,49,50,51,],[-12,-13,-14,21,22,23,24,25,26,34,35,36,37,38,39,-4,-5,-6,-7,-8,-9,]),'CLOSE_P':([6,7,8,40,41,42,43,44,45,46,47,48,49,50,51,],[-12,-13,-14,46,47,48,49,50,51,-4,-5,-6,-7,-8,-9,]),'PLUS':([12,],[14,]),'MINUS':([12,],[15,]),'INT_DIV':([12,],[16,]),'DIVIDE':([12,],[17,]),'EXP':([12,],[18,]),'MULTIPLY':([12,],[19,]),'EQUALS':([13,],[20,]),}
+_lr_action_items = {'OPERA':([0,21,22,25,],[5,5,5,5,]),'INT':([0,21,22,25,],[6,6,6,6,]),'BOOLEAN':([0,21,22,25,],[7,7,7,7,]),'VARIABLE':([0,9,21,22,25,],[8,13,8,8,8,]),'LET':([0,],[9,]),'$end':([0,1,4,10,11,],[-12,0,-3,-1,-2,]),'PyC':([2,3,6,7,8,23,27,],[10,11,-13,-14,-15,-11,-10,]),'OPEN_P':([5,],[12,]),'COMMA':([6,7,8,14,15,16,17,18,19,20,24,27,],[-13,-14,-15,22,-4,-5,-6,-7,-8,-9,25,-10,]),'CLOSE_P':([6,7,8,26,27,],[-13,-14,-15,27,-10,]),'PLUS':([12,],[15,]),'MINUS':([12,],[16,]),'INT_DIV':([12,],[17,]),'DIVIDE':([12,],[18,]),'EXP':([12,],[19,]),'MULTIPLY':([12,],[20,]),'EQUALS':([13,],[21,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'calc':([0,],[1,]),'expression':([0,20,21,22,23,24,25,26,34,35,36,37,38,39,],[2,27,28,29,30,31,32,33,40,41,42,43,44,45,]),'var_assign':([0,],[3,]),'empty':([0,],[4,]),}
+_lr_goto_items = {'calc':([0,],[1,]),'expression':([0,21,22,25,],[2,23,24,26,]),'var_assign':([0,],[3,]),'empty':([0,],[4,]),'operator':([12,],[14,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,18 +27,19 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> calc","S'",1,None,None,None),
-  ('calc -> expression PyC','calc',2,'p_calc','compiler.py',102),
-  ('calc -> var_assign PyC','calc',2,'p_calc','compiler.py',103),
-  ('calc -> empty','calc',1,'p_calc','compiler.py',104),
-  ('expression -> OPERA OPEN_P PLUS COMMA expression COMMA expression CLOSE_P','expression',8,'p_expression_opera','compiler.py',111),
-  ('expression -> OPERA OPEN_P MINUS COMMA expression COMMA expression CLOSE_P','expression',8,'p_expression_opera','compiler.py',112),
-  ('expression -> OPERA OPEN_P INT_DIV COMMA expression COMMA expression CLOSE_P','expression',8,'p_expression_opera','compiler.py',113),
-  ('expression -> OPERA OPEN_P DIVIDE COMMA expression COMMA expression CLOSE_P','expression',8,'p_expression_opera','compiler.py',114),
-  ('expression -> OPERA OPEN_P EXP COMMA expression COMMA expression CLOSE_P','expression',8,'p_expression_opera','compiler.py',115),
-  ('expression -> OPERA OPEN_P MULTIPLY COMMA expression COMMA expression CLOSE_P','expression',8,'p_expression_opera','compiler.py',116),
-  ('var_assign -> LET VARIABLE EQUALS expression','var_assign',4,'p_var_assign','compiler.py',123),
-  ('empty -> <empty>','empty',0,'p_empty','compiler.py',131),
-  ('expression -> INT','expression',1,'p_expression_int_boolean','compiler.py',138),
-  ('expression -> BOOLEAN','expression',1,'p_expression_int_boolean','compiler.py',139),
-  ('expression -> VARIABLE','expression',1,'p_expression_var','compiler.py',146),
+  ('calc -> expression PyC','calc',2,'p_calc','compiler.py',103),
+  ('calc -> var_assign PyC','calc',2,'p_calc','compiler.py',104),
+  ('calc -> empty','calc',1,'p_calc','compiler.py',105),
+  ('operator -> PLUS','operator',1,'p_operator','compiler.py',111),
+  ('operator -> MINUS','operator',1,'p_operator','compiler.py',112),
+  ('operator -> INT_DIV','operator',1,'p_operator','compiler.py',113),
+  ('operator -> DIVIDE','operator',1,'p_operator','compiler.py',114),
+  ('operator -> EXP','operator',1,'p_operator','compiler.py',115),
+  ('operator -> MULTIPLY','operator',1,'p_operator','compiler.py',116),
+  ('expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P','expression',8,'p_expression_opera','compiler.py',121),
+  ('var_assign -> LET VARIABLE EQUALS expression','var_assign',4,'p_var_assign','compiler.py',128),
+  ('empty -> <empty>','empty',0,'p_empty','compiler.py',136),
+  ('expression -> INT','expression',1,'p_expression_int_boolean','compiler.py',143),
+  ('expression -> BOOLEAN','expression',1,'p_expression_int_boolean','compiler.py',144),
+  ('expression -> VARIABLE','expression',1,'p_expression_var','compiler.py',151),
 ]
