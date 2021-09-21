@@ -242,16 +242,31 @@ def run(p):
                 print('La condicion se sale del rango del For')
 
             else:
+
                 if p[5] == '..' and isinstance(p[1], str) is True and variables.get(p[1]) is None:
                     print('Variable no definida')
                 elif p[5] == '..' and isinstance(p[1], str) is True and variables.get(p[1]) is not None:
-                    for variables[p[1]] in range(p[2], p[3]-1):
+                    for variables[run(p[1])] in range(p[2], p[3]-1):
                         print('este mensaje debe repetirse')
                     return p
+                elif p[5] == '..' and isinstance(p[1], int) is True:
+                    pointer = int(p[1])
+                    for pointer in range(p[2], p[3]-1):
+                        print('este mensaje debe repetirse')
+                    return p
+
+                elif p[5] == '..=' and isinstance(p[1], str) is True and variables.get(p[1]) is None:
+                    print('Variable no definida')
                 elif p[5] == '..=' and isinstance(p[1], str) is True and variables.get(p[1]) is not None:
                     for variables[p[1]] in range(p[2], p[3]):
                         print('este mensaje debe repetirse')
                     return p
+                elif p[5] == '..=' and isinstance(p[1], int) is True:
+                    pointer = int(p[1])
+                    for pointer in range(p[2], p[3]):
+                        print('este mensaje debe repetirse')
+                    return p
+                
                 else:
                     return p
     else:
