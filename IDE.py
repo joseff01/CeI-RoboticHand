@@ -31,23 +31,34 @@ class Menubar(ttk.Frame):
                                           filetypes = (("Text files", "*.txt*"),
                                                        ("all files", "*")))
         if(file):
-            file.write( self.GUI.text_box.get('1.0', tk.END) )
+            file.write( self.GUI.text_box.get('1.0', "end-1c") ) #end-1c means end minus last character, so it excludes the newline at the end
             self.file_name = file.name
             file.close()
 
     def save_file(self):
         if(self.file_name):
             with open(self.file_name, 'w') as file:
-                file.write( self.GUI.text_box.get('1.0', tk.END) )
+                file.write( self.GUI.text_box.get('1.0', "end-1c") )
         else:
             self.save_file_as()
 
     def compile(self):
         '''Solo compila el programa'''
+        # First it saves the file
+        self.save_file()
+        # Then it obtains the text from the saved file
+        with open(self.file_name, 'r') as file:
+            codeString = file.read()
+        # Then do stuff with the string
+        print(codeString)
         pass
 
     def compileRun(self):
         '''Compila y corre el programa'''
+        # First it compiles
+        self.compile()
+        # Then it runs the code
+        print("Running the code hell yea")
         pass
 
     # Manejo de estado para ctrl+s
