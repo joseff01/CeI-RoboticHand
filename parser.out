@@ -15,316 +15,353 @@ Unused terminals:
 
 Grammar
 
-Rule 0     S' -> calc
-Rule 1     calc -> expression PyC
-Rule 2     calc -> var_assign PyC
-Rule 3     calc -> empty
-Rule 4     operator -> PLUS
-Rule 5     operator -> MINUS
-Rule 6     operator -> INT_DIV
-Rule 7     operator -> DIVIDE
-Rule 8     operator -> EXP
-Rule 9     operator -> MULTIPLY
-Rule 10    expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-Rule 11    var_assign -> LET VARIABLE EQUALS expression
-Rule 12    empty -> <empty>
-Rule 13    expression -> INT
-Rule 14    expression -> BOOLEAN
-Rule 15    expression -> VARIABLE
+Rule 0     S' -> algorithm
+Rule 1     algorithm -> algorithm algorithm_line
+Rule 2     algorithm -> empty
+Rule 3     algorithm_line -> expression PyC
+Rule 4     algorithm_line -> var_assign PyC
+Rule 5     operator -> PLUS
+Rule 6     operator -> MINUS
+Rule 7     operator -> INT_DIV
+Rule 8     operator -> DIVIDE
+Rule 9     operator -> EXP
+Rule 10    operator -> MULTIPLY
+Rule 11    expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+Rule 12    var_assign -> LET VARIABLE EQUALS expression
+Rule 13    empty -> <empty>
+Rule 14    expression -> INT
+Rule 15    expression -> BOOLEAN
+Rule 16    expression -> VARIABLE
 
 Terminals, with rules where they appear
 
 A1                   : 
 A2                   : 
 A3                   : 
-BOOLEAN              : 14
-CLOSE_P              : 10
-COMMA                : 10 10
+BOOLEAN              : 15
+CLOSE_P              : 11
+COMMA                : 11 11
 COMMENTARY           : 
 DISTINCT             : 
-DIVIDE               : 7
-EQUALS               : 11
+DIVIDE               : 8
+EQUALS               : 12
 EQUALS_EQUALS        : 
-EXP                  : 8
-INT                  : 13
-INT_DIV              : 6
+EXP                  : 9
+INT                  : 14
+INT_DIV              : 7
 LESS_EQUAL           : 
 LESS_THAN            : 
-LET                  : 11
-MINUS                : 5
+LET                  : 12
+MINUS                : 6
 MORE_EQUAL           : 
 MORE_THAN            : 
-MULTIPLY             : 9
-OPEN_P               : 10
-OPERA                : 10
-PLUS                 : 4
-PyC                  : 1 2
-VARIABLE             : 11 15
+MULTIPLY             : 10
+OPEN_P               : 11
+OPERA                : 11
+PLUS                 : 5
+PyC                  : 3 4
+VARIABLE             : 12 16
 error                : 
 
 Nonterminals, with rules where they appear
 
-calc                 : 0
-empty                : 3
-expression           : 1 10 10 11
-operator             : 10
-var_assign           : 2
+algorithm            : 1 0
+algorithm_line       : 1
+empty                : 2
+expression           : 3 11 11 12
+operator             : 11
+var_assign           : 4
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . calc
-    (1) calc -> . expression PyC
-    (2) calc -> . var_assign PyC
-    (3) calc -> . empty
-    (10) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (13) expression -> . INT
-    (14) expression -> . BOOLEAN
-    (15) expression -> . VARIABLE
-    (11) var_assign -> . LET VARIABLE EQUALS expression
-    (12) empty -> .
+    (0) S' -> . algorithm
+    (1) algorithm -> . algorithm algorithm_line
+    (2) algorithm -> . empty
+    (13) empty -> .
 
-    OPERA           shift and go to state 5
-    INT             shift and go to state 6
-    BOOLEAN         shift and go to state 7
-    VARIABLE        shift and go to state 8
-    LET             shift and go to state 9
-    $end            reduce using rule 12 (empty -> .)
+    OPERA           reduce using rule 13 (empty -> .)
+    INT             reduce using rule 13 (empty -> .)
+    BOOLEAN         reduce using rule 13 (empty -> .)
+    VARIABLE        reduce using rule 13 (empty -> .)
+    LET             reduce using rule 13 (empty -> .)
+    $end            reduce using rule 13 (empty -> .)
 
-    calc                           shift and go to state 1
-    expression                     shift and go to state 2
-    var_assign                     shift and go to state 3
-    empty                          shift and go to state 4
+    algorithm                      shift and go to state 1
+    empty                          shift and go to state 2
 
 state 1
 
-    (0) S' -> calc .
+    (0) S' -> algorithm .
+    (1) algorithm -> algorithm . algorithm_line
+    (3) algorithm_line -> . expression PyC
+    (4) algorithm_line -> . var_assign PyC
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (14) expression -> . INT
+    (15) expression -> . BOOLEAN
+    (16) expression -> . VARIABLE
+    (12) var_assign -> . LET VARIABLE EQUALS expression
 
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
+    LET             shift and go to state 10
 
+    algorithm_line                 shift and go to state 3
+    expression                     shift and go to state 4
+    var_assign                     shift and go to state 5
 
 state 2
 
-    (1) calc -> expression . PyC
+    (2) algorithm -> empty .
 
-    PyC             shift and go to state 10
+    OPERA           reduce using rule 2 (algorithm -> empty .)
+    INT             reduce using rule 2 (algorithm -> empty .)
+    BOOLEAN         reduce using rule 2 (algorithm -> empty .)
+    VARIABLE        reduce using rule 2 (algorithm -> empty .)
+    LET             reduce using rule 2 (algorithm -> empty .)
+    $end            reduce using rule 2 (algorithm -> empty .)
 
 
 state 3
 
-    (2) calc -> var_assign . PyC
+    (1) algorithm -> algorithm algorithm_line .
 
-    PyC             shift and go to state 11
+    OPERA           reduce using rule 1 (algorithm -> algorithm algorithm_line .)
+    INT             reduce using rule 1 (algorithm -> algorithm algorithm_line .)
+    BOOLEAN         reduce using rule 1 (algorithm -> algorithm algorithm_line .)
+    VARIABLE        reduce using rule 1 (algorithm -> algorithm algorithm_line .)
+    LET             reduce using rule 1 (algorithm -> algorithm algorithm_line .)
+    $end            reduce using rule 1 (algorithm -> algorithm algorithm_line .)
 
 
 state 4
 
-    (3) calc -> empty .
+    (3) algorithm_line -> expression . PyC
 
-    $end            reduce using rule 3 (calc -> empty .)
+    PyC             shift and go to state 11
 
 
 state 5
 
-    (10) expression -> OPERA . OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (4) algorithm_line -> var_assign . PyC
 
-    OPEN_P          shift and go to state 12
+    PyC             shift and go to state 12
 
 
 state 6
 
-    (13) expression -> INT .
+    (11) expression -> OPERA . OPEN_P operator COMMA expression COMMA expression CLOSE_P
 
-    PyC             reduce using rule 13 (expression -> INT .)
-    COMMA           reduce using rule 13 (expression -> INT .)
-    CLOSE_P         reduce using rule 13 (expression -> INT .)
+    OPEN_P          shift and go to state 13
 
 
 state 7
 
-    (14) expression -> BOOLEAN .
+    (14) expression -> INT .
 
-    PyC             reduce using rule 14 (expression -> BOOLEAN .)
-    COMMA           reduce using rule 14 (expression -> BOOLEAN .)
-    CLOSE_P         reduce using rule 14 (expression -> BOOLEAN .)
+    PyC             reduce using rule 14 (expression -> INT .)
+    COMMA           reduce using rule 14 (expression -> INT .)
+    CLOSE_P         reduce using rule 14 (expression -> INT .)
 
 
 state 8
 
-    (15) expression -> VARIABLE .
+    (15) expression -> BOOLEAN .
 
-    PyC             reduce using rule 15 (expression -> VARIABLE .)
-    COMMA           reduce using rule 15 (expression -> VARIABLE .)
-    CLOSE_P         reduce using rule 15 (expression -> VARIABLE .)
+    PyC             reduce using rule 15 (expression -> BOOLEAN .)
+    COMMA           reduce using rule 15 (expression -> BOOLEAN .)
+    CLOSE_P         reduce using rule 15 (expression -> BOOLEAN .)
 
 
 state 9
 
-    (11) var_assign -> LET . VARIABLE EQUALS expression
+    (16) expression -> VARIABLE .
 
-    VARIABLE        shift and go to state 13
+    PyC             reduce using rule 16 (expression -> VARIABLE .)
+    COMMA           reduce using rule 16 (expression -> VARIABLE .)
+    CLOSE_P         reduce using rule 16 (expression -> VARIABLE .)
 
 
 state 10
 
-    (1) calc -> expression PyC .
+    (12) var_assign -> LET . VARIABLE EQUALS expression
 
-    $end            reduce using rule 1 (calc -> expression PyC .)
+    VARIABLE        shift and go to state 14
 
 
 state 11
 
-    (2) calc -> var_assign PyC .
+    (3) algorithm_line -> expression PyC .
 
-    $end            reduce using rule 2 (calc -> var_assign PyC .)
+    OPERA           reduce using rule 3 (algorithm_line -> expression PyC .)
+    INT             reduce using rule 3 (algorithm_line -> expression PyC .)
+    BOOLEAN         reduce using rule 3 (algorithm_line -> expression PyC .)
+    VARIABLE        reduce using rule 3 (algorithm_line -> expression PyC .)
+    LET             reduce using rule 3 (algorithm_line -> expression PyC .)
+    $end            reduce using rule 3 (algorithm_line -> expression PyC .)
 
 
 state 12
 
-    (10) expression -> OPERA OPEN_P . operator COMMA expression COMMA expression CLOSE_P
-    (4) operator -> . PLUS
-    (5) operator -> . MINUS
-    (6) operator -> . INT_DIV
-    (7) operator -> . DIVIDE
-    (8) operator -> . EXP
-    (9) operator -> . MULTIPLY
+    (4) algorithm_line -> var_assign PyC .
 
-    PLUS            shift and go to state 15
-    MINUS           shift and go to state 16
-    INT_DIV         shift and go to state 17
-    DIVIDE          shift and go to state 18
-    EXP             shift and go to state 19
-    MULTIPLY        shift and go to state 20
+    OPERA           reduce using rule 4 (algorithm_line -> var_assign PyC .)
+    INT             reduce using rule 4 (algorithm_line -> var_assign PyC .)
+    BOOLEAN         reduce using rule 4 (algorithm_line -> var_assign PyC .)
+    VARIABLE        reduce using rule 4 (algorithm_line -> var_assign PyC .)
+    LET             reduce using rule 4 (algorithm_line -> var_assign PyC .)
+    $end            reduce using rule 4 (algorithm_line -> var_assign PyC .)
 
-    operator                       shift and go to state 14
 
 state 13
 
-    (11) var_assign -> LET VARIABLE . EQUALS expression
+    (11) expression -> OPERA OPEN_P . operator COMMA expression COMMA expression CLOSE_P
+    (5) operator -> . PLUS
+    (6) operator -> . MINUS
+    (7) operator -> . INT_DIV
+    (8) operator -> . DIVIDE
+    (9) operator -> . EXP
+    (10) operator -> . MULTIPLY
 
-    EQUALS          shift and go to state 21
+    PLUS            shift and go to state 16
+    MINUS           shift and go to state 17
+    INT_DIV         shift and go to state 18
+    DIVIDE          shift and go to state 19
+    EXP             shift and go to state 20
+    MULTIPLY        shift and go to state 21
 
+    operator                       shift and go to state 15
 
 state 14
 
-    (10) expression -> OPERA OPEN_P operator . COMMA expression COMMA expression CLOSE_P
+    (12) var_assign -> LET VARIABLE . EQUALS expression
 
-    COMMA           shift and go to state 22
+    EQUALS          shift and go to state 22
 
 
 state 15
 
-    (4) operator -> PLUS .
+    (11) expression -> OPERA OPEN_P operator . COMMA expression COMMA expression CLOSE_P
 
-    COMMA           reduce using rule 4 (operator -> PLUS .)
+    COMMA           shift and go to state 23
 
 
 state 16
 
-    (5) operator -> MINUS .
+    (5) operator -> PLUS .
 
-    COMMA           reduce using rule 5 (operator -> MINUS .)
+    COMMA           reduce using rule 5 (operator -> PLUS .)
 
 
 state 17
 
-    (6) operator -> INT_DIV .
+    (6) operator -> MINUS .
 
-    COMMA           reduce using rule 6 (operator -> INT_DIV .)
+    COMMA           reduce using rule 6 (operator -> MINUS .)
 
 
 state 18
 
-    (7) operator -> DIVIDE .
+    (7) operator -> INT_DIV .
 
-    COMMA           reduce using rule 7 (operator -> DIVIDE .)
+    COMMA           reduce using rule 7 (operator -> INT_DIV .)
 
 
 state 19
 
-    (8) operator -> EXP .
+    (8) operator -> DIVIDE .
 
-    COMMA           reduce using rule 8 (operator -> EXP .)
+    COMMA           reduce using rule 8 (operator -> DIVIDE .)
 
 
 state 20
 
-    (9) operator -> MULTIPLY .
+    (9) operator -> EXP .
 
-    COMMA           reduce using rule 9 (operator -> MULTIPLY .)
+    COMMA           reduce using rule 9 (operator -> EXP .)
 
 
 state 21
 
-    (11) var_assign -> LET VARIABLE EQUALS . expression
-    (10) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (13) expression -> . INT
-    (14) expression -> . BOOLEAN
-    (15) expression -> . VARIABLE
+    (10) operator -> MULTIPLY .
 
-    OPERA           shift and go to state 5
-    INT             shift and go to state 6
-    BOOLEAN         shift and go to state 7
-    VARIABLE        shift and go to state 8
+    COMMA           reduce using rule 10 (operator -> MULTIPLY .)
 
-    expression                     shift and go to state 23
 
 state 22
 
-    (10) expression -> OPERA OPEN_P operator COMMA . expression COMMA expression CLOSE_P
-    (10) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (13) expression -> . INT
-    (14) expression -> . BOOLEAN
-    (15) expression -> . VARIABLE
+    (12) var_assign -> LET VARIABLE EQUALS . expression
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (14) expression -> . INT
+    (15) expression -> . BOOLEAN
+    (16) expression -> . VARIABLE
 
-    OPERA           shift and go to state 5
-    INT             shift and go to state 6
-    BOOLEAN         shift and go to state 7
-    VARIABLE        shift and go to state 8
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
 
     expression                     shift and go to state 24
 
 state 23
 
-    (11) var_assign -> LET VARIABLE EQUALS expression .
+    (11) expression -> OPERA OPEN_P operator COMMA . expression COMMA expression CLOSE_P
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (14) expression -> . INT
+    (15) expression -> . BOOLEAN
+    (16) expression -> . VARIABLE
 
-    PyC             reduce using rule 11 (var_assign -> LET VARIABLE EQUALS expression .)
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
 
+    expression                     shift and go to state 25
 
 state 24
 
-    (10) expression -> OPERA OPEN_P operator COMMA expression . COMMA expression CLOSE_P
+    (12) var_assign -> LET VARIABLE EQUALS expression .
 
-    COMMA           shift and go to state 25
+    PyC             reduce using rule 12 (var_assign -> LET VARIABLE EQUALS expression .)
 
 
 state 25
 
-    (10) expression -> OPERA OPEN_P operator COMMA expression COMMA . expression CLOSE_P
-    (10) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (13) expression -> . INT
-    (14) expression -> . BOOLEAN
-    (15) expression -> . VARIABLE
+    (11) expression -> OPERA OPEN_P operator COMMA expression . COMMA expression CLOSE_P
 
-    OPERA           shift and go to state 5
-    INT             shift and go to state 6
-    BOOLEAN         shift and go to state 7
-    VARIABLE        shift and go to state 8
+    COMMA           shift and go to state 26
 
-    expression                     shift and go to state 26
 
 state 26
 
-    (10) expression -> OPERA OPEN_P operator COMMA expression COMMA expression . CLOSE_P
+    (11) expression -> OPERA OPEN_P operator COMMA expression COMMA . expression CLOSE_P
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (14) expression -> . INT
+    (15) expression -> . BOOLEAN
+    (16) expression -> . VARIABLE
 
-    CLOSE_P         shift and go to state 27
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
 
+    expression                     shift and go to state 27
 
 state 27
 
-    (10) expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .
+    (11) expression -> OPERA OPEN_P operator COMMA expression COMMA expression . CLOSE_P
 
-    PyC             reduce using rule 10 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
-    COMMA           reduce using rule 10 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
-    CLOSE_P         reduce using rule 10 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
+    CLOSE_P         shift and go to state 28
+
+
+state 28
+
+    (11) expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .
+
+    PyC             reduce using rule 11 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
+    COMMA           reduce using rule 11 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
+    CLOSE_P         reduce using rule 11 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
 
