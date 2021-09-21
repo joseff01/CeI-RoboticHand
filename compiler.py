@@ -67,6 +67,11 @@ t_ignore = r' '
 
 """Definicion de algunos tokens como funciones(nota: definir palabras especificas antes de la definicion de variable)"""
 
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+    print("line:",t.lexer.lineno)
+
 def t_INT(t):
     r'\d+'
     t.value = int(t.value)
@@ -124,13 +129,16 @@ lexer = lex.lex()
 
 """Definicion de funciones del parser"""
 
-
-def p_comp(p):
+def p_lines(p):
     '''
-    comp : expression PyC
-         | var_assign PyC
-         | for_loop PyC
-        | empty
+    algorithm : algorithm algorithm_line
+            | empty
+    '''
+
+def p_first_section(p):
+    '''
+    algorithm_line : expression PyC
+                    | var_assign PyC
     '''
     print(run(p[1]))
 
@@ -272,10 +280,15 @@ def run(p):
     else:
         return p
 
+def clearAll():
+    global variables
+    variables = {}
+    lexer.lineno = 1
 
-while True:
-    try:
-        s = input('')
-    except EOFError:
-        break
-    parser.parse(s)
+
+def compile(text):
+    print(lexer.lineno)
+    print(text)
+    parser.parse(text)
+    clearAll()
+
