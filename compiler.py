@@ -9,6 +9,8 @@ tokens = [
     'OPERA',
     'EXP',
     'BOOLEAN',
+    'FOR',
+    'IN',
     'VARIABLE',
     'PLUS',
     'MINUS',
@@ -18,6 +20,8 @@ tokens = [
     'INT_DIV',
     'OPEN_P',
     'CLOSE_P',
+    'SB1',
+    'SB2',
     'COMMA',
     'EQUALS_EQUALS',
     'DISTINCT',
@@ -29,7 +33,9 @@ tokens = [
     'PyC',
     'A1',
     'A2',
-    'A3'
+    'A3',
+    'dDOT_E',
+    'dDOT'
 ]
 """Le dice a lex como se ven los tokens definidos anteriormente"""
 
@@ -54,27 +60,48 @@ t_PyC = r'\;'
 t_A1 = r'\#'
 t_A2 = r'\?'
 t_A3 = r'\_'
+t_dDOT_E = r'\.\.\='
+t_dDOT = r'\.\.'
 
 t_ignore = r' '
 
 """Definicion de algunos tokens como funciones(nota: definir palabras especificas antes de la definicion de variable)"""
+
 def t_INT(t):
     r'\d+'
     t.value = int(t.value)
     return t
-
 
 def t_BOOLEAN(t):
     r'True | False'
     t.type = 'BOOLEAN'
     return t
 
+def t_SB1(t):
+    r'\{'
+    t.type = 'SB1'
+    return t
+
+def t_SB2(t):
+    r'\}'
+    t.type = 'SB2'
+    return t
+
+
+def t_FOR(t):
+    r'for'
+    t.type = 'FOR'
+    return t
+
+def t_IN(t):
+    r'in'
+    t.type = 'IN'
+    return t
 
 def t_OPERA(t):
     r'OPERA'
     t.type = 'OPERA'
     return t
-
 
 def t_LET(t):
     r'let'
@@ -98,10 +125,11 @@ lexer = lex.lex()
 """Definicion de funciones del parser"""
 
 
-def p_calc(p):
+def p_comp(p):
     '''
-    calc : expression PyC
+    comp : expression PyC
          | var_assign PyC
+         | for_loop PyC
         | empty
     '''
     print(run(p[1]))
@@ -131,6 +159,16 @@ def p_var_assign(p):
 
     p[0] = ('=', p[2], p[4])
 
+
+def p_for_loop(p):
+    '''
+    for_loop : FOR INT IN INT dDOT INT SB1 expression SB2
+              | FOR VARIABLE IN INT dDOT INT SB1 expression SB2
+              | FOR INT IN INT dDOT_E INT SB1 expression SB2
+              | FOR VARIABLE IN INT dDOT_E INT SB1 expression SB2
+    '''
+
+    p[0] = ('loop', p[2], p[4], p[6], p[8], p[5])
 
 def p_empty(p):
     '''
@@ -175,16 +213,47 @@ def run(p):
             return run(p[1]) ** run(p[2])
         elif p[0] == '*':
             return run(p[1]) * run(p[2])
+
         elif p[0] == '=':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(run(p[2]), str) is True:
                 print('Tipo incompatible')
+
             elif len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], str) is True and isinstance(run(p[2]), int) is True:
                 print('Tipo incompatible')
+
             else:
                 variables[p[1]] = run(p[2])
                 print(variables)
+
         elif p[0] == 'var':
             return variables[p[1]]
+
+        elif p[0] == 'loop':
+            if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], str) is True:
+                print('No puede usar variables booleans en bucles for')
+
+            elif p[2] >= p[3]:
+                print('ingrese un rango valido')
+
+            elif len(variables) > 0 and variables.get(p[1]) is not None and (variables[p[1]] > p[3] or variables[p[1]] < p[4]):
+                print('La condicion se sale del rango del For')
+
+            elif len(variables) == 0 and (p[1] < p[2] or p[1] > p[3]):
+                print('La condicion se sale del rango del For')
+
+            else:
+                if p[5] == '..' and isinstance(p[1], str) is True and variables.get(p[1]) is None:
+                    print('Variable no definida')
+                elif p[5] == '..' and isinstance(p[1], str) is True and variables.get(p[1]) is not None:
+                    for variables[p[1]] in range(p[2], p[3]-1):
+                        print('este mensaje debe repetirse')
+                    return p
+                elif p[5] == '..=' and isinstance(p[1], str) is True and variables.get(p[1]) is not None:
+                    for variables[p[1]] in range(p[2], p[3]):
+                        print('este mensaje debe repetirse')
+                    return p
+                else:
+                    return p
     else:
         return p
 

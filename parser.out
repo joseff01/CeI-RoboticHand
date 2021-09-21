@@ -15,316 +15,586 @@ Unused terminals:
 
 Grammar
 
-Rule 0     S' -> calc
-Rule 1     calc -> expression PyC
-Rule 2     calc -> var_assign PyC
-Rule 3     calc -> empty
-Rule 4     operator -> PLUS
-Rule 5     operator -> MINUS
-Rule 6     operator -> INT_DIV
-Rule 7     operator -> DIVIDE
-Rule 8     operator -> EXP
-Rule 9     operator -> MULTIPLY
-Rule 10    expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-Rule 11    var_assign -> LET VARIABLE EQUALS expression
-Rule 12    empty -> <empty>
-Rule 13    expression -> INT
-Rule 14    expression -> BOOLEAN
-Rule 15    expression -> VARIABLE
+Rule 0     S' -> comp
+Rule 1     comp -> expression PyC
+Rule 2     comp -> var_assign PyC
+Rule 3     comp -> for_loop PyC
+Rule 4     comp -> empty
+Rule 5     operator -> PLUS
+Rule 6     operator -> MINUS
+Rule 7     operator -> INT_DIV
+Rule 8     operator -> DIVIDE
+Rule 9     operator -> EXP
+Rule 10    operator -> MULTIPLY
+Rule 11    expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+Rule 12    var_assign -> LET VARIABLE EQUALS expression
+Rule 13    for_loop -> FOR INT IN INT dDOT INT SB1 expression SB2
+Rule 14    for_loop -> FOR VARIABLE IN INT dDOT INT SB1 expression SB2
+Rule 15    for_loop -> FOR INT IN INT dDOT_E INT SB1 expression SB2
+Rule 16    for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 expression SB2
+Rule 17    empty -> <empty>
+Rule 18    expression -> INT
+Rule 19    expression -> BOOLEAN
+Rule 20    expression -> VARIABLE
 
 Terminals, with rules where they appear
 
 A1                   : 
 A2                   : 
 A3                   : 
-BOOLEAN              : 14
-CLOSE_P              : 10
-COMMA                : 10 10
+BOOLEAN              : 19
+CLOSE_P              : 11
+COMMA                : 11 11
 COMMENTARY           : 
 DISTINCT             : 
-DIVIDE               : 7
-EQUALS               : 11
+DIVIDE               : 8
+EQUALS               : 12
 EQUALS_EQUALS        : 
-EXP                  : 8
-INT                  : 13
-INT_DIV              : 6
+EXP                  : 9
+FOR                  : 13 14 15 16
+IN                   : 13 14 15 16
+INT                  : 13 13 13 14 14 15 15 15 16 16 18
+INT_DIV              : 7
 LESS_EQUAL           : 
 LESS_THAN            : 
-LET                  : 11
-MINUS                : 5
+LET                  : 12
+MINUS                : 6
 MORE_EQUAL           : 
 MORE_THAN            : 
-MULTIPLY             : 9
-OPEN_P               : 10
-OPERA                : 10
-PLUS                 : 4
-PyC                  : 1 2
-VARIABLE             : 11 15
+MULTIPLY             : 10
+OPEN_P               : 11
+OPERA                : 11
+PLUS                 : 5
+PyC                  : 1 2 3
+SB1                  : 13 14 15 16
+SB2                  : 13 14 15 16
+VARIABLE             : 12 14 16 20
+dDOT                 : 13 14
+dDOT_E               : 15 16
 error                : 
 
 Nonterminals, with rules where they appear
 
-calc                 : 0
-empty                : 3
-expression           : 1 10 10 11
-operator             : 10
+comp                 : 0
+empty                : 4
+expression           : 1 11 11 12 13 14 15 16
+for_loop             : 3
+operator             : 11
 var_assign           : 2
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . calc
-    (1) calc -> . expression PyC
-    (2) calc -> . var_assign PyC
-    (3) calc -> . empty
-    (10) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (13) expression -> . INT
-    (14) expression -> . BOOLEAN
-    (15) expression -> . VARIABLE
-    (11) var_assign -> . LET VARIABLE EQUALS expression
-    (12) empty -> .
+    (0) S' -> . comp
+    (1) comp -> . expression PyC
+    (2) comp -> . var_assign PyC
+    (3) comp -> . for_loop PyC
+    (4) comp -> . empty
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (18) expression -> . INT
+    (19) expression -> . BOOLEAN
+    (20) expression -> . VARIABLE
+    (12) var_assign -> . LET VARIABLE EQUALS expression
+    (13) for_loop -> . FOR INT IN INT dDOT INT SB1 expression SB2
+    (14) for_loop -> . FOR VARIABLE IN INT dDOT INT SB1 expression SB2
+    (15) for_loop -> . FOR INT IN INT dDOT_E INT SB1 expression SB2
+    (16) for_loop -> . FOR VARIABLE IN INT dDOT_E INT SB1 expression SB2
+    (17) empty -> .
 
-    OPERA           shift and go to state 5
-    INT             shift and go to state 6
-    BOOLEAN         shift and go to state 7
-    VARIABLE        shift and go to state 8
-    LET             shift and go to state 9
-    $end            reduce using rule 12 (empty -> .)
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
+    LET             shift and go to state 10
+    FOR             shift and go to state 11
+    $end            reduce using rule 17 (empty -> .)
 
-    calc                           shift and go to state 1
+    comp                           shift and go to state 1
     expression                     shift and go to state 2
     var_assign                     shift and go to state 3
-    empty                          shift and go to state 4
+    for_loop                       shift and go to state 4
+    empty                          shift and go to state 5
 
 state 1
 
-    (0) S' -> calc .
+    (0) S' -> comp .
 
 
 
 state 2
 
-    (1) calc -> expression . PyC
+    (1) comp -> expression . PyC
 
-    PyC             shift and go to state 10
+    PyC             shift and go to state 12
 
 
 state 3
 
-    (2) calc -> var_assign . PyC
+    (2) comp -> var_assign . PyC
 
-    PyC             shift and go to state 11
+    PyC             shift and go to state 13
 
 
 state 4
 
-    (3) calc -> empty .
+    (3) comp -> for_loop . PyC
 
-    $end            reduce using rule 3 (calc -> empty .)
+    PyC             shift and go to state 14
 
 
 state 5
 
-    (10) expression -> OPERA . OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (4) comp -> empty .
 
-    OPEN_P          shift and go to state 12
+    $end            reduce using rule 4 (comp -> empty .)
 
 
 state 6
 
-    (13) expression -> INT .
+    (11) expression -> OPERA . OPEN_P operator COMMA expression COMMA expression CLOSE_P
 
-    PyC             reduce using rule 13 (expression -> INT .)
-    COMMA           reduce using rule 13 (expression -> INT .)
-    CLOSE_P         reduce using rule 13 (expression -> INT .)
+    OPEN_P          shift and go to state 15
 
 
 state 7
 
-    (14) expression -> BOOLEAN .
+    (18) expression -> INT .
 
-    PyC             reduce using rule 14 (expression -> BOOLEAN .)
-    COMMA           reduce using rule 14 (expression -> BOOLEAN .)
-    CLOSE_P         reduce using rule 14 (expression -> BOOLEAN .)
+    PyC             reduce using rule 18 (expression -> INT .)
+    COMMA           reduce using rule 18 (expression -> INT .)
+    CLOSE_P         reduce using rule 18 (expression -> INT .)
+    SB2             reduce using rule 18 (expression -> INT .)
 
 
 state 8
 
-    (15) expression -> VARIABLE .
+    (19) expression -> BOOLEAN .
 
-    PyC             reduce using rule 15 (expression -> VARIABLE .)
-    COMMA           reduce using rule 15 (expression -> VARIABLE .)
-    CLOSE_P         reduce using rule 15 (expression -> VARIABLE .)
+    PyC             reduce using rule 19 (expression -> BOOLEAN .)
+    COMMA           reduce using rule 19 (expression -> BOOLEAN .)
+    CLOSE_P         reduce using rule 19 (expression -> BOOLEAN .)
+    SB2             reduce using rule 19 (expression -> BOOLEAN .)
 
 
 state 9
 
-    (11) var_assign -> LET . VARIABLE EQUALS expression
+    (20) expression -> VARIABLE .
 
-    VARIABLE        shift and go to state 13
+    PyC             reduce using rule 20 (expression -> VARIABLE .)
+    COMMA           reduce using rule 20 (expression -> VARIABLE .)
+    CLOSE_P         reduce using rule 20 (expression -> VARIABLE .)
+    SB2             reduce using rule 20 (expression -> VARIABLE .)
 
 
 state 10
 
-    (1) calc -> expression PyC .
+    (12) var_assign -> LET . VARIABLE EQUALS expression
 
-    $end            reduce using rule 1 (calc -> expression PyC .)
+    VARIABLE        shift and go to state 16
 
 
 state 11
 
-    (2) calc -> var_assign PyC .
+    (13) for_loop -> FOR . INT IN INT dDOT INT SB1 expression SB2
+    (14) for_loop -> FOR . VARIABLE IN INT dDOT INT SB1 expression SB2
+    (15) for_loop -> FOR . INT IN INT dDOT_E INT SB1 expression SB2
+    (16) for_loop -> FOR . VARIABLE IN INT dDOT_E INT SB1 expression SB2
 
-    $end            reduce using rule 2 (calc -> var_assign PyC .)
+    INT             shift and go to state 17
+    VARIABLE        shift and go to state 18
 
 
 state 12
 
-    (10) expression -> OPERA OPEN_P . operator COMMA expression COMMA expression CLOSE_P
-    (4) operator -> . PLUS
-    (5) operator -> . MINUS
-    (6) operator -> . INT_DIV
-    (7) operator -> . DIVIDE
-    (8) operator -> . EXP
-    (9) operator -> . MULTIPLY
+    (1) comp -> expression PyC .
 
-    PLUS            shift and go to state 15
-    MINUS           shift and go to state 16
-    INT_DIV         shift and go to state 17
-    DIVIDE          shift and go to state 18
-    EXP             shift and go to state 19
-    MULTIPLY        shift and go to state 20
+    $end            reduce using rule 1 (comp -> expression PyC .)
 
-    operator                       shift and go to state 14
 
 state 13
 
-    (11) var_assign -> LET VARIABLE . EQUALS expression
+    (2) comp -> var_assign PyC .
 
-    EQUALS          shift and go to state 21
+    $end            reduce using rule 2 (comp -> var_assign PyC .)
 
 
 state 14
 
-    (10) expression -> OPERA OPEN_P operator . COMMA expression COMMA expression CLOSE_P
+    (3) comp -> for_loop PyC .
 
-    COMMA           shift and go to state 22
+    $end            reduce using rule 3 (comp -> for_loop PyC .)
 
 
 state 15
 
-    (4) operator -> PLUS .
+    (11) expression -> OPERA OPEN_P . operator COMMA expression COMMA expression CLOSE_P
+    (5) operator -> . PLUS
+    (6) operator -> . MINUS
+    (7) operator -> . INT_DIV
+    (8) operator -> . DIVIDE
+    (9) operator -> . EXP
+    (10) operator -> . MULTIPLY
 
-    COMMA           reduce using rule 4 (operator -> PLUS .)
+    PLUS            shift and go to state 20
+    MINUS           shift and go to state 21
+    INT_DIV         shift and go to state 22
+    DIVIDE          shift and go to state 23
+    EXP             shift and go to state 24
+    MULTIPLY        shift and go to state 25
 
+    operator                       shift and go to state 19
 
 state 16
 
-    (5) operator -> MINUS .
+    (12) var_assign -> LET VARIABLE . EQUALS expression
 
-    COMMA           reduce using rule 5 (operator -> MINUS .)
+    EQUALS          shift and go to state 26
 
 
 state 17
 
-    (6) operator -> INT_DIV .
+    (13) for_loop -> FOR INT . IN INT dDOT INT SB1 expression SB2
+    (15) for_loop -> FOR INT . IN INT dDOT_E INT SB1 expression SB2
 
-    COMMA           reduce using rule 6 (operator -> INT_DIV .)
+    IN              shift and go to state 27
 
 
 state 18
 
-    (7) operator -> DIVIDE .
+    (14) for_loop -> FOR VARIABLE . IN INT dDOT INT SB1 expression SB2
+    (16) for_loop -> FOR VARIABLE . IN INT dDOT_E INT SB1 expression SB2
 
-    COMMA           reduce using rule 7 (operator -> DIVIDE .)
+    IN              shift and go to state 28
 
 
 state 19
 
-    (8) operator -> EXP .
+    (11) expression -> OPERA OPEN_P operator . COMMA expression COMMA expression CLOSE_P
 
-    COMMA           reduce using rule 8 (operator -> EXP .)
+    COMMA           shift and go to state 29
 
 
 state 20
 
-    (9) operator -> MULTIPLY .
+    (5) operator -> PLUS .
 
-    COMMA           reduce using rule 9 (operator -> MULTIPLY .)
+    COMMA           reduce using rule 5 (operator -> PLUS .)
 
 
 state 21
 
-    (11) var_assign -> LET VARIABLE EQUALS . expression
-    (10) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (13) expression -> . INT
-    (14) expression -> . BOOLEAN
-    (15) expression -> . VARIABLE
+    (6) operator -> MINUS .
 
-    OPERA           shift and go to state 5
-    INT             shift and go to state 6
-    BOOLEAN         shift and go to state 7
-    VARIABLE        shift and go to state 8
+    COMMA           reduce using rule 6 (operator -> MINUS .)
 
-    expression                     shift and go to state 23
 
 state 22
 
-    (10) expression -> OPERA OPEN_P operator COMMA . expression COMMA expression CLOSE_P
-    (10) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (13) expression -> . INT
-    (14) expression -> . BOOLEAN
-    (15) expression -> . VARIABLE
+    (7) operator -> INT_DIV .
 
-    OPERA           shift and go to state 5
-    INT             shift and go to state 6
-    BOOLEAN         shift and go to state 7
-    VARIABLE        shift and go to state 8
+    COMMA           reduce using rule 7 (operator -> INT_DIV .)
 
-    expression                     shift and go to state 24
 
 state 23
 
-    (11) var_assign -> LET VARIABLE EQUALS expression .
+    (8) operator -> DIVIDE .
 
-    PyC             reduce using rule 11 (var_assign -> LET VARIABLE EQUALS expression .)
+    COMMA           reduce using rule 8 (operator -> DIVIDE .)
 
 
 state 24
 
-    (10) expression -> OPERA OPEN_P operator COMMA expression . COMMA expression CLOSE_P
+    (9) operator -> EXP .
 
-    COMMA           shift and go to state 25
+    COMMA           reduce using rule 9 (operator -> EXP .)
 
 
 state 25
 
-    (10) expression -> OPERA OPEN_P operator COMMA expression COMMA . expression CLOSE_P
-    (10) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (13) expression -> . INT
-    (14) expression -> . BOOLEAN
-    (15) expression -> . VARIABLE
+    (10) operator -> MULTIPLY .
 
-    OPERA           shift and go to state 5
-    INT             shift and go to state 6
-    BOOLEAN         shift and go to state 7
-    VARIABLE        shift and go to state 8
+    COMMA           reduce using rule 10 (operator -> MULTIPLY .)
 
-    expression                     shift and go to state 26
 
 state 26
 
-    (10) expression -> OPERA OPEN_P operator COMMA expression COMMA expression . CLOSE_P
+    (12) var_assign -> LET VARIABLE EQUALS . expression
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (18) expression -> . INT
+    (19) expression -> . BOOLEAN
+    (20) expression -> . VARIABLE
 
-    CLOSE_P         shift and go to state 27
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
 
+    expression                     shift and go to state 30
 
 state 27
 
-    (10) expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .
+    (13) for_loop -> FOR INT IN . INT dDOT INT SB1 expression SB2
+    (15) for_loop -> FOR INT IN . INT dDOT_E INT SB1 expression SB2
 
-    PyC             reduce using rule 10 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
-    COMMA           reduce using rule 10 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
-    CLOSE_P         reduce using rule 10 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
+    INT             shift and go to state 31
+
+
+state 28
+
+    (14) for_loop -> FOR VARIABLE IN . INT dDOT INT SB1 expression SB2
+    (16) for_loop -> FOR VARIABLE IN . INT dDOT_E INT SB1 expression SB2
+
+    INT             shift and go to state 32
+
+
+state 29
+
+    (11) expression -> OPERA OPEN_P operator COMMA . expression COMMA expression CLOSE_P
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (18) expression -> . INT
+    (19) expression -> . BOOLEAN
+    (20) expression -> . VARIABLE
+
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
+
+    expression                     shift and go to state 33
+
+state 30
+
+    (12) var_assign -> LET VARIABLE EQUALS expression .
+
+    PyC             reduce using rule 12 (var_assign -> LET VARIABLE EQUALS expression .)
+
+
+state 31
+
+    (13) for_loop -> FOR INT IN INT . dDOT INT SB1 expression SB2
+    (15) for_loop -> FOR INT IN INT . dDOT_E INT SB1 expression SB2
+
+    dDOT            shift and go to state 34
+    dDOT_E          shift and go to state 35
+
+
+state 32
+
+    (14) for_loop -> FOR VARIABLE IN INT . dDOT INT SB1 expression SB2
+    (16) for_loop -> FOR VARIABLE IN INT . dDOT_E INT SB1 expression SB2
+
+    dDOT            shift and go to state 36
+    dDOT_E          shift and go to state 37
+
+
+state 33
+
+    (11) expression -> OPERA OPEN_P operator COMMA expression . COMMA expression CLOSE_P
+
+    COMMA           shift and go to state 38
+
+
+state 34
+
+    (13) for_loop -> FOR INT IN INT dDOT . INT SB1 expression SB2
+
+    INT             shift and go to state 39
+
+
+state 35
+
+    (15) for_loop -> FOR INT IN INT dDOT_E . INT SB1 expression SB2
+
+    INT             shift and go to state 40
+
+
+state 36
+
+    (14) for_loop -> FOR VARIABLE IN INT dDOT . INT SB1 expression SB2
+
+    INT             shift and go to state 41
+
+
+state 37
+
+    (16) for_loop -> FOR VARIABLE IN INT dDOT_E . INT SB1 expression SB2
+
+    INT             shift and go to state 42
+
+
+state 38
+
+    (11) expression -> OPERA OPEN_P operator COMMA expression COMMA . expression CLOSE_P
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (18) expression -> . INT
+    (19) expression -> . BOOLEAN
+    (20) expression -> . VARIABLE
+
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
+
+    expression                     shift and go to state 43
+
+state 39
+
+    (13) for_loop -> FOR INT IN INT dDOT INT . SB1 expression SB2
+
+    SB1             shift and go to state 44
+
+
+state 40
+
+    (15) for_loop -> FOR INT IN INT dDOT_E INT . SB1 expression SB2
+
+    SB1             shift and go to state 45
+
+
+state 41
+
+    (14) for_loop -> FOR VARIABLE IN INT dDOT INT . SB1 expression SB2
+
+    SB1             shift and go to state 46
+
+
+state 42
+
+    (16) for_loop -> FOR VARIABLE IN INT dDOT_E INT . SB1 expression SB2
+
+    SB1             shift and go to state 47
+
+
+state 43
+
+    (11) expression -> OPERA OPEN_P operator COMMA expression COMMA expression . CLOSE_P
+
+    CLOSE_P         shift and go to state 48
+
+
+state 44
+
+    (13) for_loop -> FOR INT IN INT dDOT INT SB1 . expression SB2
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (18) expression -> . INT
+    (19) expression -> . BOOLEAN
+    (20) expression -> . VARIABLE
+
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
+
+    expression                     shift and go to state 49
+
+state 45
+
+    (15) for_loop -> FOR INT IN INT dDOT_E INT SB1 . expression SB2
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (18) expression -> . INT
+    (19) expression -> . BOOLEAN
+    (20) expression -> . VARIABLE
+
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
+
+    expression                     shift and go to state 50
+
+state 46
+
+    (14) for_loop -> FOR VARIABLE IN INT dDOT INT SB1 . expression SB2
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (18) expression -> . INT
+    (19) expression -> . BOOLEAN
+    (20) expression -> . VARIABLE
+
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
+
+    expression                     shift and go to state 51
+
+state 47
+
+    (16) for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 . expression SB2
+    (11) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
+    (18) expression -> . INT
+    (19) expression -> . BOOLEAN
+    (20) expression -> . VARIABLE
+
+    OPERA           shift and go to state 6
+    INT             shift and go to state 7
+    BOOLEAN         shift and go to state 8
+    VARIABLE        shift and go to state 9
+
+    expression                     shift and go to state 52
+
+state 48
+
+    (11) expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .
+
+    PyC             reduce using rule 11 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
+    COMMA           reduce using rule 11 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
+    CLOSE_P         reduce using rule 11 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
+    SB2             reduce using rule 11 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
+
+
+state 49
+
+    (13) for_loop -> FOR INT IN INT dDOT INT SB1 expression . SB2
+
+    SB2             shift and go to state 53
+
+
+state 50
+
+    (15) for_loop -> FOR INT IN INT dDOT_E INT SB1 expression . SB2
+
+    SB2             shift and go to state 54
+
+
+state 51
+
+    (14) for_loop -> FOR VARIABLE IN INT dDOT INT SB1 expression . SB2
+
+    SB2             shift and go to state 55
+
+
+state 52
+
+    (16) for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 expression . SB2
+
+    SB2             shift and go to state 56
+
+
+state 53
+
+    (13) for_loop -> FOR INT IN INT dDOT INT SB1 expression SB2 .
+
+    PyC             reduce using rule 13 (for_loop -> FOR INT IN INT dDOT INT SB1 expression SB2 .)
+
+
+state 54
+
+    (15) for_loop -> FOR INT IN INT dDOT_E INT SB1 expression SB2 .
+
+    PyC             reduce using rule 15 (for_loop -> FOR INT IN INT dDOT_E INT SB1 expression SB2 .)
+
+
+state 55
+
+    (14) for_loop -> FOR VARIABLE IN INT dDOT INT SB1 expression SB2 .
+
+    PyC             reduce using rule 14 (for_loop -> FOR VARIABLE IN INT dDOT INT SB1 expression SB2 .)
+
+
+state 56
+
+    (16) for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 expression SB2 .
+
+    PyC             reduce using rule 16 (for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 expression SB2 .)
 

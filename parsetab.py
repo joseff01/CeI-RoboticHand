@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'A1 A2 A3 BOOLEAN CLOSE_P COMMA COMMENTARY DISTINCT DIVIDE EQUALS EQUALS_EQUALS EXP INT INT_DIV LESS_EQUAL LESS_THAN LET MINUS MORE_EQUAL MORE_THAN MULTIPLY OPEN_P OPERA PLUS PyC VARIABLE\n    calc : expression PyC\n         | var_assign PyC\n        | empty\n    \n    operator : PLUS\n            | MINUS\n            | INT_DIV\n            | DIVIDE\n            | EXP\n            | MULTIPLY\n    \n    expression : OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P\n    \n    var_assign : LET VARIABLE EQUALS expression\n    \n    empty :\n    \n    expression : INT\n              | BOOLEAN\n    \n    expression : VARIABLE\n    '
+_lr_signature = 'A1 A2 A3 BOOLEAN CLOSE_P COMMA COMMENTARY DISTINCT DIVIDE EQUALS EQUALS_EQUALS EXP FOR IN INT INT_DIV LESS_EQUAL LESS_THAN LET MINUS MORE_EQUAL MORE_THAN MULTIPLY OPEN_P OPERA PLUS PyC SB1 SB2 VARIABLE dDOT dDOT_E\n    comp : expression PyC\n         | var_assign PyC\n         | for_loop PyC\n        | empty\n    \n    operator : PLUS\n            | MINUS\n            | INT_DIV\n            | DIVIDE\n            | EXP\n            | MULTIPLY\n    \n    expression : OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P\n    \n    var_assign : LET VARIABLE EQUALS expression\n    \n    for_loop : FOR INT IN INT dDOT INT SB1 expression SB2\n              | FOR VARIABLE IN INT dDOT INT SB1 expression SB2\n              | FOR INT IN INT dDOT_E INT SB1 expression SB2\n              | FOR VARIABLE IN INT dDOT_E INT SB1 expression SB2\n    \n    empty :\n    \n    expression : INT\n              | BOOLEAN\n    \n    expression : VARIABLE\n    '
     
-_lr_action_items = {'OPERA':([0,21,22,25,],[5,5,5,5,]),'INT':([0,21,22,25,],[6,6,6,6,]),'BOOLEAN':([0,21,22,25,],[7,7,7,7,]),'VARIABLE':([0,9,21,22,25,],[8,13,8,8,8,]),'LET':([0,],[9,]),'$end':([0,1,4,10,11,],[-12,0,-3,-1,-2,]),'PyC':([2,3,6,7,8,23,27,],[10,11,-13,-14,-15,-11,-10,]),'OPEN_P':([5,],[12,]),'COMMA':([6,7,8,14,15,16,17,18,19,20,24,27,],[-13,-14,-15,22,-4,-5,-6,-7,-8,-9,25,-10,]),'CLOSE_P':([6,7,8,26,27,],[-13,-14,-15,27,-10,]),'PLUS':([12,],[15,]),'MINUS':([12,],[16,]),'INT_DIV':([12,],[17,]),'DIVIDE':([12,],[18,]),'EXP':([12,],[19,]),'MULTIPLY':([12,],[20,]),'EQUALS':([13,],[21,]),}
+_lr_action_items = {'OPERA':([0,26,29,38,44,45,46,47,],[6,6,6,6,6,6,6,6,]),'INT':([0,11,26,27,28,29,34,35,36,37,38,44,45,46,47,],[7,17,7,31,32,7,39,40,41,42,7,7,7,7,7,]),'BOOLEAN':([0,26,29,38,44,45,46,47,],[8,8,8,8,8,8,8,8,]),'VARIABLE':([0,10,11,26,29,38,44,45,46,47,],[9,16,18,9,9,9,9,9,9,9,]),'LET':([0,],[10,]),'FOR':([0,],[11,]),'$end':([0,1,5,12,13,14,],[-17,0,-4,-1,-2,-3,]),'PyC':([2,3,4,7,8,9,30,48,53,54,55,56,],[12,13,14,-18,-19,-20,-12,-11,-13,-15,-14,-16,]),'OPEN_P':([6,],[15,]),'COMMA':([7,8,9,19,20,21,22,23,24,25,33,48,],[-18,-19,-20,29,-5,-6,-7,-8,-9,-10,38,-11,]),'CLOSE_P':([7,8,9,43,48,],[-18,-19,-20,48,-11,]),'SB2':([7,8,9,48,49,50,51,52,],[-18,-19,-20,-11,53,54,55,56,]),'PLUS':([15,],[20,]),'MINUS':([15,],[21,]),'INT_DIV':([15,],[22,]),'DIVIDE':([15,],[23,]),'EXP':([15,],[24,]),'MULTIPLY':([15,],[25,]),'EQUALS':([16,],[26,]),'IN':([17,18,],[27,28,]),'dDOT':([31,32,],[34,36,]),'dDOT_E':([31,32,],[35,37,]),'SB1':([39,40,41,42,],[44,45,46,47,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'calc':([0,],[1,]),'expression':([0,21,22,25,],[2,23,24,26,]),'var_assign':([0,],[3,]),'empty':([0,],[4,]),'operator':([12,],[14,]),}
+_lr_goto_items = {'comp':([0,],[1,]),'expression':([0,26,29,38,44,45,46,47,],[2,30,33,43,49,50,51,52,]),'var_assign':([0,],[3,]),'for_loop':([0,],[4,]),'empty':([0,],[5,]),'operator':([15,],[19,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,20 +26,25 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> calc","S'",1,None,None,None),
-  ('calc -> expression PyC','calc',2,'p_calc','compiler.py',103),
-  ('calc -> var_assign PyC','calc',2,'p_calc','compiler.py',104),
-  ('calc -> empty','calc',1,'p_calc','compiler.py',105),
-  ('operator -> PLUS','operator',1,'p_operator','compiler.py',111),
-  ('operator -> MINUS','operator',1,'p_operator','compiler.py',112),
-  ('operator -> INT_DIV','operator',1,'p_operator','compiler.py',113),
-  ('operator -> DIVIDE','operator',1,'p_operator','compiler.py',114),
-  ('operator -> EXP','operator',1,'p_operator','compiler.py',115),
-  ('operator -> MULTIPLY','operator',1,'p_operator','compiler.py',116),
-  ('expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P','expression',8,'p_expression_opera','compiler.py',121),
-  ('var_assign -> LET VARIABLE EQUALS expression','var_assign',4,'p_var_assign','compiler.py',128),
-  ('empty -> <empty>','empty',0,'p_empty','compiler.py',136),
-  ('expression -> INT','expression',1,'p_expression_int_boolean','compiler.py',143),
-  ('expression -> BOOLEAN','expression',1,'p_expression_int_boolean','compiler.py',144),
-  ('expression -> VARIABLE','expression',1,'p_expression_var','compiler.py',151),
+  ("S' -> comp","S'",1,None,None,None),
+  ('comp -> expression PyC','comp',2,'p_comp','compiler.py',130),
+  ('comp -> var_assign PyC','comp',2,'p_comp','compiler.py',131),
+  ('comp -> for_loop PyC','comp',2,'p_comp','compiler.py',132),
+  ('comp -> empty','comp',1,'p_comp','compiler.py',133),
+  ('operator -> PLUS','operator',1,'p_operator','compiler.py',139),
+  ('operator -> MINUS','operator',1,'p_operator','compiler.py',140),
+  ('operator -> INT_DIV','operator',1,'p_operator','compiler.py',141),
+  ('operator -> DIVIDE','operator',1,'p_operator','compiler.py',142),
+  ('operator -> EXP','operator',1,'p_operator','compiler.py',143),
+  ('operator -> MULTIPLY','operator',1,'p_operator','compiler.py',144),
+  ('expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P','expression',8,'p_expression_opera','compiler.py',150),
+  ('var_assign -> LET VARIABLE EQUALS expression','var_assign',4,'p_var_assign','compiler.py',157),
+  ('for_loop -> FOR INT IN INT dDOT INT SB1 expression SB2','for_loop',9,'p_for_loop','compiler.py',165),
+  ('for_loop -> FOR VARIABLE IN INT dDOT INT SB1 expression SB2','for_loop',9,'p_for_loop','compiler.py',166),
+  ('for_loop -> FOR INT IN INT dDOT_E INT SB1 expression SB2','for_loop',9,'p_for_loop','compiler.py',167),
+  ('for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 expression SB2','for_loop',9,'p_for_loop','compiler.py',168),
+  ('empty -> <empty>','empty',0,'p_empty','compiler.py',175),
+  ('expression -> INT','expression',1,'p_expression_int_boolean','compiler.py',182),
+  ('expression -> BOOLEAN','expression',1,'p_expression_int_boolean','compiler.py',183),
+  ('expression -> VARIABLE','expression',1,'p_expression_var','compiler.py',190),
 ]
