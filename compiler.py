@@ -139,6 +139,7 @@ def p_first_section(p):
     '''
     algorithm_line : expression PyC
                     | var_assign PyC
+                    | for_loop PyC
     '''
     print(run(p[1]))
 
