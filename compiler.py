@@ -34,9 +34,6 @@ tokens = [
     'LESS_THAN',
     'COMMENTARY',
     'PyC',
-    'A1',
-    'A2',
-    'A3',
     'dDOT_E',
     'dDOT'
 ]
@@ -78,8 +75,12 @@ def t_INT(t):
     return t
 
 def t_BOOLEAN(t):
-    r'True | False'
+    r'true | false'
     t.type = 'BOOLEAN'
+    if t.value == 'true':
+        t.value = True
+    elif t.value == 'false':
+        t.value = False
     return t
 
 def t_SB1(t):
@@ -112,7 +113,6 @@ def t_ELSE(t):
     t.type = 'else'
     return t
 
-
 def t_IN(t):
     r'in'
     t.type = 'IN'
@@ -128,17 +128,14 @@ def t_LET(t):
     t.type = 'LET'
     return t
 
-
 def t_VARIABLE(t):
     r'[a-zA-Z#_?][a-zA-Z0-9#_?]{2,14}'
     t.type = 'VARIABLE'
     return t
 
-
 def t_error(t):
     print("illegal character detected")
     t.lexer.skip(1)
-
 
 lexer = lex.lex()
 
@@ -150,7 +147,6 @@ def p_lines(p):
             | empty
     '''
     p[0] = p[1]
-
 
 def p_first_section(p):
     '''
