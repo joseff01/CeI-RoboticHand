@@ -350,7 +350,20 @@ def run(p):
                 run(p[2])
 
         elif p[0] == 'while_loop':
-            print('detected')
+            if p[3] == '<>':
+                return p
+            elif p[3] == '<=':
+                return p
+            elif p[3] == '<':
+                return p
+            elif p[3] == '==':
+                return p
+            elif p[3] == '=':
+                return p
+            elif p[3] == '>=':
+                return p
+            elif p[3] == '>':
+                return p
     else:
         return p
 
