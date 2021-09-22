@@ -10,6 +10,8 @@ tokens = [
     'EXP',
     'BOOLEAN',
     'FOR',
+    'IF',
+    'ELSE',
     'WHILE',
     'IN',
     'VARIABLE',
@@ -58,9 +60,6 @@ t_MORE_EQUAL = r'\>='
 t_MORE_THAN = r'\>'
 t_COMMENTARY = r'\@'
 t_PyC = r'\;'
-t_A1 = r'\#'
-t_A2 = r'\?'
-t_A3 = r'\_'
 t_dDOT_E = r'\.\.\='
 t_dDOT = r'\.\.'
 
@@ -102,6 +101,17 @@ def t_FOR(t):
     r'for'
     t.type = 'FOR'
     return t
+
+def t_IF(t):
+    r'if'
+    t.type = 'IF'
+    return t
+
+def t_ELSE(t):
+    r'else'
+    t.type = 'else'
+    return t
+
 
 def t_IN(t):
     r'in'
@@ -148,6 +158,7 @@ def p_first_section(p):
                     | var_assign PyC
                     | for_loop PyC
                     | while_loop PyC
+                    | if_else
     '''
     p[0] = p[1]
     print(run(p[1]))
@@ -169,6 +180,23 @@ def p_expression_opera(p):
     '''
     p[0] = (p[3], p[5], p[7])
 
+def p_bool_operator(p):
+    '''
+        bool_operator : EQUALS_EQUALS
+                    | DISTINCT
+                    | LESS_EQUAL
+                    | MORE_EQUAL
+                    | MORE_THAN
+                    | LESS_THAN
+    '''
+    p[0] = p[1]
+
+
+def p_expression_bool(p):
+    '''
+    expression : expression bool_operator expression
+    '''
+    p[0] = (p[2], p[1], p[3])
 
 def p_var_assign(p):
     '''
@@ -187,6 +215,12 @@ def p_for_loop(p):
     '''
 
     p[0] = ('for_loop', p[2], p[4], p[6], p[8], p[5])
+
+def p_if_else(p):
+    '''
+        if_else : IF expression SB1 algorithm SB2
+    '''
+    p[0] = ('if_else', p[2], p[4])
 
 def p_while_loop(p):
     '''
@@ -250,6 +284,27 @@ def run(p):
             return run(p[1]) ** run(p[2])
         elif p[0] == '*':
             return run(p[1]) * run(p[2])
+        elif p[0] == 'var':
+            return variables[p[1]]
+
+        elif p[0] == '==':
+            print(p[1], run(p[2]))
+            return run(p[1]) == run(p[2])
+
+        elif p[0] == '<>':
+            return run(p[1]) != run(p[2])
+
+        elif p[0] == '<=':
+            return run(p[1]) <= run(p[2])
+
+        elif p[0] == '>=':
+            return run(p[1]) >= run(p[2])
+
+        elif p[0] == '>':
+            return run(p[1]) > run(p[2])
+
+        elif p[0] == '<':
+            return run(p[1]) < run(p[2])
 
         elif p[0] == '=':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(run(p[2]), str) is True:
@@ -305,6 +360,11 @@ def run(p):
                 
                 else:
                     return p
+
+        elif p[0] == 'if_else':
+            if run(p[1]):
+                run(p[2])
+
         elif p[0] == 'while_loop':
             print('detected')
     else:
