@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
+import compiler
 
 class Menubar(ttk.Frame):
     """Builds a menu bar for the top of the main window"""
@@ -55,10 +56,8 @@ class Menubar(ttk.Frame):
 
     def compileRun(self):
         '''Compila y corre el programa'''
-        # First it compiles
-        self.compile()
-        # Then it runs the code
-        print("Running the code hell yea")
+        compiler.compile(self.GUI.text_box.get("1.0",'end-1c'))
+
         pass
 
     # Manejo de estado para ctrl+s
