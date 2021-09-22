@@ -224,20 +224,8 @@ def p_if_else(p):
 
 def p_while_loop(p):
     '''
-    while_loop : WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    while_loop : WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
+               | WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
     '''
     p[0] = ('while_loop', p[3])
 
