@@ -35,57 +35,45 @@ Rule 24    for_loop -> FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2
 Rule 25    for_loop -> FOR INT IN INT dDOT_E INT SB1 algorithm SB2
 Rule 26    for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2
 Rule 27    if_else -> IF expression SB1 algorithm SB2
-Rule 28    while_loop -> WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
-Rule 29    while_loop -> WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-Rule 30    while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
-Rule 31    while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-Rule 32    while_loop -> WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2
-Rule 33    while_loop -> WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-Rule 34    while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
-Rule 35    while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-Rule 36    while_loop -> WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2
-Rule 37    while_loop -> WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-Rule 38    while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-Rule 39    while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-Rule 40    while_loop -> WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2
-Rule 41    while_loop -> WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
-Rule 42    empty -> <empty>
-Rule 43    expression -> INT
-Rule 44    expression -> BOOLEAN
-Rule 45    expression -> VARIABLE
+Rule 28    while_loop -> WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
+Rule 29    while_loop -> WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
+Rule 30    empty -> <empty>
+Rule 31    expression -> INT
+Rule 32    expression -> BOOLEAN
+Rule 33    expression -> VARIABLE
 
 Terminals, with rules where they appear
 
-BOOLEAN              : 44
-CLOSE_P              : 14 28 29 30 31 32 33 34 35 36 37 38 39 40 41
+BOOLEAN              : 32
+CLOSE_P              : 14 28 29
 COMMA                : 14 14
 COMMENTARY           : 
-DISTINCT             : 16 28 29
+DISTINCT             : 16
 DIVIDE               : 11
 ELSE                 : 
-EQUALS               : 22 40 41
-EQUALS_EQUALS        : 15 38 39
+EQUALS               : 22
+EQUALS_EQUALS        : 15
 EXP                  : 12
 FOR                  : 23 24 25 26
 IF                   : 27
 IN                   : 23 24 25 26
-INT                  : 23 23 23 24 24 25 25 25 26 26 28 30 32 34 36 38 40 43
+INT                  : 23 23 23 24 24 25 25 25 26 26 28 31
 INT_DIV              : 10
-LESS_EQUAL           : 17 30 31
-LESS_THAN            : 20 32 33
+LESS_EQUAL           : 17
+LESS_THAN            : 20
 LET                  : 22
 MINUS                : 9
-MORE_EQUAL           : 18 34 35
-MORE_THAN            : 19 36 37
+MORE_EQUAL           : 18
+MORE_THAN            : 19
 MULTIPLY             : 13
-OPEN_P               : 14 28 29 30 31 32 33 34 35 36 37 38 39 40 41
+OPEN_P               : 14 28 29
 OPERA                : 14
 PLUS                 : 8
 PyC                  : 3 4 5 6
-SB1                  : 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41
-SB2                  : 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41
-VARIABLE             : 22 24 26 28 29 29 30 31 31 32 33 33 34 35 35 36 37 37 38 39 39 40 41 41 45
-WHILE                : 28 29 30 31 32 33 34 35 36 37 38 39 40 41
+SB1                  : 23 24 25 26 27 28 29
+SB2                  : 23 24 25 26 27 28 29
+VARIABLE             : 22 24 26 28 29 29 33
+WHILE                : 28 29
 dDOT                 : 23 24
 dDOT_E               : 25 26
 error                : 
@@ -94,9 +82,9 @@ Nonterminals, with rules where they appear
 
 algorithm            : 1 23 24 25 26 27 0
 algorithm_line       : 1
-bool_operator        : 21
+bool_operator        : 21 28 29
 empty                : 2
-expression           : 3 14 14 21 21 22 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41
+expression           : 3 14 14 21 21 22 27 28 29
 for_loop             : 5
 if_else              : 7
 operator             : 14
@@ -110,17 +98,17 @@ state 0
     (0) S' -> . algorithm
     (1) algorithm -> . algorithm algorithm_line
     (2) algorithm -> . empty
-    (42) empty -> .
+    (30) empty -> .
 
-    OPERA           reduce using rule 42 (empty -> .)
-    INT             reduce using rule 42 (empty -> .)
-    BOOLEAN         reduce using rule 42 (empty -> .)
-    VARIABLE        reduce using rule 42 (empty -> .)
-    LET             reduce using rule 42 (empty -> .)
-    FOR             reduce using rule 42 (empty -> .)
-    WHILE           reduce using rule 42 (empty -> .)
-    IF              reduce using rule 42 (empty -> .)
-    $end            reduce using rule 42 (empty -> .)
+    OPERA           reduce using rule 30 (empty -> .)
+    INT             reduce using rule 30 (empty -> .)
+    BOOLEAN         reduce using rule 30 (empty -> .)
+    VARIABLE        reduce using rule 30 (empty -> .)
+    LET             reduce using rule 30 (empty -> .)
+    FOR             reduce using rule 30 (empty -> .)
+    WHILE           reduce using rule 30 (empty -> .)
+    IF              reduce using rule 30 (empty -> .)
+    $end            reduce using rule 30 (empty -> .)
 
     algorithm                      shift and go to state 1
     empty                          shift and go to state 2
@@ -136,28 +124,16 @@ state 1
     (7) algorithm_line -> . if_else
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
     (22) var_assign -> . LET VARIABLE EQUALS expression
     (23) for_loop -> . FOR INT IN INT dDOT INT SB1 algorithm SB2
     (24) for_loop -> . FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2
     (25) for_loop -> . FOR INT IN INT dDOT_E INT SB1 algorithm SB2
     (26) for_loop -> . FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2
-    (28) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
-    (29) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-    (30) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
-    (31) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (32) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2
-    (33) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (34) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
-    (35) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (36) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2
-    (37) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (38) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-    (39) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-    (40) while_loop -> . WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2
-    (41) while_loop -> . WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    (28) while_loop -> . WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
+    (29) while_loop -> . WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
     (27) if_else -> . IF expression SB1 algorithm SB2
 
     OPERA           shift and go to state 9
@@ -275,53 +251,53 @@ state 9
 
 state 10
 
-    (43) expression -> INT .
+    (31) expression -> INT .
 
-    PyC             reduce using rule 43 (expression -> INT .)
-    EQUALS_EQUALS   reduce using rule 43 (expression -> INT .)
-    DISTINCT        reduce using rule 43 (expression -> INT .)
-    LESS_EQUAL      reduce using rule 43 (expression -> INT .)
-    MORE_EQUAL      reduce using rule 43 (expression -> INT .)
-    MORE_THAN       reduce using rule 43 (expression -> INT .)
-    LESS_THAN       reduce using rule 43 (expression -> INT .)
-    SB1             reduce using rule 43 (expression -> INT .)
-    COMMA           reduce using rule 43 (expression -> INT .)
-    CLOSE_P         reduce using rule 43 (expression -> INT .)
-    SB2             reduce using rule 43 (expression -> INT .)
+    PyC             reduce using rule 31 (expression -> INT .)
+    EQUALS_EQUALS   reduce using rule 31 (expression -> INT .)
+    DISTINCT        reduce using rule 31 (expression -> INT .)
+    LESS_EQUAL      reduce using rule 31 (expression -> INT .)
+    MORE_EQUAL      reduce using rule 31 (expression -> INT .)
+    MORE_THAN       reduce using rule 31 (expression -> INT .)
+    LESS_THAN       reduce using rule 31 (expression -> INT .)
+    SB1             reduce using rule 31 (expression -> INT .)
+    COMMA           reduce using rule 31 (expression -> INT .)
+    CLOSE_P         reduce using rule 31 (expression -> INT .)
+    SB2             reduce using rule 31 (expression -> INT .)
 
 
 state 11
 
-    (44) expression -> BOOLEAN .
+    (32) expression -> BOOLEAN .
 
-    PyC             reduce using rule 44 (expression -> BOOLEAN .)
-    EQUALS_EQUALS   reduce using rule 44 (expression -> BOOLEAN .)
-    DISTINCT        reduce using rule 44 (expression -> BOOLEAN .)
-    LESS_EQUAL      reduce using rule 44 (expression -> BOOLEAN .)
-    MORE_EQUAL      reduce using rule 44 (expression -> BOOLEAN .)
-    MORE_THAN       reduce using rule 44 (expression -> BOOLEAN .)
-    LESS_THAN       reduce using rule 44 (expression -> BOOLEAN .)
-    SB1             reduce using rule 44 (expression -> BOOLEAN .)
-    COMMA           reduce using rule 44 (expression -> BOOLEAN .)
-    CLOSE_P         reduce using rule 44 (expression -> BOOLEAN .)
-    SB2             reduce using rule 44 (expression -> BOOLEAN .)
+    PyC             reduce using rule 32 (expression -> BOOLEAN .)
+    EQUALS_EQUALS   reduce using rule 32 (expression -> BOOLEAN .)
+    DISTINCT        reduce using rule 32 (expression -> BOOLEAN .)
+    LESS_EQUAL      reduce using rule 32 (expression -> BOOLEAN .)
+    MORE_EQUAL      reduce using rule 32 (expression -> BOOLEAN .)
+    MORE_THAN       reduce using rule 32 (expression -> BOOLEAN .)
+    LESS_THAN       reduce using rule 32 (expression -> BOOLEAN .)
+    SB1             reduce using rule 32 (expression -> BOOLEAN .)
+    COMMA           reduce using rule 32 (expression -> BOOLEAN .)
+    CLOSE_P         reduce using rule 32 (expression -> BOOLEAN .)
+    SB2             reduce using rule 32 (expression -> BOOLEAN .)
 
 
 state 12
 
-    (45) expression -> VARIABLE .
+    (33) expression -> VARIABLE .
 
-    PyC             reduce using rule 45 (expression -> VARIABLE .)
-    EQUALS_EQUALS   reduce using rule 45 (expression -> VARIABLE .)
-    DISTINCT        reduce using rule 45 (expression -> VARIABLE .)
-    LESS_EQUAL      reduce using rule 45 (expression -> VARIABLE .)
-    MORE_EQUAL      reduce using rule 45 (expression -> VARIABLE .)
-    MORE_THAN       reduce using rule 45 (expression -> VARIABLE .)
-    LESS_THAN       reduce using rule 45 (expression -> VARIABLE .)
-    SB1             reduce using rule 45 (expression -> VARIABLE .)
-    COMMA           reduce using rule 45 (expression -> VARIABLE .)
-    CLOSE_P         reduce using rule 45 (expression -> VARIABLE .)
-    SB2             reduce using rule 45 (expression -> VARIABLE .)
+    PyC             reduce using rule 33 (expression -> VARIABLE .)
+    EQUALS_EQUALS   reduce using rule 33 (expression -> VARIABLE .)
+    DISTINCT        reduce using rule 33 (expression -> VARIABLE .)
+    LESS_EQUAL      reduce using rule 33 (expression -> VARIABLE .)
+    MORE_EQUAL      reduce using rule 33 (expression -> VARIABLE .)
+    MORE_THAN       reduce using rule 33 (expression -> VARIABLE .)
+    LESS_THAN       reduce using rule 33 (expression -> VARIABLE .)
+    SB1             reduce using rule 33 (expression -> VARIABLE .)
+    COMMA           reduce using rule 33 (expression -> VARIABLE .)
+    CLOSE_P         reduce using rule 33 (expression -> VARIABLE .)
+    SB2             reduce using rule 33 (expression -> VARIABLE .)
 
 
 state 13
@@ -344,20 +320,8 @@ state 14
 
 state 15
 
-    (28) while_loop -> WHILE . OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
-    (29) while_loop -> WHILE . OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-    (30) while_loop -> WHILE . OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
-    (31) while_loop -> WHILE . OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (32) while_loop -> WHILE . OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2
-    (33) while_loop -> WHILE . OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (34) while_loop -> WHILE . OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
-    (35) while_loop -> WHILE . OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (36) while_loop -> WHILE . OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2
-    (37) while_loop -> WHILE . OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (38) while_loop -> WHILE . OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-    (39) while_loop -> WHILE . OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-    (40) while_loop -> WHILE . OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2
-    (41) while_loop -> WHILE . OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    (28) while_loop -> WHILE . OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
+    (29) while_loop -> WHILE . OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
 
     OPEN_P          shift and go to state 32
 
@@ -367,9 +331,9 @@ state 16
     (27) if_else -> IF . expression SB1 algorithm SB2
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
 
     OPERA           shift and go to state 9
     INT             shift and go to state 10
@@ -399,9 +363,9 @@ state 18
     (21) expression -> expression bool_operator . expression
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
 
     OPERA           shift and go to state 9
     INT             shift and go to state 10
@@ -562,20 +526,8 @@ state 31
 
 state 32
 
-    (28) while_loop -> WHILE OPEN_P . VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
-    (29) while_loop -> WHILE OPEN_P . VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-    (30) while_loop -> WHILE OPEN_P . VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
-    (31) while_loop -> WHILE OPEN_P . VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (32) while_loop -> WHILE OPEN_P . VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2
-    (33) while_loop -> WHILE OPEN_P . VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (34) while_loop -> WHILE OPEN_P . VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
-    (35) while_loop -> WHILE OPEN_P . VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (36) while_loop -> WHILE OPEN_P . VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2
-    (37) while_loop -> WHILE OPEN_P . VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (38) while_loop -> WHILE OPEN_P . VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-    (39) while_loop -> WHILE OPEN_P . VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-    (40) while_loop -> WHILE OPEN_P . VARIABLE EQUALS INT CLOSE_P SB1 expression SB2
-    (41) while_loop -> WHILE OPEN_P . VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    (28) while_loop -> WHILE OPEN_P . VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
+    (29) while_loop -> WHILE OPEN_P . VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
 
     VARIABLE        shift and go to state 45
 
@@ -693,9 +645,9 @@ state 42
     (22) var_assign -> LET VARIABLE EQUALS . expression
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
 
     OPERA           shift and go to state 9
     INT             shift and go to state 10
@@ -722,48 +674,42 @@ state 44
 
 state 45
 
-    (28) while_loop -> WHILE OPEN_P VARIABLE . DISTINCT INT CLOSE_P SB1 expression SB2
-    (29) while_loop -> WHILE OPEN_P VARIABLE . DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-    (30) while_loop -> WHILE OPEN_P VARIABLE . LESS_EQUAL INT CLOSE_P SB1 expression SB2
-    (31) while_loop -> WHILE OPEN_P VARIABLE . LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (32) while_loop -> WHILE OPEN_P VARIABLE . LESS_THAN INT CLOSE_P SB1 expression SB2
-    (33) while_loop -> WHILE OPEN_P VARIABLE . LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (34) while_loop -> WHILE OPEN_P VARIABLE . MORE_EQUAL INT CLOSE_P SB1 expression SB2
-    (35) while_loop -> WHILE OPEN_P VARIABLE . MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (36) while_loop -> WHILE OPEN_P VARIABLE . MORE_THAN INT CLOSE_P SB1 expression SB2
-    (37) while_loop -> WHILE OPEN_P VARIABLE . MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (38) while_loop -> WHILE OPEN_P VARIABLE . EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-    (39) while_loop -> WHILE OPEN_P VARIABLE . EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-    (40) while_loop -> WHILE OPEN_P VARIABLE . EQUALS INT CLOSE_P SB1 expression SB2
-    (41) while_loop -> WHILE OPEN_P VARIABLE . EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    (28) while_loop -> WHILE OPEN_P VARIABLE . bool_operator INT CLOSE_P SB1 expression SB2
+    (29) while_loop -> WHILE OPEN_P VARIABLE . bool_operator VARIABLE CLOSE_P SB1 expression SB2
+    (15) bool_operator -> . EQUALS_EQUALS
+    (16) bool_operator -> . DISTINCT
+    (17) bool_operator -> . LESS_EQUAL
+    (18) bool_operator -> . MORE_EQUAL
+    (19) bool_operator -> . MORE_THAN
+    (20) bool_operator -> . LESS_THAN
 
-    DISTINCT        shift and go to state 51
-    LESS_EQUAL      shift and go to state 52
-    LESS_THAN       shift and go to state 53
-    MORE_EQUAL      shift and go to state 54
-    MORE_THAN       shift and go to state 55
-    EQUALS_EQUALS   shift and go to state 56
-    EQUALS          shift and go to state 57
+    EQUALS_EQUALS   shift and go to state 19
+    DISTINCT        shift and go to state 20
+    LESS_EQUAL      shift and go to state 21
+    MORE_EQUAL      shift and go to state 22
+    MORE_THAN       shift and go to state 23
+    LESS_THAN       shift and go to state 24
 
+    bool_operator                  shift and go to state 51
 
 state 46
 
     (27) if_else -> IF expression SB1 . algorithm SB2
     (1) algorithm -> . algorithm algorithm_line
     (2) algorithm -> . empty
-    (42) empty -> .
+    (30) empty -> .
 
-    SB2             reduce using rule 42 (empty -> .)
-    OPERA           reduce using rule 42 (empty -> .)
-    INT             reduce using rule 42 (empty -> .)
-    BOOLEAN         reduce using rule 42 (empty -> .)
-    VARIABLE        reduce using rule 42 (empty -> .)
-    LET             reduce using rule 42 (empty -> .)
-    FOR             reduce using rule 42 (empty -> .)
-    WHILE           reduce using rule 42 (empty -> .)
-    IF              reduce using rule 42 (empty -> .)
+    SB2             reduce using rule 30 (empty -> .)
+    OPERA           reduce using rule 30 (empty -> .)
+    INT             reduce using rule 30 (empty -> .)
+    BOOLEAN         reduce using rule 30 (empty -> .)
+    VARIABLE        reduce using rule 30 (empty -> .)
+    LET             reduce using rule 30 (empty -> .)
+    FOR             reduce using rule 30 (empty -> .)
+    WHILE           reduce using rule 30 (empty -> .)
+    IF              reduce using rule 30 (empty -> .)
 
-    algorithm                      shift and go to state 58
+    algorithm                      shift and go to state 52
     empty                          shift and go to state 2
 
 state 47
@@ -771,16 +717,16 @@ state 47
     (14) expression -> OPERA OPEN_P operator COMMA . expression COMMA expression CLOSE_P
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
 
     OPERA           shift and go to state 9
     INT             shift and go to state 10
     BOOLEAN         shift and go to state 11
     VARIABLE        shift and go to state 12
 
-    expression                     shift and go to state 59
+    expression                     shift and go to state 53
 
 state 48
 
@@ -808,8 +754,8 @@ state 49
     (23) for_loop -> FOR INT IN INT . dDOT INT SB1 algorithm SB2
     (25) for_loop -> FOR INT IN INT . dDOT_E INT SB1 algorithm SB2
 
-    dDOT            shift and go to state 60
-    dDOT_E          shift and go to state 61
+    dDOT            shift and go to state 54
+    dDOT_E          shift and go to state 55
 
 
 state 50
@@ -817,74 +763,20 @@ state 50
     (24) for_loop -> FOR VARIABLE IN INT . dDOT INT SB1 algorithm SB2
     (26) for_loop -> FOR VARIABLE IN INT . dDOT_E INT SB1 algorithm SB2
 
-    dDOT            shift and go to state 62
-    dDOT_E          shift and go to state 63
+    dDOT            shift and go to state 56
+    dDOT_E          shift and go to state 57
 
 
 state 51
 
-    (28) while_loop -> WHILE OPEN_P VARIABLE DISTINCT . INT CLOSE_P SB1 expression SB2
-    (29) while_loop -> WHILE OPEN_P VARIABLE DISTINCT . VARIABLE CLOSE_P SB1 expression SB2
+    (28) while_loop -> WHILE OPEN_P VARIABLE bool_operator . INT CLOSE_P SB1 expression SB2
+    (29) while_loop -> WHILE OPEN_P VARIABLE bool_operator . VARIABLE CLOSE_P SB1 expression SB2
 
-    INT             shift and go to state 65
-    VARIABLE        shift and go to state 64
+    INT             shift and go to state 59
+    VARIABLE        shift and go to state 58
 
 
 state 52
-
-    (30) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL . INT CLOSE_P SB1 expression SB2
-    (31) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL . VARIABLE CLOSE_P SB1 expression SB2
-
-    INT             shift and go to state 67
-    VARIABLE        shift and go to state 66
-
-
-state 53
-
-    (32) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN . INT CLOSE_P SB1 expression SB2
-    (33) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN . VARIABLE CLOSE_P SB1 expression SB2
-
-    INT             shift and go to state 69
-    VARIABLE        shift and go to state 68
-
-
-state 54
-
-    (34) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL . INT CLOSE_P SB1 expression SB2
-    (35) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL . VARIABLE CLOSE_P SB1 expression SB2
-
-    INT             shift and go to state 71
-    VARIABLE        shift and go to state 70
-
-
-state 55
-
-    (36) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN . INT CLOSE_P SB1 expression SB2
-    (37) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN . VARIABLE CLOSE_P SB1 expression SB2
-
-    INT             shift and go to state 73
-    VARIABLE        shift and go to state 72
-
-
-state 56
-
-    (38) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS . INT CLOSE_P SB1 expression SB2
-    (39) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS . VARIABLE CLOSE_P SB1 expression SB2
-
-    INT             shift and go to state 75
-    VARIABLE        shift and go to state 74
-
-
-state 57
-
-    (40) while_loop -> WHILE OPEN_P VARIABLE EQUALS . INT CLOSE_P SB1 expression SB2
-    (41) while_loop -> WHILE OPEN_P VARIABLE EQUALS . VARIABLE CLOSE_P SB1 expression SB2
-
-    INT             shift and go to state 77
-    VARIABLE        shift and go to state 76
-
-
-state 58
 
     (27) if_else -> IF expression SB1 algorithm . SB2
     (1) algorithm -> algorithm . algorithm_line
@@ -895,31 +787,19 @@ state 58
     (7) algorithm_line -> . if_else
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
     (22) var_assign -> . LET VARIABLE EQUALS expression
     (23) for_loop -> . FOR INT IN INT dDOT INT SB1 algorithm SB2
     (24) for_loop -> . FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2
     (25) for_loop -> . FOR INT IN INT dDOT_E INT SB1 algorithm SB2
     (26) for_loop -> . FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2
-    (28) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
-    (29) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-    (30) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
-    (31) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (32) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2
-    (33) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (34) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
-    (35) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (36) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2
-    (37) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (38) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-    (39) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-    (40) while_loop -> . WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2
-    (41) while_loop -> . WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    (28) while_loop -> . WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
+    (29) while_loop -> . WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
     (27) if_else -> . IF expression SB1 algorithm SB2
 
-    SB2             shift and go to state 78
+    SB2             shift and go to state 60
     OPERA           shift and go to state 9
     INT             shift and go to state 10
     BOOLEAN         shift and go to state 11
@@ -936,7 +816,7 @@ state 58
     while_loop                     shift and go to state 7
     if_else                        shift and go to state 8
 
-state 59
+state 53
 
     (14) expression -> OPERA OPEN_P operator COMMA expression . COMMA expression CLOSE_P
     (21) expression -> expression . bool_operator expression
@@ -947,7 +827,7 @@ state 59
     (19) bool_operator -> . MORE_THAN
     (20) bool_operator -> . LESS_THAN
 
-    COMMA           shift and go to state 79
+    COMMA           shift and go to state 61
     EQUALS_EQUALS   shift and go to state 19
     DISTINCT        shift and go to state 20
     LESS_EQUAL      shift and go to state 21
@@ -957,133 +837,49 @@ state 59
 
     bool_operator                  shift and go to state 18
 
-state 60
+state 54
 
     (23) for_loop -> FOR INT IN INT dDOT . INT SB1 algorithm SB2
 
-    INT             shift and go to state 80
+    INT             shift and go to state 62
 
 
-state 61
+state 55
 
     (25) for_loop -> FOR INT IN INT dDOT_E . INT SB1 algorithm SB2
 
-    INT             shift and go to state 81
+    INT             shift and go to state 63
 
 
-state 62
+state 56
 
     (24) for_loop -> FOR VARIABLE IN INT dDOT . INT SB1 algorithm SB2
 
-    INT             shift and go to state 82
+    INT             shift and go to state 64
 
 
-state 63
+state 57
 
     (26) for_loop -> FOR VARIABLE IN INT dDOT_E . INT SB1 algorithm SB2
 
-    INT             shift and go to state 83
+    INT             shift and go to state 65
 
 
-state 64
+state 58
 
-    (29) while_loop -> WHILE OPEN_P VARIABLE DISTINCT VARIABLE . CLOSE_P SB1 expression SB2
+    (29) while_loop -> WHILE OPEN_P VARIABLE bool_operator VARIABLE . CLOSE_P SB1 expression SB2
 
-    CLOSE_P         shift and go to state 84
-
-
-state 65
-
-    (28) while_loop -> WHILE OPEN_P VARIABLE DISTINCT INT . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 85
+    CLOSE_P         shift and go to state 66
 
 
-state 66
+state 59
 
-    (31) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE . CLOSE_P SB1 expression SB2
+    (28) while_loop -> WHILE OPEN_P VARIABLE bool_operator INT . CLOSE_P SB1 expression SB2
 
-    CLOSE_P         shift and go to state 86
-
-
-state 67
-
-    (30) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL INT . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 87
+    CLOSE_P         shift and go to state 67
 
 
-state 68
-
-    (33) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN VARIABLE . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 88
-
-
-state 69
-
-    (32) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN INT . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 89
-
-
-state 70
-
-    (35) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 90
-
-
-state 71
-
-    (34) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL INT . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 91
-
-
-state 72
-
-    (37) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN VARIABLE . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 92
-
-
-state 73
-
-    (36) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN INT . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 93
-
-
-state 74
-
-    (39) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 94
-
-
-state 75
-
-    (38) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS INT . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 95
-
-
-state 76
-
-    (41) while_loop -> WHILE OPEN_P VARIABLE EQUALS VARIABLE . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 96
-
-
-state 77
-
-    (40) while_loop -> WHILE OPEN_P VARIABLE EQUALS INT . CLOSE_P SB1 expression SB2
-
-    CLOSE_P         shift and go to state 97
-
-
-state 78
+state 60
 
     (27) if_else -> IF expression SB1 algorithm SB2 .
 
@@ -1099,149 +895,65 @@ state 78
     SB2             reduce using rule 27 (if_else -> IF expression SB1 algorithm SB2 .)
 
 
-state 79
+state 61
 
     (14) expression -> OPERA OPEN_P operator COMMA expression COMMA . expression CLOSE_P
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
 
     OPERA           shift and go to state 9
     INT             shift and go to state 10
     BOOLEAN         shift and go to state 11
     VARIABLE        shift and go to state 12
 
-    expression                     shift and go to state 98
+    expression                     shift and go to state 68
 
-state 80
+state 62
 
     (23) for_loop -> FOR INT IN INT dDOT INT . SB1 algorithm SB2
 
-    SB1             shift and go to state 99
+    SB1             shift and go to state 69
 
 
-state 81
+state 63
 
     (25) for_loop -> FOR INT IN INT dDOT_E INT . SB1 algorithm SB2
 
-    SB1             shift and go to state 100
+    SB1             shift and go to state 70
 
 
-state 82
+state 64
 
     (24) for_loop -> FOR VARIABLE IN INT dDOT INT . SB1 algorithm SB2
 
-    SB1             shift and go to state 101
+    SB1             shift and go to state 71
 
 
-state 83
+state 65
 
     (26) for_loop -> FOR VARIABLE IN INT dDOT_E INT . SB1 algorithm SB2
 
-    SB1             shift and go to state 102
+    SB1             shift and go to state 72
 
 
-state 84
+state 66
 
-    (29) while_loop -> WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P . SB1 expression SB2
+    (29) while_loop -> WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P . SB1 expression SB2
 
-    SB1             shift and go to state 103
-
-
-state 85
-
-    (28) while_loop -> WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 104
+    SB1             shift and go to state 73
 
 
-state 86
+state 67
 
-    (31) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P . SB1 expression SB2
+    (28) while_loop -> WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P . SB1 expression SB2
 
-    SB1             shift and go to state 105
-
-
-state 87
-
-    (30) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 106
+    SB1             shift and go to state 74
 
 
-state 88
-
-    (33) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 107
-
-
-state 89
-
-    (32) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 108
-
-
-state 90
-
-    (35) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 109
-
-
-state 91
-
-    (34) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 110
-
-
-state 92
-
-    (37) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 111
-
-
-state 93
-
-    (36) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 112
-
-
-state 94
-
-    (39) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 113
-
-
-state 95
-
-    (38) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 114
-
-
-state 96
-
-    (41) while_loop -> WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 115
-
-
-state 97
-
-    (40) while_loop -> WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P . SB1 expression SB2
-
-    SB1             shift and go to state 116
-
-
-state 98
+state 68
 
     (14) expression -> OPERA OPEN_P operator COMMA expression COMMA expression . CLOSE_P
     (21) expression -> expression . bool_operator expression
@@ -1252,7 +964,7 @@ state 98
     (19) bool_operator -> . MORE_THAN
     (20) bool_operator -> . LESS_THAN
 
-    CLOSE_P         shift and go to state 117
+    CLOSE_P         shift and go to state 75
     EQUALS_EQUALS   shift and go to state 19
     DISTINCT        shift and go to state 20
     LESS_EQUAL      shift and go to state 21
@@ -1262,311 +974,119 @@ state 98
 
     bool_operator                  shift and go to state 18
 
-state 99
+state 69
 
     (23) for_loop -> FOR INT IN INT dDOT INT SB1 . algorithm SB2
     (1) algorithm -> . algorithm algorithm_line
     (2) algorithm -> . empty
-    (42) empty -> .
+    (30) empty -> .
 
-    SB2             reduce using rule 42 (empty -> .)
-    OPERA           reduce using rule 42 (empty -> .)
-    INT             reduce using rule 42 (empty -> .)
-    BOOLEAN         reduce using rule 42 (empty -> .)
-    VARIABLE        reduce using rule 42 (empty -> .)
-    LET             reduce using rule 42 (empty -> .)
-    FOR             reduce using rule 42 (empty -> .)
-    WHILE           reduce using rule 42 (empty -> .)
-    IF              reduce using rule 42 (empty -> .)
+    SB2             reduce using rule 30 (empty -> .)
+    OPERA           reduce using rule 30 (empty -> .)
+    INT             reduce using rule 30 (empty -> .)
+    BOOLEAN         reduce using rule 30 (empty -> .)
+    VARIABLE        reduce using rule 30 (empty -> .)
+    LET             reduce using rule 30 (empty -> .)
+    FOR             reduce using rule 30 (empty -> .)
+    WHILE           reduce using rule 30 (empty -> .)
+    IF              reduce using rule 30 (empty -> .)
 
-    algorithm                      shift and go to state 118
+    algorithm                      shift and go to state 76
     empty                          shift and go to state 2
 
-state 100
+state 70
 
     (25) for_loop -> FOR INT IN INT dDOT_E INT SB1 . algorithm SB2
     (1) algorithm -> . algorithm algorithm_line
     (2) algorithm -> . empty
-    (42) empty -> .
+    (30) empty -> .
 
-    SB2             reduce using rule 42 (empty -> .)
-    OPERA           reduce using rule 42 (empty -> .)
-    INT             reduce using rule 42 (empty -> .)
-    BOOLEAN         reduce using rule 42 (empty -> .)
-    VARIABLE        reduce using rule 42 (empty -> .)
-    LET             reduce using rule 42 (empty -> .)
-    FOR             reduce using rule 42 (empty -> .)
-    WHILE           reduce using rule 42 (empty -> .)
-    IF              reduce using rule 42 (empty -> .)
+    SB2             reduce using rule 30 (empty -> .)
+    OPERA           reduce using rule 30 (empty -> .)
+    INT             reduce using rule 30 (empty -> .)
+    BOOLEAN         reduce using rule 30 (empty -> .)
+    VARIABLE        reduce using rule 30 (empty -> .)
+    LET             reduce using rule 30 (empty -> .)
+    FOR             reduce using rule 30 (empty -> .)
+    WHILE           reduce using rule 30 (empty -> .)
+    IF              reduce using rule 30 (empty -> .)
 
-    algorithm                      shift and go to state 119
+    algorithm                      shift and go to state 77
     empty                          shift and go to state 2
 
-state 101
+state 71
 
     (24) for_loop -> FOR VARIABLE IN INT dDOT INT SB1 . algorithm SB2
     (1) algorithm -> . algorithm algorithm_line
     (2) algorithm -> . empty
-    (42) empty -> .
+    (30) empty -> .
 
-    SB2             reduce using rule 42 (empty -> .)
-    OPERA           reduce using rule 42 (empty -> .)
-    INT             reduce using rule 42 (empty -> .)
-    BOOLEAN         reduce using rule 42 (empty -> .)
-    VARIABLE        reduce using rule 42 (empty -> .)
-    LET             reduce using rule 42 (empty -> .)
-    FOR             reduce using rule 42 (empty -> .)
-    WHILE           reduce using rule 42 (empty -> .)
-    IF              reduce using rule 42 (empty -> .)
+    SB2             reduce using rule 30 (empty -> .)
+    OPERA           reduce using rule 30 (empty -> .)
+    INT             reduce using rule 30 (empty -> .)
+    BOOLEAN         reduce using rule 30 (empty -> .)
+    VARIABLE        reduce using rule 30 (empty -> .)
+    LET             reduce using rule 30 (empty -> .)
+    FOR             reduce using rule 30 (empty -> .)
+    WHILE           reduce using rule 30 (empty -> .)
+    IF              reduce using rule 30 (empty -> .)
 
-    algorithm                      shift and go to state 120
+    algorithm                      shift and go to state 78
     empty                          shift and go to state 2
 
-state 102
+state 72
 
     (26) for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 . algorithm SB2
     (1) algorithm -> . algorithm algorithm_line
     (2) algorithm -> . empty
-    (42) empty -> .
+    (30) empty -> .
 
-    SB2             reduce using rule 42 (empty -> .)
-    OPERA           reduce using rule 42 (empty -> .)
-    INT             reduce using rule 42 (empty -> .)
-    BOOLEAN         reduce using rule 42 (empty -> .)
-    VARIABLE        reduce using rule 42 (empty -> .)
-    LET             reduce using rule 42 (empty -> .)
-    FOR             reduce using rule 42 (empty -> .)
-    WHILE           reduce using rule 42 (empty -> .)
-    IF              reduce using rule 42 (empty -> .)
+    SB2             reduce using rule 30 (empty -> .)
+    OPERA           reduce using rule 30 (empty -> .)
+    INT             reduce using rule 30 (empty -> .)
+    BOOLEAN         reduce using rule 30 (empty -> .)
+    VARIABLE        reduce using rule 30 (empty -> .)
+    LET             reduce using rule 30 (empty -> .)
+    FOR             reduce using rule 30 (empty -> .)
+    WHILE           reduce using rule 30 (empty -> .)
+    IF              reduce using rule 30 (empty -> .)
 
-    algorithm                      shift and go to state 121
+    algorithm                      shift and go to state 79
     empty                          shift and go to state 2
 
-state 103
+state 73
 
-    (29) while_loop -> WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 . expression SB2
+    (29) while_loop -> WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 . expression SB2
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
 
     OPERA           shift and go to state 9
     INT             shift and go to state 10
     BOOLEAN         shift and go to state 11
     VARIABLE        shift and go to state 12
 
-    expression                     shift and go to state 122
+    expression                     shift and go to state 80
 
-state 104
+state 74
 
-    (28) while_loop -> WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 . expression SB2
+    (28) while_loop -> WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 . expression SB2
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
 
     OPERA           shift and go to state 9
     INT             shift and go to state 10
     BOOLEAN         shift and go to state 11
     VARIABLE        shift and go to state 12
 
-    expression                     shift and go to state 123
+    expression                     shift and go to state 81
 
-state 105
-
-    (31) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 124
-
-state 106
-
-    (30) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 125
-
-state 107
-
-    (33) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 126
-
-state 108
-
-    (32) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 127
-
-state 109
-
-    (35) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 128
-
-state 110
-
-    (34) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 129
-
-state 111
-
-    (37) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 130
-
-state 112
-
-    (36) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 131
-
-state 113
-
-    (39) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 132
-
-state 114
-
-    (38) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 133
-
-state 115
-
-    (41) while_loop -> WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 134
-
-state 116
-
-    (40) while_loop -> WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 . expression SB2
-    (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
-    (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
-
-    OPERA           shift and go to state 9
-    INT             shift and go to state 10
-    BOOLEAN         shift and go to state 11
-    VARIABLE        shift and go to state 12
-
-    expression                     shift and go to state 135
-
-state 117
+state 75
 
     (14) expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .
 
@@ -1583,7 +1103,7 @@ state 117
     SB2             reduce using rule 14 (expression -> OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P .)
 
 
-state 118
+state 76
 
     (23) for_loop -> FOR INT IN INT dDOT INT SB1 algorithm . SB2
     (1) algorithm -> algorithm . algorithm_line
@@ -1594,31 +1114,19 @@ state 118
     (7) algorithm_line -> . if_else
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
     (22) var_assign -> . LET VARIABLE EQUALS expression
     (23) for_loop -> . FOR INT IN INT dDOT INT SB1 algorithm SB2
     (24) for_loop -> . FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2
     (25) for_loop -> . FOR INT IN INT dDOT_E INT SB1 algorithm SB2
     (26) for_loop -> . FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2
-    (28) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
-    (29) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-    (30) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
-    (31) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (32) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2
-    (33) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (34) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
-    (35) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (36) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2
-    (37) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (38) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-    (39) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-    (40) while_loop -> . WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2
-    (41) while_loop -> . WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    (28) while_loop -> . WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
+    (29) while_loop -> . WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
     (27) if_else -> . IF expression SB1 algorithm SB2
 
-    SB2             shift and go to state 136
+    SB2             shift and go to state 82
     OPERA           shift and go to state 9
     INT             shift and go to state 10
     BOOLEAN         shift and go to state 11
@@ -1635,7 +1143,7 @@ state 118
     while_loop                     shift and go to state 7
     if_else                        shift and go to state 8
 
-state 119
+state 77
 
     (25) for_loop -> FOR INT IN INT dDOT_E INT SB1 algorithm . SB2
     (1) algorithm -> algorithm . algorithm_line
@@ -1646,31 +1154,19 @@ state 119
     (7) algorithm_line -> . if_else
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
     (22) var_assign -> . LET VARIABLE EQUALS expression
     (23) for_loop -> . FOR INT IN INT dDOT INT SB1 algorithm SB2
     (24) for_loop -> . FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2
     (25) for_loop -> . FOR INT IN INT dDOT_E INT SB1 algorithm SB2
     (26) for_loop -> . FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2
-    (28) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
-    (29) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-    (30) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
-    (31) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (32) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2
-    (33) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (34) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
-    (35) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (36) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2
-    (37) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (38) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-    (39) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-    (40) while_loop -> . WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2
-    (41) while_loop -> . WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    (28) while_loop -> . WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
+    (29) while_loop -> . WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
     (27) if_else -> . IF expression SB1 algorithm SB2
 
-    SB2             shift and go to state 137
+    SB2             shift and go to state 83
     OPERA           shift and go to state 9
     INT             shift and go to state 10
     BOOLEAN         shift and go to state 11
@@ -1687,7 +1183,7 @@ state 119
     while_loop                     shift and go to state 7
     if_else                        shift and go to state 8
 
-state 120
+state 78
 
     (24) for_loop -> FOR VARIABLE IN INT dDOT INT SB1 algorithm . SB2
     (1) algorithm -> algorithm . algorithm_line
@@ -1698,31 +1194,19 @@ state 120
     (7) algorithm_line -> . if_else
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
     (22) var_assign -> . LET VARIABLE EQUALS expression
     (23) for_loop -> . FOR INT IN INT dDOT INT SB1 algorithm SB2
     (24) for_loop -> . FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2
     (25) for_loop -> . FOR INT IN INT dDOT_E INT SB1 algorithm SB2
     (26) for_loop -> . FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2
-    (28) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
-    (29) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-    (30) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
-    (31) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (32) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2
-    (33) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (34) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
-    (35) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (36) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2
-    (37) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (38) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-    (39) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-    (40) while_loop -> . WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2
-    (41) while_loop -> . WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    (28) while_loop -> . WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
+    (29) while_loop -> . WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
     (27) if_else -> . IF expression SB1 algorithm SB2
 
-    SB2             shift and go to state 138
+    SB2             shift and go to state 84
     OPERA           shift and go to state 9
     INT             shift and go to state 10
     BOOLEAN         shift and go to state 11
@@ -1739,7 +1223,7 @@ state 120
     while_loop                     shift and go to state 7
     if_else                        shift and go to state 8
 
-state 121
+state 79
 
     (26) for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 algorithm . SB2
     (1) algorithm -> algorithm . algorithm_line
@@ -1750,31 +1234,19 @@ state 121
     (7) algorithm_line -> . if_else
     (14) expression -> . OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
     (21) expression -> . expression bool_operator expression
-    (43) expression -> . INT
-    (44) expression -> . BOOLEAN
-    (45) expression -> . VARIABLE
+    (31) expression -> . INT
+    (32) expression -> . BOOLEAN
+    (33) expression -> . VARIABLE
     (22) var_assign -> . LET VARIABLE EQUALS expression
     (23) for_loop -> . FOR INT IN INT dDOT INT SB1 algorithm SB2
     (24) for_loop -> . FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2
     (25) for_loop -> . FOR INT IN INT dDOT_E INT SB1 algorithm SB2
     (26) for_loop -> . FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2
-    (28) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
-    (29) while_loop -> . WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
-    (30) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
-    (31) while_loop -> . WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (32) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2
-    (33) while_loop -> . WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (34) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
-    (35) while_loop -> . WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2
-    (36) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2
-    (37) while_loop -> . WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
-    (38) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
-    (39) while_loop -> . WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2
-    (40) while_loop -> . WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2
-    (41) while_loop -> . WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    (28) while_loop -> . WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
+    (29) while_loop -> . WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
     (27) if_else -> . IF expression SB1 algorithm SB2
 
-    SB2             shift and go to state 139
+    SB2             shift and go to state 85
     OPERA           shift and go to state 9
     INT             shift and go to state 10
     BOOLEAN         shift and go to state 11
@@ -1791,9 +1263,9 @@ state 121
     while_loop                     shift and go to state 7
     if_else                        shift and go to state 8
 
-state 122
+state 80
 
-    (29) while_loop -> WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression . SB2
+    (29) while_loop -> WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression . SB2
     (21) expression -> expression . bool_operator expression
     (15) bool_operator -> . EQUALS_EQUALS
     (16) bool_operator -> . DISTINCT
@@ -1802,7 +1274,7 @@ state 122
     (19) bool_operator -> . MORE_THAN
     (20) bool_operator -> . LESS_THAN
 
-    SB2             shift and go to state 140
+    SB2             shift and go to state 86
     EQUALS_EQUALS   shift and go to state 19
     DISTINCT        shift and go to state 20
     LESS_EQUAL      shift and go to state 21
@@ -1812,9 +1284,9 @@ state 122
 
     bool_operator                  shift and go to state 18
 
-state 123
+state 81
 
-    (28) while_loop -> WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression . SB2
+    (28) while_loop -> WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression . SB2
     (21) expression -> expression . bool_operator expression
     (15) bool_operator -> . EQUALS_EQUALS
     (16) bool_operator -> . DISTINCT
@@ -1823,7 +1295,7 @@ state 123
     (19) bool_operator -> . MORE_THAN
     (20) bool_operator -> . LESS_THAN
 
-    SB2             shift and go to state 141
+    SB2             shift and go to state 87
     EQUALS_EQUALS   shift and go to state 19
     DISTINCT        shift and go to state 20
     LESS_EQUAL      shift and go to state 21
@@ -1833,382 +1305,46 @@ state 123
 
     bool_operator                  shift and go to state 18
 
-state 124
-
-    (31) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 142
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 125
-
-    (30) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 143
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 126
-
-    (33) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 144
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 127
-
-    (32) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 145
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 128
-
-    (35) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 146
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 129
-
-    (34) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 147
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 130
-
-    (37) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 148
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 131
-
-    (36) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 149
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 132
-
-    (39) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 150
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 133
-
-    (38) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 151
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 134
-
-    (41) while_loop -> WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 152
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 135
-
-    (40) while_loop -> WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression . SB2
-    (21) expression -> expression . bool_operator expression
-    (15) bool_operator -> . EQUALS_EQUALS
-    (16) bool_operator -> . DISTINCT
-    (17) bool_operator -> . LESS_EQUAL
-    (18) bool_operator -> . MORE_EQUAL
-    (19) bool_operator -> . MORE_THAN
-    (20) bool_operator -> . LESS_THAN
-
-    SB2             shift and go to state 153
-    EQUALS_EQUALS   shift and go to state 19
-    DISTINCT        shift and go to state 20
-    LESS_EQUAL      shift and go to state 21
-    MORE_EQUAL      shift and go to state 22
-    MORE_THAN       shift and go to state 23
-    LESS_THAN       shift and go to state 24
-
-    bool_operator                  shift and go to state 18
-
-state 136
+state 82
 
     (23) for_loop -> FOR INT IN INT dDOT INT SB1 algorithm SB2 .
 
     PyC             reduce using rule 23 (for_loop -> FOR INT IN INT dDOT INT SB1 algorithm SB2 .)
 
 
-state 137
+state 83
 
     (25) for_loop -> FOR INT IN INT dDOT_E INT SB1 algorithm SB2 .
 
     PyC             reduce using rule 25 (for_loop -> FOR INT IN INT dDOT_E INT SB1 algorithm SB2 .)
 
 
-state 138
+state 84
 
     (24) for_loop -> FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2 .
 
     PyC             reduce using rule 24 (for_loop -> FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2 .)
 
 
-state 139
+state 85
 
     (26) for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2 .
 
     PyC             reduce using rule 26 (for_loop -> FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2 .)
 
 
-state 140
+state 86
 
-    (29) while_loop -> WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2 .
+    (29) while_loop -> WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2 .
 
-    PyC             reduce using rule 29 (while_loop -> WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2 .)
-
-
-state 141
-
-    (28) while_loop -> WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 28 (while_loop -> WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2 .)
+    PyC             reduce using rule 29 (while_loop -> WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2 .)
 
 
-state 142
+state 87
 
-    (31) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2 .
+    (28) while_loop -> WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2 .
 
-    PyC             reduce using rule 31 (while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL VARIABLE CLOSE_P SB1 expression SB2 .)
-
-
-state 143
-
-    (30) while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 30 (while_loop -> WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2 .)
-
-
-state 144
-
-    (33) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 33 (while_loop -> WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2 .)
-
-
-state 145
-
-    (32) while_loop -> WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 32 (while_loop -> WHILE OPEN_P VARIABLE LESS_THAN INT CLOSE_P SB1 expression SB2 .)
-
-
-state 146
-
-    (35) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 35 (while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL VARIABLE CLOSE_P SB1 expression SB2 .)
-
-
-state 147
-
-    (34) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 34 (while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2 .)
-
-
-state 148
-
-    (37) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 37 (while_loop -> WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2 .)
-
-
-state 149
-
-    (36) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 36 (while_loop -> WHILE OPEN_P VARIABLE MORE_THAN INT CLOSE_P SB1 expression SB2 .)
-
-
-state 150
-
-    (39) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 39 (while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE CLOSE_P SB1 expression SB2 .)
-
-
-state 151
-
-    (38) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 38 (while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2 .)
-
-
-state 152
-
-    (41) while_loop -> WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 41 (while_loop -> WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2 .)
-
-
-state 153
-
-    (40) while_loop -> WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2 .
-
-    PyC             reduce using rule 40 (while_loop -> WHILE OPEN_P VARIABLE EQUALS INT CLOSE_P SB1 expression SB2 .)
+    PyC             reduce using rule 28 (while_loop -> WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2 .)
 
 WARNING: 
 WARNING: Conflicts:

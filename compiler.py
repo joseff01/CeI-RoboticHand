@@ -223,7 +223,7 @@ def p_while_loop(p):
     while_loop : WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
                | WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
     '''
-    p[0] = ('while_loop', p[3])
+    p[0] = ('while_loop', p[3], p[5], p[4])
 
 def p_empty(p):
     '''
@@ -291,10 +291,10 @@ def run(p):
             return run(p[1]) < run(p[2])
 
         elif p[0] == '=':
-            if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(run(p[2]), str) is True:
+            if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(run(p[2]), bool) is True:
                 print('Tipo incompatible')
 
-            elif len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], str) is True and isinstance(run(p[2]), int) is True:
+            elif len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], bool) is True and isinstance(run(p[2]), int) is True:
                 print('Tipo incompatible')
 
             else:
@@ -305,7 +305,7 @@ def run(p):
             return variables[p[1]]
 
         elif p[0] == 'for_loop':
-            if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], str) is True:
+            if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], bool) is True:
                 print('No puede usar variables booleans en bucles for')
 
             elif p[2] >= p[3]:
