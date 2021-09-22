@@ -116,24 +116,22 @@ class EventText(tk.Text):
         self.tk.call("rename", self._w, self._orig)
         self.tk.createcommand(self._w, self._proxy)
 
-    def _proxy(self, *args):
-        # let the actual widget perform the requested action
-        cmd = (self._orig,) + args
+    def _proxy(self, command, *args):
+        # avoid error when copying
+        if command == 'get' and (args[0] == 'sel.first' and args[1] == 'sel.last') and not self.tag_ranges(
+            'sel'): return
+
+        # avoid error when deleting
+        if command == 'delete' and (args[0] == 'sel.first' and args[1] == 'sel.last') and not self.tag_ranges(
+            'sel'): return
+
+        cmd = (self._orig, command) + args
         result = self.tk.call(cmd)
 
-        # generate an event if something was added or deleted,
-        # or the cursor position changed
-        if (args[0] in ("insert", "replace", "delete") or 
-            args[0:3] == ("mark", "set", "insert") or
-            args[0:2] == ("xview", "moveto") or
-            args[0:2] == ("xview", "scroll") or
-            args[0:2] == ("yview", "moveto") or
-            args[0:2] == ("yview", "scroll")
-        ):
-            self.event_generate("<<Change>>", when="tail")
+        if command in ('insert', 'delete', 'replace'):
+            self.event_generate('<<TextModified>>')
 
-        # return what the actual widget returned
-        return result        
+        return result
 
 class GUI(ttk.Frame):
     """Main GUI class"""
