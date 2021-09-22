@@ -10,6 +10,7 @@ tokens = [
     'EXP',
     'BOOLEAN',
     'FOR',
+    'WHILE',
     'IN',
     'VARIABLE',
     'PLUS',
@@ -92,6 +93,10 @@ def t_SB2(t):
     t.type = 'SB2'
     return t
 
+def t_WHILE(t):
+    r'while'
+    t.type = 'WHILE'
+    return t
 
 def t_FOR(t):
     r'for'
@@ -134,13 +139,17 @@ def p_lines(p):
     algorithm : algorithm algorithm_line
             | empty
     '''
+    p[0] = p[1]
+
 
 def p_first_section(p):
     '''
     algorithm_line : expression PyC
                     | var_assign PyC
                     | for_loop PyC
+                    | while_loop PyC
     '''
+    p[0] = p[1]
     print(run(p[1]))
 
 def p_operator(p):
@@ -171,13 +180,26 @@ def p_var_assign(p):
 
 def p_for_loop(p):
     '''
-    for_loop : FOR INT IN INT dDOT INT SB1 expression SB2
-              | FOR VARIABLE IN INT dDOT INT SB1 expression SB2
-              | FOR INT IN INT dDOT_E INT SB1 expression SB2
-              | FOR VARIABLE IN INT dDOT_E INT SB1 expression SB2
+    for_loop : FOR INT IN INT dDOT INT SB1 algorithm SB2
+              | FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2
+              | FOR INT IN INT dDOT_E INT SB1 algorithm SB2
+              | FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2
     '''
 
-    p[0] = ('loop', p[2], p[4], p[6], p[8], p[5])
+    p[0] = ('for_loop', p[2], p[4], p[6], p[8], p[5])
+
+def p_while_loop(p):
+    '''
+    while_loop : WHILE OPEN_P VARIABLE DISTINCT INT CLOSE_P SB1 expression SB2
+               | WHILE OPEN_P VARIABLE DISTINCT VARIABLE CLOSE_P SB1 expression SB2
+               | WHILE OPEN_P VARIABLE LESS_EQUAL INT CLOSE_P SB1 expression SB2
+               | WHILE OPEN_P VARIABLE LESS_THAN VARIABLE CLOSE_P SB1 expression SB2
+               | WHILE OPEN_P VARIABLE MORE_EQUAL INT CLOSE_P SB1 expression SB2
+               | WHILE OPEN_P VARIABLE MORE_THAN VARIABLE CLOSE_P SB1 expression SB2
+               | WHILE OPEN_P VARIABLE EQUALS_EQUALS INT CLOSE_P SB1 expression SB2
+               | WHILE OPEN_P VARIABLE EQUALS VARIABLE CLOSE_P SB1 expression SB2
+    '''
+    p[0] = ('while_loop', p[3])
 
 def p_empty(p):
     '''
@@ -237,12 +259,12 @@ def run(p):
         elif p[0] == 'var':
             return variables[p[1]]
 
-        elif p[0] == 'loop':
+        elif p[0] == 'for_loop':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], str) is True:
                 print('No puede usar variables booleans en bucles for')
 
             elif p[2] >= p[3]:
-                print('ingrese un rango valido')
+                print('Ingrese un rango valido')
 
             elif len(variables) > 0 and variables.get(p[1]) is not None and (variables[p[1]] > p[3] or variables[p[1]] < p[4]):
                 print('La condicion se sale del rango del For')
@@ -251,35 +273,37 @@ def run(p):
                 print('La condicion se sale del rango del For')
 
             else:
-
                 if p[5] == '..' and isinstance(p[1], str) is True and variables.get(p[1]) is None:
                     print('Variable no definida')
                 elif p[5] == '..' and isinstance(p[1], str) is True and variables.get(p[1]) is not None:
                     for variables[run(p[1])] in range(p[2], p[3]-1):
-                        print('este mensaje debe repetirse')
+                        print(run(p[4]))
                     return p
                 elif p[5] == '..' and isinstance(p[1], int) is True:
                     pointer = int(p[1])
                     for pointer in range(p[2], p[3]-1):
-                        print('este mensaje debe repetirse')
+                        print(run(p[4]))
                     return p
 
                 elif p[5] == '..=' and isinstance(p[1], str) is True and variables.get(p[1]) is None:
                     print('Variable no definida')
                 elif p[5] == '..=' and isinstance(p[1], str) is True and variables.get(p[1]) is not None:
                     for variables[p[1]] in range(p[2], p[3]):
-                        print('este mensaje debe repetirse')
+                        print(run(p[4]))
                     return p
                 elif p[5] == '..=' and isinstance(p[1], int) is True:
                     pointer = int(p[1])
                     for pointer in range(p[2], p[3]):
-                        print('este mensaje debe repetirse')
+                        print(run(p[4]))
                     return p
                 
                 else:
                     return p
+        elif p[0] == 'while_loop':
+            print('detected')
     else:
         return p
+
 
 def clearAll():
     global variables
@@ -292,4 +316,3 @@ def compile(text):
     print(text)
     parser.parse(text)
     clearAll()
-
