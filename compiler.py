@@ -2,18 +2,22 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 
+reserved = {
+    'let'	: 'LET',
+    'while'	: 'WHILE',
+    'for'	: 'FOR',
+    'if'	: 'IF',
+    'else'	: 'ELSE',
+    'in'	: 'IN',
+    'OPERA'	: 'OPERA',
+    'true'	: 'BOOLEAN',
+    'false'	: 'BOOLEAN'
+}
+            
 """Define los tokens validos para el lexer"""
 tokens = [
     'INT',
-    'LET',
-    'OPERA',
     'EXP',
-    'BOOLEAN',
-    'FOR',
-    'IF',
-    'ELSE',
-    'WHILE',
-    'IN',
     'VARIABLE',
     'PLUS',
     'MINUS',
@@ -36,7 +40,7 @@ tokens = [
     'PyC',
     'dDOT_E',
     'dDOT'
-]
+] + list(set(reserved.values())) # first turn into a set to remove duplicate BOOLEAN values
 """Le dice a lex como se ven los tokens definidos anteriormente"""
 
 t_PLUS = r'\+'
@@ -74,15 +78,6 @@ def t_INT(t):
     t.value = int(t.value)
     return t
 
-def t_BOOLEAN(t):
-    r'true | false'
-    t.type = 'BOOLEAN'
-    if t.value == 'true':
-        t.value = True
-    elif t.value == 'false':
-        t.value = False
-    return t
-
 def t_SB1(t):
     r'\{'
     t.type = 'SB1'
@@ -93,44 +88,16 @@ def t_SB2(t):
     t.type = 'SB2'
     return t
 
-def t_WHILE(t):
-    r'while'
-    t.type = 'WHILE'
-    return t
-
-def t_FOR(t):
-    r'for'
-    t.type = 'FOR'
-    return t
-
-def t_IF(t):
-    r'if'
-    t.type = 'IF'
-    return t
-
-def t_ELSE(t):
-    r'else'
-    t.type = 'else'
-    return t
-
-def t_IN(t):
-    r'in'
-    t.type = 'IN'
-    return t
-
-def t_OPERA(t):
-    r'OPERA'
-    t.type = 'OPERA'
-    return t
-
-def t_LET(t):
-    r'let'
-    t.type = 'LET'
-    return t
-
-def t_VARIABLE(t):
+def t_ID(t):
     r'[a-zA-Z#_?][a-zA-Z0-9#_?]{2,14}'
-    t.type = 'VARIABLE'
+    t.type = reserved.get(t.value,'VARIABLE')    # Check for reserved words
+    if t.value == 'true':
+        t.value = True
+    elif t.value == 'false':
+        t.value = False
+    print("Lexer info")
+    print(t.value)
+    print(t.type)
     return t
 
 def t_error(t):
