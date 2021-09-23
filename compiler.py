@@ -141,23 +141,25 @@ lexer = lex.lex()
 
 """Definicion de funciones del parser"""
 
-def p_lines(p):
+def p_algorithm(p):
     '''
     algorithm : algorithm algorithm_line
             | empty
     '''
-    p[0] = p[1]
+    print("algorithm processing...")
+    if len(p) == 3:
+        p[0] = p[2]
+        print(run(p[0]))
 
-def p_first_section(p):
+def p_algorithm_line(p):
     '''
-    algorithm_line : expression PyC
+    algorithm_line : if_else
+                    | expression PyC
                     | var_assign PyC
                     | for_loop PyC
                     | while_loop PyC
-                    | if_else
     '''
     p[0] = p[1]
-    print(run(p[1]))
 
 def p_operator(p):
     '''
@@ -214,9 +216,29 @@ def p_for_loop(p):
 
 def p_if_else(p):
     '''
-        if_else : IF expression SB1 algorithm SB2
+        if_else : IF expression SB1 statement SB2
     '''
+    print("if-else processing...")
     p[0] = ('if_else', p[2], p[4])
+
+def p_statement(p):
+    '''
+    statement : statement statement_line
+            | empty
+    '''
+    print("statement processing...")
+    if len(p) == 3:
+        p[0] = ('statement',p[1],p[2])
+
+def p_statement_line(p):
+    '''
+    statement_line : if_else
+                    | expression PyC
+                    | var_assign PyC
+                    | for_loop PyC
+                    | while_loop PyC
+    '''
+    p[0] = p[1]
 
 def p_while_loop(p):
     '''
@@ -316,6 +338,10 @@ def run(p):
         elif p[0] == 'var':
             return variables[p[1]]
 
+        elif p[0] == 'statement':
+            run(p[1])
+            run(p[2])
+
         elif p[0] == 'for_loop':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], str) is True:
                 print('No puede usar variables booleans en bucles for')
@@ -358,7 +384,9 @@ def run(p):
                     return p
 
         elif p[0] == 'if_else':
+            print(p[2])
             if run(p[1]):
+                print(p[2])
                 run(p[2])
 
         elif p[0] == 'while_loop':
@@ -371,10 +399,10 @@ def clearAll():
     global variables
     variables = {}
     lexer.lineno = 1
+    print("\n")
 
 
 def compile(text):
-    print(lexer.lineno)
-    print(text)
     parser.parse(text)
+    print(variables)
     clearAll()
