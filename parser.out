@@ -774,6 +774,7 @@ state 46
     EQUALS_EQUALS   shift and go to state 58
     EQUALS          shift and go to state 59
 
+    bool_operator                  shift and go to state 51
 
 state 47
 
@@ -951,7 +952,7 @@ state 58
     VARIABLE        shift and go to state 82
 
 
-state 59
+state 53
 
     (47) while_loop -> WHILE OPEN_P VARIABLE EQUALS . INT CLOSE_P SB1 expression SB2
     (48) while_loop -> WHILE OPEN_P VARIABLE EQUALS . VARIABLE CLOSE_P SB1 expression SB2
@@ -997,7 +998,7 @@ state 61
     SB2             reduce using rule 27 (if_else -> IF expression SB1 statement SB2 .)
 
 
-state 62
+state 56
 
     (28) statement -> statement statement_line .
 
@@ -1012,7 +1013,7 @@ state 62
     WHILE           reduce using rule 28 (statement -> statement statement_line .)
 
 
-state 63
+state 57
 
     (30) statement_line -> if_else .
 
@@ -1027,21 +1028,21 @@ state 63
     WHILE           reduce using rule 30 (statement_line -> if_else .)
 
 
-state 64
+state 58
 
     (32) statement_line -> var_assign . PyC
 
     PyC             shift and go to state 87
 
 
-state 65
+state 59
 
     (33) statement_line -> for_loop . PyC
 
     PyC             shift and go to state 88
 
 
-state 66
+state 60
 
     (34) statement_line -> while_loop . PyC
 
@@ -1146,56 +1147,56 @@ state 78
     CLOSE_P         shift and go to state 101
 
 
-state 79
+state 61
 
     (41) while_loop -> WHILE OPEN_P VARIABLE MORE_EQUAL INT . CLOSE_P SB1 expression SB2
 
     CLOSE_P         shift and go to state 102
 
 
-state 80
+state 62
 
     (44) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN VARIABLE . CLOSE_P SB1 expression SB2
 
     CLOSE_P         shift and go to state 103
 
 
-state 81
+state 63
 
     (43) while_loop -> WHILE OPEN_P VARIABLE MORE_THAN INT . CLOSE_P SB1 expression SB2
 
     CLOSE_P         shift and go to state 104
 
 
-state 82
+state 64
 
     (46) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS VARIABLE . CLOSE_P SB1 expression SB2
 
     CLOSE_P         shift and go to state 105
 
 
-state 83
+state 65
 
     (45) while_loop -> WHILE OPEN_P VARIABLE EQUALS_EQUALS INT . CLOSE_P SB1 expression SB2
 
     CLOSE_P         shift and go to state 106
 
 
-state 84
+state 66
 
     (48) while_loop -> WHILE OPEN_P VARIABLE EQUALS VARIABLE . CLOSE_P SB1 expression SB2
 
     CLOSE_P         shift and go to state 107
 
 
-state 85
+state 67
 
     (47) while_loop -> WHILE OPEN_P VARIABLE EQUALS INT . CLOSE_P SB1 expression SB2
 
     CLOSE_P         shift and go to state 108
 
 
-state 86
+state 68
 
     (31) statement_line -> expression PyC .
 
