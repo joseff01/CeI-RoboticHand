@@ -92,19 +92,21 @@ def t_SB2(t):
     return t
 
 def t_ID(t):
-    r'[a-zA-Z#_?][a-zA-Z0-9#_?]{2,14}'
+    r'[a-zA-Z#_?][a-zA-Z0-9#_?]{0,14}'
     t.type = reserved.get(t.value,'VARIABLE')    # Check for reserved words
     if t.value == 'true':
         t.value = True
     elif t.value == 'false':
         t.value = False
+    if(t.type == 'VARIABLE' and len(t.value) < 3):
+        return t_error(t)
     #print("Lexer info")
     #print(t.value)
     #print(t.type)
     return t
 
 def t_error(t):
-    print("illegal character detected")
+    print("illegal character detected: '" + t.value + "'")
     t.lexer.skip(1)
 
 lexer = lex.lex()
