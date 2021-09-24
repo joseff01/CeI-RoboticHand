@@ -291,26 +291,46 @@ def run(p):
             return variables[p[1]]
 
         elif p[0] == '==':
-            if variables.get(p[1]) is None or variables.get(p[2]) is None:
-                print('Error: Variable no declarada')
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) == run(p[2])
 
         elif p[0] == '<>':
-            return run(p[1]) != run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) != run(p[2])
 
         elif p[0] == '<=':
-            return run(p[1]) <= run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) <= run(p[2])
 
         elif p[0] == '>=':
-            return run(p[1]) >= run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) >= run(p[2])
 
         elif p[0] == '>':
-            return run(p[1]) > run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) > run(p[2])
 
         elif p[0] == '<':
-            return run(p[1]) < run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) < run(p[2])
 
         elif p[0] == '=':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(run(p[2]), bool) is True:
