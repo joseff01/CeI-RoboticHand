@@ -438,15 +438,22 @@ def run(p):
             elif p[3] == '>':
                 return p
         elif p[0] == 'function_def':
+            if (p[1],length_variables(p[2])) in functions_methods:
+                print("ERROR: Function", p[1], "already exist with the same name and number of inputs")
+                return
             functions_methods[(p[1],length_variables(p[2]))] = (p[2],p[3],p[4])
             print("Functions/Methods:")
             print(functions_methods, '\n')
         elif p[0] == 'method_def':
+            if (p[1],length_variables(p[2])) in functions_methods:
+                print("ERROR: Method", p[1], "already exist with the same name and number of inputs")
+                return
             functions_methods[(p[1], length_variables(p[2]))] = (p[2], p[3])
             print("Functions/Methods:")
             print(functions_methods, '\n')
     else:
         return p
+
 
 def run_main():
     if ('main',0) in functions_methods:
@@ -455,13 +462,13 @@ def run_main():
     else:
         print('ERROR: main not found')
 
+
 def clearAll():
     global variables, functions_methods
     variables = {}
     functions_methods = {}
     lexer.lineno = 1
     print("\n")
-
 
 def compile(text):
     parser.parse(text)
