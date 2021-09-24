@@ -3,15 +3,19 @@ import ply.yacc as yacc
 import sys
 
 reserved = {
-    'let'	: 'LET',
-    'while'	: 'WHILE',
-    'for'	: 'FOR',
-    'if'	: 'IF',
-    'else'	: 'ELSE',
-    'in'	: 'IN',
-    'OPERA'	: 'OPERA',
-    'true'	: 'BOOLEAN',
-    'false'	: 'BOOLEAN'
+    'let'	 : 'LET',
+    'while'	 : 'WHILE',
+    'for'	 : 'FOR',
+    'if'	 : 'IF',
+    'else'	 : 'ELSE',
+    'in'	 : 'IN',
+    'OPERA'	 : 'OPERA',
+    'true'	 : 'BOOLEAN',
+    'false'	 : 'BOOLEAN',
+    'boolean': 'BOOLEAN_TXT',
+    'integer': 'INTEGER_TXT',
+    'fn'     : 'FUNCTION',
+    'return' : 'RETURN',
 }
             
 """Define los tokens validos para el lexer"""
@@ -39,11 +43,13 @@ tokens = [
     'COMMENT',
     'PyC',
     'dDOT_E',
-    'dDOT'
+    'dDOT',
+    'ARROW'
 ] + list(set(reserved.values())) # first turn into a set to remove duplicate BOOLEAN values
 """Le dice a lex como se ven los tokens definidos anteriormente"""
 
 t_PLUS = r'\+'
+t_ARROW = r'\->'
 t_MINUS = r'\-'
 t_INT_DIV = r'\//'
 t_DIVIDE = r'\/'
@@ -115,23 +121,53 @@ lexer = lex.lex()
 
 def p_algorithm(p):
     '''
-    algorithm : algorithm algorithm_line
+    algorithm : algorithm algorithm_function
             | empty
     '''
     print("algorithm processing...")
     if len(p) == 3:
         p[0] = p[2]
+        print(p[0])
         print(run(p[0]))
 
-def p_algorithm_line(p):
+def p_algorithm_function(p):
     '''
-    algorithm_line : if_else
-                    | expression PyC
-                    | var_assign PyC
-                    | for_loop PyC
-                    | while_loop PyC
+    algorithm_function : method_def
+                        | function_def
     '''
     p[0] = p[1]
+
+def p_var_type(p):
+    '''
+    var_type : BOOLEAN_TXT
+            | INTEGER_TXT
+    '''
+    print("function hoo haa")
+    p[0] = p[1]
+
+def p_function_def(p):
+    '''
+    function_def : FUNCTION VARIABLE OPEN_P parameters CLOSE_P ARROW var_type SB1 statement SB2
+    '''
+    p[0] = ('function_def', p[2], p[4], p[7], p[9])
+
+def p_method_def(p):
+    '''
+    method_def : FUNCTION VARIABLE OPEN_P parameters CLOSE_P SB1 statement SB2
+    '''
+    p[0] = ('method_def', p[2], p[4], p[7])
+
+def p_parameters(p):
+    '''
+        parameters : parameters COMMA parameters
+                    | VARIABLE
+                    | empty
+    '''
+    print("parameters hoo haa")
+    if len(p) == 4:
+        p[0] = (p[1],p[3])
+    else:
+        p[0] = p[1]
 
 def p_operator(p):
     '''
@@ -272,6 +308,16 @@ parser = yacc.yacc()
 
 variables = {}
 
+functions_methods = {}
+
+
+def length_variables(variable_list):
+    if isinstance(variable_list,tuple):
+        return 1 + length_variables(variable_list[1])
+    elif isinstance(variable_list,str):
+        return 1
+    elif variable_list is None:
+        return 0
 
 def run(p):
     global variables
@@ -366,7 +412,7 @@ def run(p):
                     for pointer in range(p[2], p[3]):
                         print(run(p[4]))
                     return p
-                
+
                 else:
                     return p
 
@@ -391,13 +437,22 @@ def run(p):
                 return p
             elif p[3] == '>':
                 return p
+        elif p[0] == 'function_def':
+            functions_methods[(p[1],length_variables(p[2]))] = (p[2],p[3],p[4])
+            print("Functions/Methods:")
+            print(functions_methods, '\n')
+        elif p[0] == 'method_def':
+            functions_methods[(p[1], length_variables(p[2]))] = (p[2], p[3])
+            print("Functions/Methods:")
+            print(functions_methods, '\n')
     else:
         return p
 
 
 def clearAll():
-    global variables
+    global variables, functions_methods
     variables = {}
+    functions_methods = {}
     lexer.lineno = 1
     print("\n")
 
