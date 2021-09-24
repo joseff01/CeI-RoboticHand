@@ -36,7 +36,7 @@ tokens = [
     'MORE_EQUAL',
     'MORE_THAN',
     'LESS_THAN',
-    'COMMENTARY',
+    'COMMENT',
     'PyC',
     'dDOT_E',
     'dDOT'
@@ -59,7 +59,6 @@ t_LESS_EQUAL = r'\<='
 t_LESS_THAN = r'\<'
 t_MORE_EQUAL = r'\>='
 t_MORE_THAN = r'\>'
-t_COMMENTARY = r'\@'
 t_PyC = r'\;'
 t_dDOT_E = r'\.\.\='
 t_dDOT = r'\.\.'
@@ -67,6 +66,10 @@ t_dDOT = r'\.\.'
 t_ignore = r' '
 
 """Definicion de algunos tokens como funciones(nota: definir palabras especificas antes de la definicion de variable)"""
+
+def t_COMMENT(t):
+    r'\@.*'
+    pass
 
 def t_newline(t):
     r'\n+'
@@ -95,9 +98,9 @@ def t_ID(t):
         t.value = True
     elif t.value == 'false':
         t.value = False
-    print("Lexer info")
-    print(t.value)
-    print(t.type)
+    #print("Lexer info")
+    #print(t.value)
+    #print(t.type)
     return t
 
 def t_error(t):
@@ -288,7 +291,8 @@ def run(p):
 
             else:
                 variables[p[1]] = run(p[2])
-                print(variables)
+                print("Variables:")
+                print(variables, '\n')
 
         elif p[0] == 'var':
             return variables[p[1]]
