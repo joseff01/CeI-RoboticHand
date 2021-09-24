@@ -35,30 +35,37 @@ class Menubar(ttk.Frame):
             file.write( self.GUI.text_box.get('1.0', "end-1c") ) #end-1c means end minus last character, so it excludes the newline at the end
             self.file_name = file.name
             file.close()
+            return True
 
     def save_file(self):
         if(self.file_name):
             with open(self.file_name, 'w') as file:
                 file.write( self.GUI.text_box.get('1.0', "end-1c") )
+                return True
         else:
-            self.save_file_as()
+            if(self.save_file_as()): return True
+        return False
 
     def compile(self):
         '''Solo compila el programa'''
         # First it saves the file
-        self.save_file()
+        if(not self.save_file()):
+            print("No se pudo guardar el archivo, por lo tanto no se compiló")
+            return False
         # Then it obtains the text from the saved file
         with open(self.file_name, 'r') as file:
             codeString = file.read()
         # Then do stuff with the string
         print(codeString)
-        pass
+        return True
 
     def compileRun(self):
         '''Compila y corre el programa'''
-        compiler.compile(self.GUI.text_box.get("1.0",'end-1c'))
+        # Primero compila el programa
+        #self.compile()
 
-        pass
+        # Luego lo corre
+        compiler.compile(self.GUI.text_box.get("1.0",'end-1c'))
 
     # Manejo de estado para ctrl+s
     def root_key_pressed(self, event):
