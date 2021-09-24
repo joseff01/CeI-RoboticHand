@@ -381,8 +381,14 @@ def run(p):
                 run(p[2])
 
         elif p[0] == 'while_loop':
+            iterations = 0
             while run(p[1]):
-                print(run(p[2]))
+                iterations = iterations + 1
+                if iterations == 1000:
+                    print('limite de iteraciones alcanzado')
+                    break
+                else:
+                    print(run(p[2]))
 
     else:
         return p
