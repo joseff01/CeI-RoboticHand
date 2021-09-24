@@ -126,7 +126,7 @@ class EventText(tk.Text):
     def _proxy(self, *args):
         # avoid error when copying
         if args[0] == 'get' and (args[1] == 'sel.first' and args[2] == 'sel.last') and not self.tag_ranges(
-            'sel'): return
+            'sel'): return ''
 
         # avoid error when deleting
         if args[0] == 'delete' and (args[1] == 'sel.first' and args[2] == 'sel.last') and not self.tag_ranges(
