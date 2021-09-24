@@ -123,20 +123,27 @@ class EventText(tk.Text):
         self.tk.call("rename", self._w, self._orig)
         self.tk.createcommand(self._w, self._proxy)
 
-    def _proxy(self, command, *args):
+    def _proxy(self, *args):
         # avoid error when copying
-        if command == 'get' and (args[0] == 'sel.first' and args[1] == 'sel.last') and not self.tag_ranges(
+        if args[0] == 'get' and (args[1] == 'sel.first' and args[2] == 'sel.last') and not self.tag_ranges(
             'sel'): return
 
         # avoid error when deleting
-        if command == 'delete' and (args[0] == 'sel.first' and args[1] == 'sel.last') and not self.tag_ranges(
+        if args[0] == 'delete' and (args[1] == 'sel.first' and args[2] == 'sel.last') and not self.tag_ranges(
             'sel'): return
 
-        cmd = (self._orig, command) + args
+        cmd = (self._orig, args[0]) + args[1:]
         result = self.tk.call(cmd)
 
-        if command in ('insert', 'delete', 'replace'):
-            self.event_generate('<<TextModified>>')
+        if args[0] in ('insert', 'delete', 'replace'):
+            self.event_generate('<<Change>>')
+        if(args[0:3] == ("mark", "set", "insert") or
+            args[0:2] == ("xview", "moveto") or
+            args[0:2] == ("xview", "scroll") or
+            args[0:2] == ("yview", "moveto") or
+            args[0:2] == ("yview", "scroll")
+        ):
+            self.event_generate("<<Change>>", when="tail")
 
         return result
 
