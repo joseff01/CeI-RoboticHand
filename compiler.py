@@ -448,6 +448,12 @@ def run(p):
     else:
         return p
 
+def run_main():
+    if ('main',0) in functions_methods:
+        print('main found')
+        run(functions_methods[('main',0)][1])
+    else:
+        print('ERROR: main not found')
 
 def clearAll():
     global variables, functions_methods
@@ -460,4 +466,7 @@ def clearAll():
 def compile(text):
     parser.parse(text)
     print(variables)
+    print(functions_methods)
+    run_main()
+
     clearAll()
