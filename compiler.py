@@ -186,10 +186,36 @@ def p_for_loop(p):
 
 def p_if_else(p):
     '''
-        if_else : IF expression SB1 statement SB2
+        if_else : IF expression SB1 statement SB2 else_if
     '''
     print("if-else processing...")
-    p[0] = ('if_else', p[2], p[4])
+    print(len(p))
+    p[0] = ('if_else', p[2], p[4], p[6])
+
+def p_else_if(p):
+    '''
+        else_if : ELSE IF expression SB1 statement SB2 else_if
+                | else_exp
+    '''
+    print("else_if processing...")
+    print(len(p))
+    if len(p) > 2:
+        p[0] = ('if_else', p[3], p[5], p[7])
+    else:
+        p[0] = p[1]
+
+def p_else_exp(p):
+    '''
+        else_exp : ELSE SB1 statement SB2
+                | empty
+    '''
+    print("else processing...")
+    print(len(p))
+    if len(p) > 2:
+        p[0] = p[3]
+    else:
+        p[0] = p[1]
+
 
 def p_statement(p):
     '''
@@ -343,10 +369,10 @@ def run(p):
                     return p
 
         elif p[0] == 'if_else':
-            print(p[2])
             if run(p[1]):
-                print(p[2])
-                run(p[2])
+                print(run(p[2]))
+            else:
+                print(run(p[3]))
 
         elif p[0] == 'while_loop':
             if p[3] == '<>':
