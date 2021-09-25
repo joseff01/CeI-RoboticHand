@@ -118,7 +118,6 @@ def p_algorithm(p):
     algorithm : algorithm algorithm_line
             | empty
     '''
-    print("algorithm processing...")
     if len(p) == 3:
         p[0] = p[2]
         print(run(p[0]))
@@ -128,8 +127,8 @@ def p_algorithm_line(p):
     algorithm_line : if_else
                     | expression PyC
                     | var_assign PyC
-                    | for_loop PyC
-                    | while_loop PyC
+                    | for_loop
+                    | while_loop
     '''
     p[0] = p[1]
 
@@ -178,10 +177,10 @@ def p_var_assign(p):
 
 def p_for_loop(p):
     '''
-    for_loop : FOR INT IN INT dDOT INT SB1 algorithm SB2
-              | FOR VARIABLE IN INT dDOT INT SB1 algorithm SB2
-              | FOR INT IN INT dDOT_E INT SB1 algorithm SB2
-              | FOR VARIABLE IN INT dDOT_E INT SB1 algorithm SB2
+    for_loop : FOR INT IN INT dDOT INT SB1 statement SB2
+              | FOR VARIABLE IN INT dDOT INT SB1 statement SB2
+              | FOR INT IN INT dDOT_E INT SB1 statement SB2
+              | FOR VARIABLE IN INT dDOT_E INT SB1 statement SB2
     '''
 
     p[0] = ('for_loop', p[2], p[4], p[6], p[8], p[5])
@@ -224,9 +223,8 @@ def p_statement(p):
     statement : statement statement_line
             | empty
     '''
-    print("statement processing...")
     if len(p) == 3:
-        p[0] = ('statement',p[1],p[2])
+        p[0] = ('statement', p[1], p[2])
 
 def p_statement_line(p):
     '''
@@ -240,10 +238,9 @@ def p_statement_line(p):
 
 def p_while_loop(p):
     '''
-    while_loop : WHILE OPEN_P VARIABLE bool_operator INT CLOSE_P SB1 expression SB2
-               | WHILE OPEN_P VARIABLE bool_operator VARIABLE CLOSE_P SB1 expression SB2
+    while_loop : WHILE OPEN_P expression CLOSE_P SB1 statement SB2
     '''
-    p[0] = ('while_loop', p[3], p[5], p[4])
+    p[0] = ('while_loop', p[3], p[6])
 
 def p_empty(p):
     '''
@@ -292,23 +289,46 @@ def run(p):
             return variables[p[1]]
 
         elif p[0] == '==':
-            print(p[1], run(p[2]))
-            return run(p[1]) == run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) == run(p[2])
 
         elif p[0] == '<>':
-            return run(p[1]) != run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) != run(p[2])
 
         elif p[0] == '<=':
-            return run(p[1]) <= run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) <= run(p[2])
 
         elif p[0] == '>=':
-            return run(p[1]) >= run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) >= run(p[2])
 
         elif p[0] == '>':
-            return run(p[1]) > run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) > run(p[2])
 
         elif p[0] == '<':
-            return run(p[1]) < run(p[2])
+            if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                print('Error: Variable no definida')
+            else:
+                print(p[1], run(p[2]))
+                return run(p[1]) < run(p[2])
 
         elif p[0] == '=':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(run(p[2]), bool) is True:
@@ -326,8 +346,11 @@ def run(p):
             return variables[p[1]]
 
         elif p[0] == 'statement':
-            run(p[1])
-            run(p[2])
+            if run(p[1]) is None:
+                print(run(p[2]))
+            else:
+                print(run(p[2]))
+                print(run(p[1]))
 
         elif p[0] == 'for_loop':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], bool) is True:
@@ -347,24 +370,24 @@ def run(p):
                     print('Variable no definida')
                 elif p[5] == '..' and isinstance(p[1], str) is True and variables.get(p[1]) is not None:
                     for variables[run(p[1])] in range(p[2], p[3]-1):
-                        print(run(p[4]))
+                        run(p[4])
                     return p
                 elif p[5] == '..' and isinstance(p[1], int) is True:
                     pointer = int(p[1])
                     for pointer in range(p[2], p[3]-1):
-                        print(run(p[4]))
+                        run(p[4])
                     return p
 
                 elif p[5] == '..=' and isinstance(p[1], str) is True and variables.get(p[1]) is None:
                     print('Variable no definida')
                 elif p[5] == '..=' and isinstance(p[1], str) is True and variables.get(p[1]) is not None:
                     for variables[p[1]] in range(p[2], p[3]):
-                        print(run(p[4]))
+                        run(p[4])
                     return p
                 elif p[5] == '..=' and isinstance(p[1], int) is True:
                     pointer = int(p[1])
                     for pointer in range(p[2], p[3]):
-                        print(run(p[4]))
+                        run(p[4])
                     return p
                 
                 else:
@@ -377,20 +400,15 @@ def run(p):
                 print(run(p[3]))
 
         elif p[0] == 'while_loop':
-            if p[3] == '<>':
-                return p
-            elif p[3] == '<=':
-                return p
-            elif p[3] == '<':
-                return p
-            elif p[3] == '==':
-                return p
-            elif p[3] == '=':
-                return p
-            elif p[3] == '>=':
-                return p
-            elif p[3] == '>':
-                return p
+            iterations = 0
+            while run(p[1]):
+                iterations = iterations + 1
+                if iterations == 1000:
+                    print('limite de iteraciones alcanzado')
+                    break
+                else:
+                    print(run(p[2]))
+
     else:
         return p
 
