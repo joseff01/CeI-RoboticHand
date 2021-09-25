@@ -359,7 +359,7 @@ def run(p):
             elif p[2] >= p[3]:
                 print('Ingrese un rango valido')
 
-            elif len(variables) > 0 and variables.get(p[1]) is not None and (variables[p[1]] > p[3] or variables[p[1]] < p[4]):
+            elif len(variables) > 0 and variables.get(p[1]) is not None and (variables[p[1]] > p[3] or variables[p[1]] < p[2]):
                 print('La condicion se sale del rango del For')
 
             elif len(variables) == 0 and (p[1] < p[2] or p[1] > p[3]):
