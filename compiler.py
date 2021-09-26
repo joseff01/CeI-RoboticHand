@@ -267,8 +267,8 @@ def p_statement_line(p):
     statement_line : if_else
                     | expression PyC
                     | var_assign PyC
-                    | for_loop PyC
-                    | while_loop PyC
+                    | for_loop
+                    | while_loop
     '''
     p[0] = p[1]
 
@@ -320,16 +320,17 @@ def p_param_expresions(p):
     '''
     if len(p) == 4:
         p[0] = (p[1], p[3])
-        print("parameters:",p[0])
+        print("parameters:", p[0])
     else:
         p[0] = p[1]
 
-parser = yacc.yacc()
 
+parser = yacc.yacc()
 
 variables = {}
 
 functions_methods = {}
+
 
 def length_variables(variable_list):
     if isinstance(variable_list,tuple):
@@ -338,6 +339,7 @@ def length_variables(variable_list):
         return 1
     elif variable_list is None:
         return 0
+
 
 def add_parameter_variables(parametersTuple, parameterNames):
     if isinstance(parametersTuple,tuple):
@@ -348,6 +350,7 @@ def add_parameter_variables(parametersTuple, parameterNames):
     elif parametersTuple is None:
         return
 
+
 def remove_parameter_variables(parametersTuple, parameterNames):
     if isinstance(parametersTuple,tuple):
         variables.pop(parameterNames[0])
@@ -356,6 +359,7 @@ def remove_parameter_variables(parametersTuple, parameterNames):
         variables.pop(parameterNames)
     elif parametersTuple is None:
         return
+
 
 def run(p):
     global variables
@@ -439,13 +443,12 @@ def run(p):
                 if isinstance(result2,tuple):
                     return result2
             elif isinstance(result1,tuple):
-                print("SCUBIDIBAPMBADOP  1:",p)
+                print("SCUBIDIBAPMBADOP  1:", p)
                 return result1
             else:
                 result2 = run(p[2])
                 if isinstance(result2, tuple):
                     return result2
-
 
         elif p[0] == 'for_loop':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], bool) is True:
@@ -459,31 +462,42 @@ def run(p):
 
             elif len(variables) == 0 and (p[1] < p[2] or p[1] > p[3]):
                 print('La condicion se sale del rango del For')
-
             else:
                 if p[5] == '..' and isinstance(p[1], str) is True and variables.get(p[1]) is None:
                     print('Variable no definida')
                 elif p[5] == '..' and isinstance(p[1], str) is True and variables.get(p[1]) is not None:
                     for variables[run(p[1])] in range(p[2], p[3]-1):
-                        run(p[4])
-                    return p
+                        result = run(p[4])
+                        print(p[4], result)
+                        if isinstance(result, tuple):
+                            print("mean_for")
+                            return result
                 elif p[5] == '..' and isinstance(p[1], int) is True:
                     pointer = int(p[1])
                     for pointer in range(p[2], p[3]-1):
-                        run(p[4])
-                    return p
+                        result = run(p[4])
+                        print(p[4], result)
+                        if isinstance(result, tuple):
+                            print("mean_for")
+                            return result
 
                 elif p[5] == '..=' and isinstance(p[1], str) is True and variables.get(p[1]) is None:
                     print('Variable no definida')
                 elif p[5] == '..=' and isinstance(p[1], str) is True and variables.get(p[1]) is not None:
                     for variables[p[1]] in range(p[2], p[3]):
-                        run(p[4])
-                    return p
+                        result = run(p[4])
+                        print(p[4], result)
+                        if isinstance(result, tuple):
+                            print("mean_for")
+                            return result
                 elif p[5] == '..=' and isinstance(p[1], int) is True:
                     pointer = int(p[1])
                     for pointer in range(p[2], p[3]):
-                        run(p[4])
-                    return p
+                        result = run(p[4])
+                        print(p[4], result)
+                        if isinstance(result, tuple):
+                            print("mean_for")
+                            return result
 
                 else:
                     return p
@@ -492,8 +506,8 @@ def run(p):
             print("if pepesilvia")
             if run(p[1]):
                 result = run(p[2])
-                print(p[2],result)
-                if isinstance(result,tuple):
+                print(p[2], result)
+                if isinstance(result, tuple):
                     print("if pepesilvia1")
                     return result
             else:
@@ -502,24 +516,22 @@ def run(p):
                     print("if pepesilvia2")
                     return result
 
+        elif p[0] == 'while_loop':
+            while run(p[1]):
+                result = run(p[2])
+                print(p[2], result)
+                if isinstance(result, tuple):
+                    print("meanwhile")
+                    return result
+
         elif p[0] == 'return':
             return (True, run(p[1]))
-
-        elif p[0] == 'while_loop':
-            iterations = 0
-            while run(p[1]):
-                iterations = iterations + 1
-                if iterations == 1000:
-                    print('limite de iteraciones alcanzado')
-                    break
-                else:
-                    print(run(p[2]))
 
         elif p[0] == 'function_def':
             if (p[1],length_variables(p[2])) in functions_methods:
                 print("ERROR: Function", p[1], "already exist with the same name and number of inputs")
                 return
-            functions_methods[(p[1],length_variables(p[2]))] = (p[2],p[3],p[4])
+            functions_methods[(p[1],length_variables(p[2]))] = (p[2], p[3], p[4])
             print("Functions/Methods:")
             print(functions_methods, '\n')
         elif p[0] == 'method_def':
