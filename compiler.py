@@ -3,15 +3,19 @@ import ply.yacc as yacc
 import sys
 
 reserved = {
-    'let'	: 'LET',
-    'while'	: 'WHILE',
-    'for'	: 'FOR',
-    'if'	: 'IF',
-    'else'	: 'ELSE',
-    'in'	: 'IN',
-    'OPERA'	: 'OPERA',
-    'true'	: 'BOOLEAN',
-    'false'	: 'BOOLEAN'
+    'let'	 : 'LET',
+    'while'	 : 'WHILE',
+    'for'	 : 'FOR',
+    'if'	 : 'IF',
+    'else'	 : 'ELSE',
+    'in'	 : 'IN',
+    'OPERA'	 : 'OPERA',
+    'true'	 : 'BOOLEAN',
+    'false'	 : 'BOOLEAN',
+    'boolean': 'BOOLEAN_TXT',
+    'integer': 'INTEGER_TXT',
+    'fn'     : 'FUNCTION',
+    'return' : 'RETURN',
 }
             
 """Define los tokens validos para el lexer"""
@@ -39,11 +43,13 @@ tokens = [
     'COMMENT',
     'PyC',
     'dDOT_E',
-    'dDOT'
+    'dDOT',
+    'ARROW'
 ] + list(set(reserved.values())) # first turn into a set to remove duplicate BOOLEAN values
 """Le dice a lex como se ven los tokens definidos anteriormente"""
 
 t_PLUS = r'\+'
+t_ARROW = r'\->'
 t_MINUS = r'\-'
 t_INT_DIV = r'\//'
 t_DIVIDE = r'\/'
@@ -115,22 +121,52 @@ lexer = lex.lex()
 
 def p_algorithm(p):
     '''
-    algorithm : algorithm algorithm_line
+    algorithm : algorithm algorithm_function
             | empty
     '''
     if len(p) == 3:
         p[0] = p[2]
+        print(p[0])
         print(run(p[0]))
 
-def p_algorithm_line(p):
+def p_algorithm_function(p):
     '''
-    algorithm_line : if_else
-                    | expression PyC
-                    | var_assign PyC
-                    | for_loop
-                    | while_loop
+    algorithm_function : method_def
+                        | function_def
     '''
     p[0] = p[1]
+
+def p_var_type(p):
+    '''
+    var_type : BOOLEAN_TXT
+            | INTEGER_TXT
+    '''
+    print("function hoo haa")
+    p[0] = p[1]
+
+def p_function_def(p):
+    '''
+    function_def : FUNCTION VARIABLE OPEN_P parameters CLOSE_P ARROW var_type SB1 statement SB2
+    '''
+    p[0] = ('function_def', p[2], p[4], p[9], p[7])
+
+def p_method_def(p):
+    '''
+    method_def : FUNCTION VARIABLE OPEN_P parameters CLOSE_P SB1 statement SB2
+    '''
+    p[0] = ('method_def', p[2], p[4], p[7])
+
+def p_parameters(p):
+    '''
+        parameters : parameters COMMA parameters
+                    | VARIABLE
+                    | empty
+    '''
+    print("parameters hoo haa")
+    if len(p) == 4:
+        p[0] = (p[1],p[3])
+    else:
+        p[0] = p[1]
 
 def p_operator(p):
     '''
@@ -236,6 +272,12 @@ def p_statement_line(p):
     '''
     p[0] = p[1]
 
+def p_statement_line_return(p):
+    '''
+    statement_line : RETURN expression PyC
+    '''
+    p[0] = ('return', p[2])
+
 def p_while_loop(p):
     '''
     while_loop : WHILE OPEN_P expression CLOSE_P SB1 statement SB2
@@ -253,6 +295,7 @@ def p_expression_int_boolean(p):
     '''
     expression : INT
               | BOOLEAN
+              | function_call
     '''
     p[0] = p[1]
 
@@ -263,12 +306,56 @@ def p_expression_var(p):
     '''
     p[0] = ('var', p[1])
 
+def p_function_call(p):
+    '''
+    function_call : VARIABLE OPEN_P param_expressions CLOSE_P
+    '''
+    p[0] = ('fn', p[1], p[3])
+
+def p_param_expresions(p):
+    '''
+    param_expressions : param_expressions COMMA param_expressions
+                    | expression
+                    | empty
+    '''
+    if len(p) == 4:
+        p[0] = (p[1], p[3])
+        print("parameters:",p[0])
+    else:
+        p[0] = p[1]
 
 parser = yacc.yacc()
 
 
 variables = {}
 
+functions_methods = {}
+
+def length_variables(variable_list):
+    if isinstance(variable_list,tuple):
+        return 1 + length_variables(variable_list[1])
+    elif (isinstance(variable_list, str)) or (isinstance(variable_list, bool)) or (isinstance(variable_list, int)):
+        return 1
+    elif variable_list is None:
+        return 0
+
+def add_parameter_variables(parametersTuple, parameterNames):
+    if isinstance(parametersTuple,tuple):
+        variables[parameterNames[0]] = run(parametersTuple[0])
+        add_parameter_variables(parametersTuple[1], parameterNames[1])
+    elif (isinstance(parametersTuple, int)) or (isinstance(parametersTuple, bool)):
+        variables[parameterNames] = run(parametersTuple)
+    elif parametersTuple is None:
+        return
+
+def remove_parameter_variables(parametersTuple, parameterNames):
+    if isinstance(parametersTuple,tuple):
+        variables.pop(parameterNames[0])
+        remove_parameter_variables(parametersTuple[1], parameterNames[1])
+    elif (isinstance(parametersTuple, int)) or (isinstance(parametersTuple, bool)):
+        variables.pop(parameterNames)
+    elif parametersTuple is None:
+        return
 
 def run(p):
     global variables
@@ -346,11 +433,19 @@ def run(p):
             return variables[p[1]]
 
         elif p[0] == 'statement':
-            if run(p[1]) is None:
-                print(run(p[2]))
+            result1 = run(p[1])
+            if p[1] is None:
+                result2 = run(p[2])
+                if isinstance(result2,tuple):
+                    return result2
+            elif isinstance(result1,tuple):
+                print("SCUBIDIBAPMBADOP  1:",p)
+                return result1
             else:
-                print(run(p[2]))
-                print(run(p[1]))
+                result2 = run(p[2])
+                if isinstance(result2, tuple):
+                    return result2
+
 
         elif p[0] == 'for_loop':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], bool) is True:
@@ -389,15 +484,26 @@ def run(p):
                     for pointer in range(p[2], p[3]):
                         run(p[4])
                     return p
-                
+
                 else:
                     return p
 
         elif p[0] == 'if_else':
+            print("if pepesilvia")
             if run(p[1]):
-                print(run(p[2]))
+                result = run(p[2])
+                print(p[2],result)
+                if isinstance(result,tuple):
+                    print("if pepesilvia1")
+                    return result
             else:
-                print(run(p[3]))
+                result = run(p[3])
+                if isinstance(result, tuple):
+                    print("if pepesilvia2")
+                    return result
+
+        elif p[0] == 'return':
+            return (True, run(p[1]))
 
         elif p[0] == 'while_loop':
             iterations = 0
@@ -409,18 +515,92 @@ def run(p):
                 else:
                     print(run(p[2]))
 
+        elif p[0] == 'function_def':
+            if (p[1],length_variables(p[2])) in functions_methods:
+                print("ERROR: Function", p[1], "already exist with the same name and number of inputs")
+                return
+            functions_methods[(p[1],length_variables(p[2]))] = (p[2],p[3],p[4])
+            print("Functions/Methods:")
+            print(functions_methods, '\n')
+        elif p[0] == 'method_def':
+            if (p[1],length_variables(p[2])) in functions_methods:
+                print("ERROR: Method", p[1], "already exist with the same name and number of inputs")
+                return
+            functions_methods[(p[1], length_variables(p[2]))] = (p[2], p[3])
+            print("Functions/Methods:")
+            print(functions_methods, '\n')
+        elif p[0] == 'fn':
+            print((p[1],length_variables(p[2])))
+            if (p[1],length_variables(p[2])) in functions_methods:
+                ParameterNames = functions_methods[(p[1], length_variables(p[2]))][0]
+                print(ParameterNames)
+                print(p[2])
+                add_parameter_variables(p[2], ParameterNames)
+                print("New Variables:", variables)
+                result = run(functions_methods[(p[1],length_variables(p[2]))][1])
+                print("Resultbsjdakdas: ", functions_methods[(p[1],length_variables(p[2]))][1])
+                print("Result: ", result)
+                print("Func or Method?: ", len(functions_methods[(p[1], length_variables(p[2]))]))
+                print("result is None:", (result is None))
+                print("result is tuple:", isinstance(result,tuple))
+                if (result is None) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 2):
+                    remove_parameter_variables(p[2], ParameterNames)
+                    print("Variables Hoo Haa1:", variables)
+                    return 0
+                elif (result is None) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 3):
+                    #ERROR CASE, FUNCTION MUST HAVE A RETURN CODE SHOULD STOP READING
+                    print("ERROR: Function ", p[1], "must have a return" )
+                elif (isinstance(result,tuple)) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 2):
+                    print("WARNING: Method ", p[1], "must not have a return, returning 0 ")
+                    remove_parameter_variables(p[2], ParameterNames)
+                    return 0
+                elif (isinstance(result,tuple)) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 3):
+                    if functions_methods[(p[1],length_variables(p[2]))][2] == "boolean":
+                        print(result[1])
+                        if isinstance(result[1],bool):
+                            remove_parameter_variables(p[2], ParameterNames)
+                            return result[1]
+                        else:
+                            #ERROR CASE, RETURN INCORRECT TYPE
+                            print("ERROR: Incorrect return type, must be boolean")
+                            remove_parameter_variables(p[2], ParameterNames)
+                            return 0
+                    elif functions_methods[(p[1],length_variables(p[2]))][2] == "integer":
+                        print(result[1])
+                        if isinstance(result[1],bool):
+                            # ERROR CASE, RETURN INCORRECT TYPE
+                            print("ERROR: Incorrect return type, must be integer")
+                            remove_parameter_variables(p[2], ParameterNames)
+                            return 0
+                        else:
+                            remove_parameter_variables(p[2], ParameterNames)
+                            return result[1]
+                else:
+                    print("THIS SHOULD NOT HAPPEN")
+
+            else:
+                return
     else:
         return p
 
+def run_main():
+    if ('main',0) in functions_methods:
+        print('main found')
+        run(functions_methods[('main',0)][1])
+    else:
+        print('ERROR: main not found')
 
 def clearAll():
-    global variables
+    global variables, functions_methods
     variables = {}
+    functions_methods = {}
     lexer.lineno = 1
     print("\n")
-
 
 def compile(text):
     parser.parse(text)
     print(variables)
+    print(functions_methods)
+    run_main()
+
     clearAll()
