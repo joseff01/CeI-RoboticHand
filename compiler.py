@@ -16,12 +16,20 @@ reserved = {
     'integer': 'INTEGER_TXT',
     'fn'     : 'FUNCTION',
     'return' : 'RETURN',
+    'Move'   : 'MOVE',
 }
             
 """Define los tokens validos para el lexer"""
 tokens = [
     'INT',
     'EXP',
+    'THUMB',
+    'INDEX',
+    'MIDDLE',
+    'ANULAR',
+    'PINKY',
+    'ALL',
+    'ARROW',
     'VARIABLE',
     'PLUS',
     'MINUS',
@@ -33,6 +41,8 @@ tokens = [
     'CLOSE_P',
     'SB1',
     'SB2',
+    'SQ1',
+    'SQ2',
     'COMMA',
     'EQUALS_EQUALS',
     'DISTINCT',
@@ -44,7 +54,6 @@ tokens = [
     'PyC',
     'dDOT_E',
     'dDOT',
-    'ARROW'
 ] + list(set(reserved.values())) # first turn into a set to remove duplicate BOOLEAN values
 """Le dice a lex como se ven los tokens definidos anteriormente"""
 
@@ -73,6 +82,33 @@ t_ignore = r' '
 
 """Definicion de algunos tokens como funciones(nota: definir palabras especificas antes de la definicion de variable)"""
 
+
+def t_THUMB(t):
+    r'\"P\"'
+    t.type = 'THUMB'
+    return t
+def t_INDEX(t):
+    r'\"I\"'
+    t.type = 'INDEX'
+    return t
+def t_MIDDLE(t):
+    r'\"M\"'
+    t.type = 'MIDDLE'
+    return t
+def t_ANULAR(t):
+    r'\"A\"'
+    t.type = 'ANULAR'
+    return t
+def t_PINKY(t):
+    r'\"Q\"'
+    t.type = 'PINKY'
+    return t
+def t_ALL(t):
+    r'\"T\"'
+    t.type = 'ALL'
+    return t
+
+
 def t_COMMENT(t):
     r'\@.*'
     pass
@@ -95,6 +131,16 @@ def t_SB1(t):
 def t_SB2(t):
     r'\}'
     t.type = 'SB2'
+    return t
+
+def t_SQ1(t):
+    r'\['
+    t.type = 'SQ1'
+    return t
+
+def t_SQ2(t):
+    r'\]'
+    t.type = 'SQ2'
     return t
 
 def t_ID(t):
@@ -178,6 +224,53 @@ def p_operator(p):
             | MULTIPLY
     '''
     p[0] = p[1]
+
+def p_fingers(p):
+    '''
+    fingers : THUMB
+            | INDEX
+            | MIDDLE
+            | ANULAR
+            | PINKY
+            | ALL
+    '''
+    p[0] = (p[1])
+
+def p_finger_list_A(p):
+    '''
+    fingerL_A : SQ1 fingers COMMA fingerL_B
+    '''
+    p[0] = (p[2], p[4])
+
+def p_finger_list_B(p):
+    '''
+    fingerL_B : fingers COMMA fingerL_B
+              | fingerL_C
+    '''
+    if len(p) > 2:
+        p[0] = (p[1], p[3])
+    else:
+        p[0] = p[1]
+
+def p_finger_list_C(p):
+    '''
+    fingerL_C : fingers SQ2
+              | empty
+    '''
+    p[0] = p[1]
+
+def p_hand_control(p):
+    '''
+    hand : fingerL_A fingerL_B fingerL_C
+    '''
+    p[0] = (p[1], p[2], p[3])
+
+def p_function_move(p):
+    '''
+    function_move : MOVE OPEN_P fingers COMMA BOOLEAN CLOSE_P
+                  | MOVE OPEN_P hand COMMA BOOLEAN CLOSE_P
+    '''
+    p[0] = ('Move', p[3], p[5])
 
 def p_expression_opera(p):
     '''
@@ -269,6 +362,7 @@ def p_statement_line(p):
                     | var_assign PyC
                     | for_loop
                     | while_loop
+                    | function_move PyC
     '''
     p[0] = p[1]
 
@@ -331,6 +425,7 @@ variables = {}
 
 functions_methods = {}
 
+tuple_elements = []
 
 def length_variables(variable_list):
     if isinstance(variable_list,tuple):
@@ -490,6 +585,7 @@ def run(p):
                         if isinstance(result, tuple):
                             print("mean_for")
                             return result
+
                 elif p[5] == '..=' and isinstance(p[1], int) is True:
                     pointer = int(p[1])
                     for pointer in range(p[2], p[3]):
@@ -592,9 +688,41 @@ def run(p):
 
             else:
                 return
+
+        elif p[0] == 'Move':
+            if isinstance(p[1], tuple) is True:
+                untuple(p[1])
+                print(tuple_elements)
+                j = len(tuple_elements)
+                for i in range(j):
+                    if run(p[2]):
+                        print('mano arriba')
+                        print(tuple_elements[i])
+                    else:
+                        print('Mano abajo')
+                        print(tuple_elements[i])
+            elif isinstance(p[1], tuple) is False:
+                if run(p[2]):
+                    print('mano arriba')
+                    print(p[1])
+                else:
+                    print('Mano abajo')
+                    print(p[1])
+        elif p[0] == 'finger':
+            print(p[1])
     else:
         return p
 
+
+def untuple(p):
+    j = len(p)
+    for i in range(j):
+        if p[i] is None:
+            pass
+        elif isinstance(p[i], tuple) is False:
+            tuple_elements.append(p[i])
+        elif isinstance(p[i], tuple) is True:
+            untuple(p[i])
 def run_main():
     if ('main',0) in functions_methods:
         print('main found')
