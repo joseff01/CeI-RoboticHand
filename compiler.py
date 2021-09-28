@@ -981,7 +981,7 @@ def run(p):
                 if variables.get(p[1]) is not None:
                     GUI.println(variables[p[1]])
                 elif variables.get(p[1]) is None:
-                    GUI.println(variables[p[1]])
+                    GUI.println(p[1])
     else:
         return p
 r"\"[]"
