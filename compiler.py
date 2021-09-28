@@ -608,6 +608,7 @@ def run(p):
             else:
                 lineno = p[2]
                 GUI.println('Error: Variable \'{}\' no definida en línea {}'.format(p[1], lineno))
+                return 0
 
         elif p[0] == '==':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
@@ -963,18 +964,19 @@ def run(p):
 
         elif p[0] == 'print':
             if isinstance(p[1], tuple) is True:
+                global phrase
+                phrase = []
                 printable = ""
                 untupleS(p[1])
-                print(phrase)
                 j = len(phrase)
                 for i in range(j):
                     if variables.get(phrase[i]) is not None:
-                        printable = printable + " " + str(variables[phrase[1]])
+                        printable = printable + ("" if i==0 else " ") + str(variables[phrase[1]])
                     elif variables.get(phrase[i]) is None:
-                        printable = printable + " " + str(phrase[i])
-                print(printable)
+                        printable = printable + ("" if i==0 else " ") + str(phrase[i])
+                GUI.println(printable)
             elif isinstance(p[1], tuple) is False:
-                print(p[1])
+                GUI.println(p[1])
     else:
         return p
 r"\"[]"
