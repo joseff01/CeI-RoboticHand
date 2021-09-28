@@ -328,21 +328,21 @@ def p_bool_operator(p):
                     | MORE_THAN
                     | LESS_THAN
     '''
-    p[0] = p[1]
+    p[0] = (p[1],p.lineno(1))
 
 
 def p_expression_bool(p):
     '''
     expression : expression bool_operator expression
     '''
-    p[0] = (p[2], p[1], p[3])
+    p[0] = (p[2][0], p[1], p[3], p[2][1])
 
 def p_var_assign(p):
     '''
     var_assign : LET VARIABLE EQUALS expression
     '''
 
-    p[0] = ('=', p[2], p[4])
+    p[0] = ('=', p[2], p[4], p.lineno(1))
 
 
 def p_for_loop(p):
@@ -455,7 +455,7 @@ def p_expression_var(p):
     '''
     expression : VARIABLE
     '''
-    p[0] = ('var', p[1])
+    p[0] = ('var', p[1], p.lineno(1))
 
 def p_function_call(p):
     '''
@@ -541,10 +541,14 @@ def run(p):
             if(p[1] in variables):
                 return variables[p[1]]
             else:
+                lineno = p[2]
+                print("LineNo: ", lineno)
                 GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
 
         elif p[0] == '==':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                lineno = p[3]
+                print("LineNo: ", lineno)
                 GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
@@ -552,6 +556,8 @@ def run(p):
 
         elif p[0] == '<>':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                lineno = p[3]
+                print("LineNo: ", lineno)
                 GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
@@ -559,6 +565,8 @@ def run(p):
 
         elif p[0] == '<=':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                lineno = p[3]
+                print("LineNo: ", lineno)
                 GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
@@ -566,6 +574,8 @@ def run(p):
 
         elif p[0] == '>=':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                lineno = p[3]
+                print("LineNo: ", lineno)
                 GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
@@ -573,6 +583,8 @@ def run(p):
 
         elif p[0] == '>':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                lineno = p[3]
+                print("LineNo: ", lineno)
                 GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
@@ -580,6 +592,8 @@ def run(p):
 
         elif p[0] == '<':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
+                lineno = p[3]
+                print("LineNo: ", lineno)
                 GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
@@ -587,10 +601,14 @@ def run(p):
 
         elif p[0] == '=':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(run(p[2]), bool) is True:
+                lineno = p[3]
+                print("LineNo: ", lineno)
                 GUI.println('Tipo incompatible entre \'{}\' y \'{}\':'.format(p[1],p[2]))
                 GUI.println('int != bool')
 
             elif len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], bool) is True and isinstance(run(p[2]), int) is True:
+                lineno = p[3]
+                print("LineNo: ", lineno)
                 GUI.println('Tipo incompatible entre \'{}\' y \'{}\':bool != int'.format(p[1],p[2]))
                 GUI.println('bool != int')
 
