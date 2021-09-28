@@ -112,11 +112,13 @@ def t_ALL(t):
 
 def t_PRINT(t):
     r'println\!'
+    t.value = t.value[1:-1]
     t.type = 'PRINT'
     return t
 
 def t_STR(t):
     r"\"[a-zA-Z ]+\""
+
     t.type = 'STR'
     return t
 
@@ -777,7 +779,6 @@ def run(p):
 
         elif p[0] == 'print':
             if isinstance(p[1], tuple) is True:
-                exception = ['"']
                 printable = ""
                 untupleS(p[1])
                 print(phrase)
@@ -787,7 +788,7 @@ def run(p):
                         printable = printable + " " + str(variables[phrase[1]])
                     elif variables.get(phrase[i]) is None:
                         printable = printable + " " + str(phrase[i])
-                print(printable.translate(exception))
+                print(printable)
             elif isinstance(p[1], tuple) is False:
                 print(p[1])
     else:
