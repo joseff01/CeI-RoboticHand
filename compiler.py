@@ -846,7 +846,6 @@ def run(p):
             else:
                 return
 
-<<<<<<< HEAD
         # elif p[0] == 'Move':
         #     if isinstance(p[1], tuple) is True:
         #         untuple(p[1])
@@ -950,29 +949,6 @@ def run(p):
         #                 pin6.write(0)
         #                 pin9.write(0)
         #                 pin10.write(0)
-=======
-        elif p[0] == 'Move':
-            if isinstance(p[1], tuple) is True:
-                untuple(p[1])
-                print(tuple_elements)
-                j = len(tuple_elements)
-                for i in range(j):
-                    if p[2] is True or variables[p[2]] is True:
-                        print('mano arriba')
-                        print(tuple_elements[i])
-                    elif p[2] is False or variables[p[2]] is False:
-                        print('Mano abajo')
-                        print(tuple_elements[i])
-                tuple_elements.clear()
-            elif isinstance(p[1], tuple) is False:
-                if p[2] is True or variables[p[2]] is True:
-                    print('mano arriba')
-                    print(p[1])
-                elif p[2] is False or variables[p[2]] is False:
-                    print('Mano abajo')
-                    print(p[1])
-
->>>>>>> Dennis
         elif p[0] == 'finger':
             print(p[1])
 
