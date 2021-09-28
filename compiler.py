@@ -235,13 +235,13 @@ def p_function_def(p):
     '''
     function_def : FUNCTION VARIABLE OPEN_P parameters CLOSE_P ARROW var_type SB1 statement SB2
     '''
-    p[0] = ('function_def', p[2], p[4], p[9], p[7])
+    p[0] = ('function_def', p[2], p[4], p[9], p[7], p.lineno(1))
 
 def p_method_def(p):
     '''
     method_def : FUNCTION VARIABLE OPEN_P parameters CLOSE_P SB1 statement SB2
     '''
-    p[0] = ('method_def', p[2], p[4], p[7])
+    p[0] = ('method_def', p[2], p[4], p[7], p.lineno(1))
 
 def p_parameters(p):
     '''
@@ -670,17 +670,14 @@ def run(p):
                     return p
 
         elif p[0] == 'if_else':
-            print("if pepesilvia")
             if run(p[1]):
                 result = run(p[2])
                 print(p[2], result)
                 if isinstance(result, tuple):
-                    print("if pepesilvia1")
                     return result
             else:
                 result = run(p[3])
                 if isinstance(result, tuple):
-                    print("if pepesilvia2")
                     return result
 
         elif p[0] == 'while_loop':
@@ -688,7 +685,6 @@ def run(p):
                 result = run(p[2])
                 print(p[2], result)
                 if isinstance(result, tuple):
-                    print("meanwhile")
                     return result
 
         elif p[0] == 'return':
@@ -696,18 +692,21 @@ def run(p):
 
         elif p[0] == 'function_def':
             if (p[1],length_variables(p[2])) in functions_methods:
+                lineno = p[5]
                 GUI.println("Error: La función {} ya existe con el mismo nombre y cantidad de argumentos".format(p[1]))
                 return
-            functions_methods[(p[1],length_variables(p[2]))] = (p[2], p[3], p[4])
+            functions_methods[(p[1],length_variables(p[2]))] = (p[2], p[3], p[4], p[5])
             print("Functions/Methods:")
             print(functions_methods, '\n')
         elif p[0] == 'method_def':
             if (p[1],length_variables(p[2])) in functions_methods:
+                lineno = p[4]
                 GUI.println("Error: El método {} ya existe con el mismo nombre y cantidad de argumentos".format(p[1]))
                 return
-            functions_methods[(p[1], length_variables(p[2]))] = (p[2], p[3])
+            functions_methods[(p[1], length_variables(p[2]))] = (p[2], p[3], p[4])
             print("Functions/Methods:")
             print(functions_methods, '\n')
+
         elif p[0] == 'fn':
             print((p[1],length_variables(p[2])))
             if (p[1],length_variables(p[2])) in functions_methods:
@@ -722,18 +721,22 @@ def run(p):
                 print("Func or Method?: ", len(functions_methods[(p[1], length_variables(p[2]))]))
                 print("result is None:", (result is None))
                 print("result is tuple:", isinstance(result,tuple))
-                if (result is None) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 2):
+                if (result is None) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 3):
                     remove_parameter_variables(p[2], ParameterNames)
                     print("Variables Hoo Haa1:", variables)
                     return 0
-                elif (result is None) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 3):
+                elif (result is None) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 4):
                     #ERROR CASE, FUNCTION MUST HAVE A RETURN CODE SHOULD STOP READING
+                    lineno = functions_methods[(p[1], length_variables(p[2]))][3]
+                    print("LineNo:",lineno)
                     GUI.println("Error: La función {} debe contener un return".format(p[1]) )
-                elif (isinstance(result,tuple)) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 2):
+                elif (isinstance(result,tuple)) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 3):
+                    lineno = functions_methods[(p[1], length_variables(p[2]))][2]
+                    print("LineNo:", lineno)
                     print("WARNING: Method ", p[1], "must not have a return, returning 0 ")
                     remove_parameter_variables(p[2], ParameterNames)
                     return 0
-                elif (isinstance(result,tuple)) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 3):
+                elif (isinstance(result,tuple)) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 4):
                     if functions_methods[(p[1],length_variables(p[2]))][2] == "boolean":
                         print(result[1])
                         if isinstance(result[1],bool):
@@ -741,6 +744,8 @@ def run(p):
                             return result[1]
                         else:
                             #ERROR CASE, RETURN INCORRECT TYPE
+                            lineno = functions_methods[(p[1], length_variables(p[2]))][3]
+                            print("LineNo:", lineno)
                             GUI.println("Error: Tipo de retorno incorrecto, debe ser un booleano.")
                             remove_parameter_variables(p[2], ParameterNames)
                             return 0
@@ -748,6 +753,8 @@ def run(p):
                         print(result[1])
                         if isinstance(result[1],bool):
                             # ERROR CASE, RETURN INCORRECT TYPE
+                            lineno = functions_methods[(p[1], length_variables(p[2]))][3]
+                            print("LineNo:", lineno)
                             GUI.println("Error: Tipo de retorno incorrecto, debe ser un int.")
                             remove_parameter_variables(p[2], ParameterNames)
                             return 0
@@ -879,7 +886,7 @@ def run(p):
 
     else:
         return p
-
+r"\"[]"
 
 def untuple(p):
     j = len(p)
@@ -913,5 +920,5 @@ def compile(text, gui): #Needs GUI object in order to print to console
     print(variables)
     print(functions_methods)
     run_main()
-
+    print(variables)
     clearAll()
