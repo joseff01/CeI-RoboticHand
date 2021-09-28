@@ -280,7 +280,9 @@ def p_hand_control(p):
 def p_function_move(p):
     '''
     function_move : MOVE OPEN_P fingers COMMA BOOLEAN CLOSE_P
+                  | MOVE OPEN_P fingers COMMA VARIABLE CLOSE_P
                   | MOVE OPEN_P hand COMMA BOOLEAN CLOSE_P
+                  | MOVE OPEN_P hand COMMA VARIABLE CLOSE_P
     '''
     p[0] = ('Move', p[3], p[5])
 
@@ -766,10 +768,10 @@ def run(p):
                         print('Mano abajo')
                         print(tuple_elements[i])
             elif isinstance(p[1], tuple) is False:
-                if run(p[2]):
+                if variables[p[2]] is True:
                     print('mano arriba')
                     print(p[1])
-                else:
+                elif variables[p[2]] is False:
                     print('Mano abajo')
                     print(p[1])
 
