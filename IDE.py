@@ -64,7 +64,9 @@ class Menubar(ttk.Frame):
     def compileRun(self):
         '''Compila y corre el programa'''
         # Primero compila el programa
-        self.compile()
+        if(not self.compile()):
+            print("No se guardó el archivo")
+            return
 
         # Luego lo corre
         compiler.run_main()
