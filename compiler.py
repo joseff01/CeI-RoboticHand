@@ -30,6 +30,8 @@ tokens = [
     'PINKY',
     'ALL',
     'ARROW',
+    'PRINT',
+    'STR',
     'VARIABLE',
     'PLUS',
     'MINUS',
@@ -108,6 +110,15 @@ def t_ALL(t):
     t.type = 'ALL'
     return t
 
+def t_PRINT(t):
+    r'println\!'
+    t.type = 'PRINT'
+    return t
+
+def t_STR(t):
+    r"\"[a-zA-Z ]+\""
+    t.type = 'STR'
+    return t
 
 def t_COMMENT(t):
     r'\@.*'
@@ -272,6 +283,55 @@ def p_function_move(p):
     '''
     p[0] = ('Move', p[3], p[5])
 
+def p_string_list_A(p):
+    '''
+    stringL_A : STR COMMA stringL_B
+              | VARIABLE COMMA stringL_B
+              | BOOLEAN COMMA stringL_B
+              | INT COMMA stringL_B
+    '''
+    p[0] = (p[1], p[3])
+
+def p_string_list_B(p):
+    '''
+    stringL_B : STR COMMA stringL_B
+              | VARIABLE COMMA stringL_B
+              | INT COMMA stringL_B
+              | BOOLEAN COMMA stringL_B
+              | stringL_C
+    '''
+    if len(p) > 2:
+        p[0] = (p[1], p[3])
+    else:
+        p[0] = p[1]
+
+def p_string_list_C(p):
+    '''
+    stringL_C : STR
+              | VARIABLE
+              | BOOLEAN
+              | INT
+              | empty
+    '''
+    p[0] = p[1]
+
+def p_string_creator(p):
+    '''
+    Cstring : stringL_A stringL_B stringL_C
+    '''
+    p[0] = (p[1], p[2], p[3])
+
+def p_function_print(p):
+    '''
+    function_print : PRINT OPEN_P STR CLOSE_P
+                   | PRINT OPEN_P VARIABLE CLOSE_P
+                   | PRINT OPEN_P BOOLEAN CLOSE_P
+                   | PRINT OPEN_P INT CLOSE_P
+                   | PRINT OPEN_P Cstring CLOSE_P
+    '''
+
+    p[0] = ('print', p[3])
+
 def p_expression_opera(p):
     '''
     expression : OPERA OPEN_P operator COMMA expression COMMA expression CLOSE_P
@@ -363,6 +423,7 @@ def p_statement_line(p):
                     | for_loop
                     | while_loop
                     | function_move PyC
+                    | function_print PyC
     '''
     p[0] = p[1]
 
@@ -426,6 +487,8 @@ variables = {}
 functions_methods = {}
 
 tuple_elements = []
+
+phrase = []
 
 def length_variables(variable_list):
     if isinstance(variable_list,tuple):
@@ -708,8 +771,25 @@ def run(p):
                 else:
                     print('Mano abajo')
                     print(p[1])
+
         elif p[0] == 'finger':
             print(p[1])
+
+        elif p[0] == 'print':
+            if isinstance(p[1], tuple) is True:
+                exception = ['"']
+                printable = ""
+                untupleS(p[1])
+                print(phrase)
+                j = len(phrase)
+                for i in range(j):
+                    if variables.get(phrase[i]) is not None:
+                        printable = printable + " " + str(variables[phrase[1]])
+                    elif variables.get(phrase[i]) is None:
+                        printable = printable + " " + str(phrase[i])
+                print(printable.translate(exception))
+            elif isinstance(p[1], tuple) is False:
+                print(p[1])
     else:
         return p
 
@@ -723,6 +803,19 @@ def untuple(p):
             tuple_elements.append(p[i])
         elif isinstance(p[i], tuple) is True:
             untuple(p[i])
+
+
+def untupleS(p):
+    j = len(p)
+    for i in range(j):
+        if p[i] is None:
+            pass
+        elif isinstance(p[i], tuple) is False:
+            phrase.append(p[i])
+        elif isinstance(p[i], tuple) is True:
+            untupleS(p[i])
+
+
 def run_main():
     if ('main',0) in functions_methods:
         print('main found')
