@@ -58,7 +58,7 @@ class Menubar(ttk.Frame):
             codeString = file.read()
         # Then do stuff with the string
         compiler.clearAll()
-        compiler.compile(self.GUI.text_box.get("1.0", 'end-1c'), self.GUI)
+        compiler.compile(codeString, self.GUI)
         return True
 
     def compileRun(self):
