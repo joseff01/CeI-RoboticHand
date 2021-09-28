@@ -1,6 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
+import time
 
 reserved = {
     'let'	 : 'LET',
@@ -17,6 +18,7 @@ reserved = {
     'fn'     : 'FUNCTION',
     'return' : 'RETURN',
     'Move'   : 'MOVE',
+    'Delay'  : 'DELAY'
 }
             
 """Define los tokens validos para el lexer"""
@@ -28,6 +30,9 @@ tokens = [
     'MIDDLE',
     'ANULAR',
     'PINKY',
+    'SEG',
+    'MIL',
+    'MIN',
     'ALL',
     'ARROW',
     'VARIABLE',
@@ -103,11 +108,29 @@ def t_PINKY(t):
     r'\"Q\"'
     t.type = 'PINKY'
     return t
+
 def t_ALL(t):
     r'\"T\"'
     t.type = 'ALL'
     return t
 
+def t_SEG(t):
+    r'\"Seg\"'
+    t.value = "Seg"
+    t.type = 'SEG'
+    return t
+
+def t_MIL(t):
+    r'\"Mil\"'
+    t.value = "Mil"
+    t.type = 'MIL'
+    return t
+
+def t_MIN(t):
+    r'\"Min\"'
+    t.value = "Min"
+    t.type = 'MIN'
+    return t
 
 def t_COMMENT(t):
     r'\@.*'
@@ -363,8 +386,24 @@ def p_statement_line(p):
                     | for_loop
                     | while_loop
                     | function_move PyC
+                    | function_delay PyC
     '''
     p[0] = p[1]
+
+def p_time_param(p):
+    '''
+    time_param : SEG
+                | MIL
+                | MIN
+    '''
+    p[0] = p[1]
+
+def p_function_delay(p):
+    '''
+    function_delay : DELAY OPEN_P INT COMMA time_param CLOSE_P
+    '''
+    p[0] = ('delay', p[3], p[5])
+
 
 def p_statement_line_return(p):
     '''
@@ -457,7 +496,7 @@ def remove_parameter_variables(parametersTuple, parameterNames):
 
 
 def run(p):
-    global variables
+    global variables, GUI
     if type(p) == tuple:
         if p[0] == '+':
             return run(p[1]) + run(p[2])
@@ -710,6 +749,18 @@ def run(p):
                     print(p[1])
         elif p[0] == 'finger':
             print(p[1])
+
+        elif p[0] == 'delay':
+            timeToSleep = p[1]
+            timeUnit = p[2]
+            print("PepeSilvia", timeUnit, timeToSleep)
+            if timeUnit == 'Min':
+                GUI.root.after(timeToSleep*60000)
+            elif timeUnit == 'Seg':
+                GUI.root.after(timeToSleep*1000)
+            elif timeUnit == 'Mil':
+                GUI.root.after(timeToSleep)
+
     else:
         return p
 
@@ -723,6 +774,7 @@ def untuple(p):
             tuple_elements.append(p[i])
         elif isinstance(p[i], tuple) is True:
             untuple(p[i])
+
 def run_main():
     if ('main',0) in functions_methods:
         print('main found')
@@ -737,7 +789,11 @@ def clearAll():
     lexer.lineno = 1
     print("\n")
 
-def compile(text):
+GUI = None
+
+def compile(text, gui):
+    global GUI
+    GUI = gui
     parser.parse(text)
     print(variables)
     print(functions_methods)

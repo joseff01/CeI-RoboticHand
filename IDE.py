@@ -65,7 +65,7 @@ class Menubar(ttk.Frame):
         #self.compile()
 
         # Luego lo corre
-        compiler.compile(self.GUI.text_box.get("1.0",'end-1c'))
+        compiler.compile(self.GUI.text_box.get("1.0",'end-1c'), self.GUI)
 
     # Manejo de estado para ctrl+s
     def root_key_pressed(self, event):
