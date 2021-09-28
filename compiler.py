@@ -761,17 +761,18 @@ def run(p):
                 print(tuple_elements)
                 j = len(tuple_elements)
                 for i in range(j):
-                    if run(p[2]):
+                    if p[2] is True or variables[p[2]] is True:
                         print('mano arriba')
                         print(tuple_elements[i])
-                    else:
+                    elif p[2] is False or variables[p[2]] is False:
                         print('Mano abajo')
                         print(tuple_elements[i])
+                tuple_elements.clear()
             elif isinstance(p[1], tuple) is False:
-                if variables[p[2]] is True:
+                if p[2] is True or variables[p[2]] is True:
                     print('mano arriba')
                     print(p[1])
-                elif variables[p[2]] is False:
+                elif p[2] is False or variables[p[2]] is False:
                     print('Mano abajo')
                     print(p[1])
 
@@ -789,6 +790,7 @@ def run(p):
                         printable = printable + " " + str(variables[phrase[1]])
                     elif variables.get(phrase[i]) is None:
                         printable = printable + " " + str(phrase[i])
+                phrase.clear()
                 print(printable)
             elif isinstance(p[1], tuple) is False:
                 print(p[1])
