@@ -57,7 +57,8 @@ class Menubar(ttk.Frame):
         with open(self.file_name, 'r') as file:
             codeString = file.read()
         # Then do stuff with the string
-        print(codeString)
+        compiler.clearAll()
+        compiler.compile(self.GUI.text_box.get("1.0", 'end-1c'), self.GUI)
         return True
 
     def compileRun(self):
@@ -66,7 +67,8 @@ class Menubar(ttk.Frame):
         self.compile()
 
         # Luego lo corre
-        compiler.compile(self.GUI.text_box.get("1.0",'end-1c'), self.GUI)
+        compiler.run_main()
+        compiler.clearAll()
 
     # Manejo de estado para ctrl+s
     def root_key_pressed(self, event):

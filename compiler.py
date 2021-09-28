@@ -1020,8 +1020,5 @@ def compile(text, gui): #Needs GUI object in order to print to console
     global GUI
     GUI = gui
     parser.parse(text)
-    print(variables)
     print(functions_methods)
-    run_main()
-    print(variables)
-    clearAll()
+
