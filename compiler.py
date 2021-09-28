@@ -2,6 +2,8 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 import time
+import pyfirmata
+
 
 reserved = {
     'let'	 : 'LET',
@@ -86,6 +88,24 @@ t_ignore = r' '
 
 """Definicion de algunos tokens como funciones(nota: definir palabras especificas antes de la definicion de variable)"""
 
+
+board = pyfirmata.Arduino('COM3')
+
+it = pyfirmata.util.Iterator(board)
+it.start()
+angle = 0
+
+pin3 = board.get_pin('d:3:s')
+pin5 = board.get_pin('d:5:s')
+pin6 = board.get_pin('d:6:s')
+pin9 = board.get_pin('d:9:s')
+pin10 = board.get_pin('d:10:s')
+
+pin3.write(angle)
+pin5.write(angle)
+pin6.write(angle)
+pin9.write(angle)
+pin10.write(angle)
 
 def t_THUMB(t):
     r'\"P\"'
@@ -748,17 +768,101 @@ def run(p):
                 for i in range(j):
                     if run(p[2]):
                         print('mano arriba')
-                        print(tuple_elements[i])
+                        if tuple_elements[i] == '"P"':
+                            print(tuple_elements[i])
+                            pin3.write(180)
+                        elif tuple_elements[i] == '"I"':
+                            print(tuple_elements[i])
+                            pin5.write(180)
+                        elif tuple_elements[i] == '"M"':
+                            print(tuple_elements[i])
+                            pin6.write(180)
+                        elif tuple_elements[i] == '"A"':
+                            print(tuple_elements[i])
+                            pin9.write(180)
+                        elif tuple_elements[i] == '"Q"':
+                            print(tuple_elements[i])
+                            pin10.write(180)
+                        elif tuple_elements[i] == '"T"':
+                            print(tuple_elements[i])
+                            pin3.write(180)
+                            pin5.write(180)
+                            pin6.write(180)
+                            pin9.write(180)
+                            pin10.write(180)
                     else:
-                        print('Mano abajo')
-                        print(tuple_elements[i])
+                        print('mano abajo')
+                        if tuple_elements[i] == '"P"':
+                            print(tuple_elements[i])
+                            pin3.write(0)
+                        elif tuple_elements[i] == '"I"':
+                            print(tuple_elements[i])
+                            pin5.write(0)
+                        elif tuple_elements[i] == '"M"':
+                            print(tuple_elements[i])
+                            pin6.write(0)
+                        elif tuple_elements[i] == '"A"':
+                            print(tuple_elements[i])
+                            pin9.write(0)
+                        elif tuple_elements[i] == '"Q"':
+                            print(tuple_elements[i])
+                            pin10.write(0)
+                        elif tuple_elements[i] == '"T"':
+                            print(tuple_elements[i])
+                            pin3.write(0)
+                            pin5.write(0)
+                            pin6.write(0)
+                            pin9.write(0)
+                            pin10.write(0)
             elif isinstance(p[1], tuple) is False:
                 if run(p[2]):
-                    print('mano arriba')
-                    print(p[1])
+                    print('Mano arriba')
+                    if p[1] == '"P"':
+                        print(p[1])
+                        pin3.write(180)
+                    elif p[1] == '"I"':
+                        print(p[1])
+                        pin5.write(180)
+                    elif p[1] == '"M"':
+                        print(p[1])
+                        pin6.write(180)
+                    elif p[1] == '"A"':
+                        print(p[1])
+                        pin9.write(180)
+                    elif p[1] == '"Q"':
+                        print(p[1])
+                        pin10.write(180)
+                    elif p[1] == '"T"':
+                        print(p[1])
+                        pin3.write(180)
+                        pin5.write(180)
+                        pin6.write(180)
+                        pin9.write(180)
+                        pin10.write(180)
                 else:
                     print('Mano abajo')
-                    print(p[1])
+                    if p[1] == '"P"':
+                        print(p[1])
+                        pin3.write(0)
+                    elif p[1] == '"I"':
+                        print(p[1])
+                        pin5.write(0)
+                    elif p[1] == '"M"':
+                        print(p[1])
+                        pin6.write(0)
+                    elif p[1] == '"A"':
+                        print(p[1])
+                        pin9.write(0)
+                    elif p[1] == '"Q"':
+                        print(p[1])
+                        pin10.write(0)
+                    elif p[1] == '"T"':
+                        print(p[1])
+                        pin3.write(0)
+                        pin5.write(0)
+                        pin6.write(0)
+                        pin9.write(0)
+                        pin10.write(0)
         elif p[0] == 'finger':
             print(p[1])
 
