@@ -112,13 +112,12 @@ def t_ALL(t):
 
 def t_PRINT(t):
     r'println\!'
-    t.value = t.value[1:-1]
     t.type = 'PRINT'
     return t
 
 def t_STR(t):
     r"\"[a-zA-Z ]+\""
-
+    t.value = t.value[1:-1]
     t.type = 'STR'
     return t
 
