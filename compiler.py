@@ -978,7 +978,10 @@ def run(p):
                         printable = printable + ("" if i==0 else " ") + str(phrase[i])
                 GUI.println(printable)
             elif isinstance(p[1], tuple) is False:
-                GUI.println(p[1])
+                if variables.get(p[1]) is not None:
+                    GUI.println(variables[p[1]])
+                elif variables.get(p[1]) is None:
+                    GUI.println(variables[p[1]])
     else:
         return p
 r"\"[]"
