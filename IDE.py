@@ -48,6 +48,7 @@ class Menubar(ttk.Frame):
 
     def compile(self):
         '''Solo compila el programa'''
+        self.GUI.cls()
         # First it saves the file
         if(not self.save_file()):
             print("No se pudo guardar el archivo, por lo tanto no se compiló")
@@ -62,10 +63,10 @@ class Menubar(ttk.Frame):
     def compileRun(self):
         '''Compila y corre el programa'''
         # Primero compila el programa
-        #self.compile()
+        self.compile()
 
         # Luego lo corre
-        compiler.compile(self.GUI.text_box.get("1.0",'end-1c'))
+        compiler.compile(self.GUI.text_box.get("1.0",'end-1c'), self.GUI)
 
     # Manejo de estado para ctrl+s
     def root_key_pressed(self, event):
@@ -157,6 +158,10 @@ class GUI(ttk.Frame):
     def println(self, text):
         '''Agrega una línea de texto a la ventana de la consola'''
         self.console.insert(tk.END, text)
+
+    def cls(self):
+        '''Borra el contenido de la consola'''
+        self.console.delete(0,tk.END)
 
     def _on_change(self, event):
         self.linenumbers.redraw()

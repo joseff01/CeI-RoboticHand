@@ -50,7 +50,6 @@ tokens = [
     'MORE_EQUAL',
     'MORE_THAN',
     'LESS_THAN',
-    'COMMENT',
     'PyC',
     'dDOT_E',
     'dDOT',
@@ -116,7 +115,6 @@ def t_COMMENT(t):
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-    print("line:",t.lexer.lineno)
 
 def t_INT(t):
     r'\d+'
@@ -158,8 +156,8 @@ def t_ID(t):
     return t
 
 def t_error(t):
-    print("illegal character detected: '" + t.value + "'")
-    t.lexer.skip(1)
+    global IDE
+    IDE.println("Frase ilegal '{}' en línea {}".format(t.value, t.lexer.lineno))
 
 lexer = lex.lex()
 
@@ -418,6 +416,15 @@ def p_param_expresions(p):
     else:
         p[0] = p[1]
 
+def p_error(p):
+    global IDE
+    if not p:
+         IDE.println("Error de sintaxis por EOF!")
+         return
+
+    IDE.println("Sintaxis no reconocida cerca de '{}' en línea {}".format(p.value, p.lineno))
+
+
 
 parser = yacc.yacc()
 
@@ -457,7 +464,7 @@ def remove_parameter_variables(parametersTuple, parameterNames):
 
 
 def run(p):
-    global variables
+    global variables, IDE
     if type(p) == tuple:
         if p[0] == '+':
             return run(p[1]) + run(p[2])
@@ -472,56 +479,61 @@ def run(p):
         elif p[0] == '*':
             return run(p[1]) * run(p[2])
         elif p[0] == 'var':
-            return variables[p[1]]
+            if(p[1] in variables):
+                return variables[p[1]]
+            else:
+                IDE.println('Error: Variable \'{}\' no definida'.format(p[1]))
 
         elif p[0] == '==':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
-                print('Error: Variable no definida')
+                IDE.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) == run(p[2])
 
         elif p[0] == '<>':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
-                print('Error: Variable no definida')
+                IDE.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) != run(p[2])
 
         elif p[0] == '<=':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
-                print('Error: Variable no definida')
+                IDE.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) <= run(p[2])
 
         elif p[0] == '>=':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
-                print('Error: Variable no definida')
+                IDE.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) >= run(p[2])
 
         elif p[0] == '>':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
-                print('Error: Variable no definida')
+                IDE.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) > run(p[2])
 
         elif p[0] == '<':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
-                print('Error: Variable no definida')
+                IDE.println('Error: Variable \'{}\' no definida'.format(p[1]))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) < run(p[2])
 
         elif p[0] == '=':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(run(p[2]), bool) is True:
-                print('Tipo incompatible')
+                IDE.println('Tipo incompatible entre \'{}\' y \'{}\':'.format(p[1],p[2]))
+                IDE.println('int != bool')
 
             elif len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], bool) is True and isinstance(run(p[2]), int) is True:
-                print('Tipo incompatible')
+                IDE.println('Tipo incompatible entre \'{}\' y \'{}\':bool != int'.format(p[1],p[2]))
+                IDE.println('bool != int')
 
             else:
                 variables[p[1]] = run(p[2])
@@ -625,14 +637,14 @@ def run(p):
 
         elif p[0] == 'function_def':
             if (p[1],length_variables(p[2])) in functions_methods:
-                print("ERROR: Function", p[1], "already exist with the same name and number of inputs")
+                IDE.println("Error: La función {} ya existe con el mismo nombre y cantidad de argumentos".format(p[1]))
                 return
             functions_methods[(p[1],length_variables(p[2]))] = (p[2], p[3], p[4])
             print("Functions/Methods:")
             print(functions_methods, '\n')
         elif p[0] == 'method_def':
             if (p[1],length_variables(p[2])) in functions_methods:
-                print("ERROR: Method", p[1], "already exist with the same name and number of inputs")
+                IDE.println("Error: El método {} ya existe con el mismo nombre y cantidad de argumentos".format(p[1]))
                 return
             functions_methods[(p[1], length_variables(p[2]))] = (p[2], p[3])
             print("Functions/Methods:")
@@ -657,7 +669,7 @@ def run(p):
                     return 0
                 elif (result is None) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 3):
                     #ERROR CASE, FUNCTION MUST HAVE A RETURN CODE SHOULD STOP READING
-                    print("ERROR: Function ", p[1], "must have a return" )
+                    IDE.println("Error: La función {} debe contener un return".format(p[1]) )
                 elif (isinstance(result,tuple)) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 2):
                     print("WARNING: Method ", p[1], "must not have a return, returning 0 ")
                     remove_parameter_variables(p[2], ParameterNames)
@@ -670,14 +682,14 @@ def run(p):
                             return result[1]
                         else:
                             #ERROR CASE, RETURN INCORRECT TYPE
-                            print("ERROR: Incorrect return type, must be boolean")
+                            IDE.println("Error: Tipo de retorno incorrecto, debe ser un booleano.")
                             remove_parameter_variables(p[2], ParameterNames)
                             return 0
                     elif functions_methods[(p[1],length_variables(p[2]))][2] == "integer":
                         print(result[1])
                         if isinstance(result[1],bool):
                             # ERROR CASE, RETURN INCORRECT TYPE
-                            print("ERROR: Incorrect return type, must be integer")
+                            IDE.println("Error: Tipo de retorno incorrecto, debe ser un int.")
                             remove_parameter_variables(p[2], ParameterNames)
                             return 0
                         else:
@@ -724,11 +736,12 @@ def untuple(p):
         elif isinstance(p[i], tuple) is True:
             untuple(p[i])
 def run_main():
+    global IDE
     if ('main',0) in functions_methods:
         print('main found')
         run(functions_methods[('main',0)][1])
     else:
-        print('ERROR: main not found')
+        IDE.println('Error: No se encontró la función main')
 
 def clearAll():
     global variables, functions_methods
@@ -737,7 +750,9 @@ def clearAll():
     lexer.lineno = 1
     print("\n")
 
-def compile(text):
+def compile(text, lIDE): #Needs IDE object in order to print to console
+    global IDE 
+    IDE = lIDE
     parser.parse(text)
     print(variables)
     print(functions_methods)
