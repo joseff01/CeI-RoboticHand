@@ -971,7 +971,7 @@ def run(p):
                 j = len(phrase)
                 for i in range(j):
                     if variables.get(phrase[i]) is not None:
-                        printable = printable + ("" if i==0 else " ") + str(variables[phrase[1]])
+                        printable = printable + ("" if i==0 else " ") + str(variables[phrase[i]])
                     elif variables.get(phrase[i]) is None:
                         printable = printable + ("" if i==0 else " ") + str(phrase[i])
                 GUI.println(printable)
