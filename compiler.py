@@ -543,14 +543,12 @@ def run(p):
                 return variables[p[1]]
             else:
                 lineno = p[2]
-                print("LineNo: ", lineno)
-                GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
+                GUI.println('Error: Variable \'{}\' no definida en línea {}'.format(p[1], lineno))
 
         elif p[0] == '==':
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
                 lineno = p[3]
-                print("LineNo: ", lineno)
-                GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
+                GUI.println('Error: Variable \'{}\' no definida en línea {}'.format(p[1], lineno))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) == run(p[2])
@@ -559,7 +557,7 @@ def run(p):
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
                 lineno = p[3]
                 print("LineNo: ", lineno)
-                GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
+                GUI.println('Error: Variable \'{}\' no definida en línea {}'.format(p[1], lineno))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) != run(p[2])
@@ -568,7 +566,7 @@ def run(p):
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
                 lineno = p[3]
                 print("LineNo: ", lineno)
-                GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
+                GUI.println('Error: Variable \'{}\' no definida en línea {}'.format(p[1], lineno))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) <= run(p[2])
@@ -577,7 +575,7 @@ def run(p):
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
                 lineno = p[3]
                 print("LineNo: ", lineno)
-                GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
+                GUI.println('Error: Variable \'{}\' no definida en línea {}'.format(p[1], lineno))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) >= run(p[2])
@@ -586,7 +584,7 @@ def run(p):
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
                 lineno = p[3]
                 print("LineNo: ", lineno)
-                GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
+                GUI.println('Error: Variable \'{}\' no definida en línea {}'.format(p[1], lineno))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) > run(p[2])
@@ -595,7 +593,7 @@ def run(p):
             if (isinstance(p[1], int) is False and variables.get(p[1][1]) is None) or (isinstance(p[2], int) is False and variables.get(p[2][1]) is None):
                 lineno = p[3]
                 print("LineNo: ", lineno)
-                GUI.println('Error: Variable \'{}\' no definida'.format(p[1]))
+                GUI.println('Error: Variable \'{}\' no definida en línea {}'.format(p[1], lineno))
             else:
                 print(p[1], run(p[2]))
                 return run(p[1]) < run(p[2])
@@ -603,14 +601,12 @@ def run(p):
         elif p[0] == '=':
             if len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], int) is True and isinstance(run(p[2]), bool) is True:
                 lineno = p[3]
-                print("LineNo: ", lineno)
-                GUI.println('Tipo incompatible entre \'{}\' y \'{}\':'.format(p[1],p[2]))
+                GUI.println('Error: En línea {} tipos son incompatibles entre \'{}\' y \'{}\':'.format(lineno, p[1],p[2]))
                 GUI.println('int != bool')
 
             elif len(variables) > 0 and variables.get(p[1]) is not None and isinstance(variables[p[1]], bool) is True and isinstance(run(p[2]), int) is True:
                 lineno = p[3]
-                print("LineNo: ", lineno)
-                GUI.println('Tipo incompatible entre \'{}\' y \'{}\':bool != int'.format(p[1],p[2]))
+                GUI.println('Error: En línea {} tipos son incompatibles entre \'{}\' y \'{}\':bool != int'.format(lineno, p[1],p[2]))
                 GUI.println('bool != int')
 
             else:
@@ -712,7 +708,7 @@ def run(p):
         elif p[0] == 'function_def':
             if (p[1],length_variables(p[2])) in functions_methods:
                 lineno = p[5]
-                GUI.println("Error: La función {} ya existe con el mismo nombre y cantidad de argumentos".format(p[1]))
+                GUI.println("Error: En línea {}. La función {} ya existe con el mismo nombre y cantidad de argumentos".format(lineno, p[1]))
                 return
             functions_methods[(p[1],length_variables(p[2]))] = (p[2], p[3], p[4], p[5])
             print("Functions/Methods:")
@@ -720,7 +716,7 @@ def run(p):
         elif p[0] == 'method_def':
             if (p[1],length_variables(p[2])) in functions_methods:
                 lineno = p[4]
-                GUI.println("Error: El método {} ya existe con el mismo nombre y cantidad de argumentos".format(p[1]))
+                GUI.println("Error: En línea {}. El método {} ya existe con el mismo nombre y cantidad de argumentos".format(lineno, p[1]))
                 return
             functions_methods[(p[1], length_variables(p[2]))] = (p[2], p[3], p[4])
             print("Functions/Methods:")
@@ -747,8 +743,7 @@ def run(p):
                 elif (result is None) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 4):
                     #ERROR CASE, FUNCTION MUST HAVE A RETURN CODE SHOULD STOP READING
                     lineno = functions_methods[(p[1], length_variables(p[2]))][3]
-                    print("LineNo:",lineno)
-                    GUI.println("Error: La función {} debe contener un return".format(p[1]) )
+                    GUI.println("Error: En línea {}. La función {} debe contener un return".format(lineno, p[1]) )
                 elif (isinstance(result,tuple)) and (len(functions_methods[(p[1],length_variables(p[2]))]) == 3):
                     lineno = functions_methods[(p[1], length_variables(p[2]))][2]
                     print("LineNo:", lineno)
@@ -764,8 +759,7 @@ def run(p):
                         else:
                             #ERROR CASE, RETURN INCORRECT TYPE
                             lineno = functions_methods[(p[1], length_variables(p[2]))][3]
-                            print("LineNo:", lineno)
-                            GUI.println("Error: Tipo de retorno incorrecto, debe ser un booleano.")
+                            GUI.println("Error: En línea {}. Tipo de retorno incorrecto, debe ser un booleano.".format(lineno))
                             remove_parameter_variables(p[2], ParameterNames)
                             return 0
                     elif functions_methods[(p[1],length_variables(p[2]))][2] == "integer":
@@ -773,8 +767,7 @@ def run(p):
                         if isinstance(result[1],bool):
                             # ERROR CASE, RETURN INCORRECT TYPE
                             lineno = functions_methods[(p[1], length_variables(p[2]))][3]
-                            print("LineNo:", lineno)
-                            GUI.println("Error: Tipo de retorno incorrecto, debe ser un int.")
+                            GUI.println("Error: En línea {}. Tipo de retorno incorrecto, debe ser un int.".format(lineno))
                             remove_parameter_variables(p[2], ParameterNames)
                             return 0
                         else:
